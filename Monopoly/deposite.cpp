@@ -1,14 +1,13 @@
 #include "deposite.h"
+#include "player.h"
 
-unsigned int Deposite::depositeMoney = 0;
-
-void Deposite::actionOnStop(Player& player) const
+void Deposite::actionOnStop(Player& player)
 {
     player.setNewResult(player.getActualResult() + depositeMoney);
     depositeMoney = 0;
 }
 
-void Deposite::actionOnWalkThrought(Player& player) const
+void Deposite::actionOnWalkThrought(Player& player)
 {
     player.withdrawMoney(valueToStore);
     depositeMoney += valueToStore;

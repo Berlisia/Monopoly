@@ -2,17 +2,17 @@
 #include <vector>
 #include <memory>
 #include "cycliciterator.h"
+#include "square.h"
 
-class Square;
-typedef std::vector<std::shared_ptr<Square>> Squers;
-typedef CyclicIterator<std::shared_ptr<Square>, Squers::iterator> BoardIterator;
+typedef std::vector<std::unique_ptr<Square>> Squers;
+typedef CyclicIterator<std::unique_ptr<Square>, Squers::iterator> BoardIterator;
 
 class Board
 {
 public:
     Board(Squers p_squares);
 
-    BoardIterator createBoardIteratorWithStartPossition();
+    BoardIterator createBoardIterator();
 private:
     Squers squares;
     const int numberOfSquares = 40;

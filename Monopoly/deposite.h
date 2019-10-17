@@ -5,13 +5,15 @@
 class Deposite : public Square
 {
 public:
-    Deposite(unsigned int p_valueToStore): valueToStore(p_valueToStore)
+    Deposite(unsigned int p_valueToStore):
+        valueToStore(p_valueToStore),
+        depositeMoney(0)
     {
     }
 
-    virtual void actionOnStop(Player&) const = 0;
-    virtual void actionOnWalkThrought(Player&) const = 0;
+    virtual void actionOnStop(Player&);
+    virtual void actionOnWalkThrought(Player&);
 private:
     unsigned int valueToStore;
-    static unsigned int depositeMoney;
+    unsigned int depositeMoney;
 };

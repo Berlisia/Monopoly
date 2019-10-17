@@ -26,13 +26,11 @@ public:
 
     T& operator*() const
     {
-        std::cout << "() " << std::endl;
         return *cursor;
     }
 
     CyclicIterator& operator++()
     {
-        std::cout << "++ " << std::endl;
         ++cursor;
         if (cursor == end)
             cursor = begin;

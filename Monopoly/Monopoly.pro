@@ -1,5 +1,5 @@
 TEMPLATE = app
-CONFIG += console c++11
+CONFIG += console c++14
 CONFIG -= app_bundle
 CONFIG -= qt
 
@@ -11,8 +11,7 @@ SOURCES += \
     penalty.cpp \
     reward.cpp \
     player.cpp \
-    deposite.cpp \
-    piece.cpp
+    deposite.cpp
 
 HEADERS += \
     square.h \
@@ -20,7 +19,6 @@ HEADERS += \
     board.h \
     monopolygame.h \
     player.h \
-    piece.h \
     die.h \
     penalty.h \
     reward.h \

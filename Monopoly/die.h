@@ -1,22 +1,20 @@
 #pragma once
 
-#include <cstdlib>
-#include <ctime>
+#include <random>
 #include <iostream>
-
-using namespace std;
 
 class Dice
 {
 public:
 
-    int diceThrow() const
+    unsigned int diceThrow() const
     {
-        srand((unsigned)time(0));
-        int i;
-        i = (rand()%12)+1;
-        cout << "throw: " << i << endl;
-        return i;
+        std::random_device dev;
+        std::mt19937 rng(dev());
+        std::uniform_int_distribution<std::mt19937::result_type> dist12(1, 12);
+        auto number = dist12(rng);
+        std::cout << "throw: " << number << std::endl;
+        return number;
     }
 
 };

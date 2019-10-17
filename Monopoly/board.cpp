@@ -3,11 +3,11 @@
 #include <algorithm>
 
 
-Board::Board(Squers p_squares): squares(p_squares)
+Board::Board(Squers p_squares): squares(std::move(p_squares))
 {
 }
 
-BoardIterator Board::createBoardIteratorWithStartPossition()
+BoardIterator Board::createBoardIterator()
 {
     return BoardIterator(squares.begin(), squares.end());
 }

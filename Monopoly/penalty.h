@@ -8,8 +8,8 @@ public:
         bonus(p_bonus)
     {}
 
-    void actionOnStop(Player&) const override;
-    void actionOnWalkThrought(Player&) const override;
+    void actionOnStop(Player&) override;
+    void actionOnWalkThrought(Player&) override;
 private:
     int bonus;
 };

@@ -1,28 +1,31 @@
 #pragma once
 #include <string>
-#include "piece.h"
+
 #include "die.h"
-#include <iostream>
+#include "board.h"
 
 class Player
 {
 public:
-    Player(std::string p_name, Piece p_piece, const Dice & p_dice):
+    Player(std::string p_name, const Dice & p_dice, BoardIterator p_boardIterator):
         name(p_name),
-        piece(p_piece),
-        dice(p_dice)
+        dice(p_dice),
+        actualPossisionOnBoard(p_boardIterator)
     {}
 
-    void turn();
+    std::vector<Square*> turn();
     void setNewResult(int newResult);
-    const int getActualResult();
+    int getActualResult();
     void withdrawMoney(unsigned int money);
+    void printStatus();
 
 private:
     std::string name;
-    Piece piece;
     const Dice & dice;
+    BoardIterator actualPossisionOnBoard;
     int result = 0;
 
-    int throwDice();
+    unsigned int throwDice();
+    std::vector<Square*> move(unsigned int valueOfSteps);
+
 };

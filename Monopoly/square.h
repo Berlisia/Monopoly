@@ -1,13 +1,14 @@
 #pragma once
-#include "player.h"
+
+class Player;
 
 class Square
 {
 public:
-    virtual ~Square() {}
+    virtual ~Square() = default;
 
-    virtual void actionOnStop(Player&) const = 0;
-    virtual void actionOnWalkThrought(Player&) const = 0;
+    virtual void actionOnStop(Player&) = 0;
+    virtual void actionOnWalkThrought(Player&) = 0;
 
 };
 
