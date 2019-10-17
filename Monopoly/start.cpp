@@ -1,14 +1,12 @@
 #include "start.h"
 #include <iostream>
 
-int Start::action() const
+void Start::actionOnStop(Player& player) const
 {
-    std::cout << "Start action!" << std::endl;
-    return bonus;
-
+    player.setNewResult(player.getActualResult() + bonus);
 }
 
-unsigned int Start::getPossition() const
+void Start::actionOnWalkThrought(Player& player) const
 {
-    return possition;
+    player.setNewResult(player.getActualResult() + bonus);
 }

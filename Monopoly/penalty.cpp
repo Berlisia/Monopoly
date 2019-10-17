@@ -1,14 +1,12 @@
 #include "penalty.h"
 #include <iostream>
 
-
-int Penalty::action() const
+void Penalty::actionOnStop(Player& player) const
 {
-    std::cout << "Penalty " << std::endl;
-    return bonus;
+    player.setNewResult(player.getActualResult() - bonus);
 }
 
-unsigned int Penalty::getPossition() const
+void Penalty::actionOnWalkThrought(Player& player) const
 {
-    return possition;
+
 }

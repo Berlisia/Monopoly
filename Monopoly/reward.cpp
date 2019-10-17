@@ -1,13 +1,12 @@
 #include "reward.h"
 #include <iostream>
 
-int Reward::action() const
+void Reward::actionOnStop(Player& player) const
 {
-    std::cout << "Reward " << std::endl;
-    return bonus;
+    player.setNewResult(player.getActualResult() + bonus);
 }
 
-unsigned int Reward::getPossition() const
+void Reward::actionOnWalkThrought(Player &) const
 {
-    return possition;
+
 }

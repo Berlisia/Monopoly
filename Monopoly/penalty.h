@@ -4,13 +4,12 @@
 class Penalty : public Square
 {
 public:
-    Penalty(int p_bonus, unsigned int p_possition):
-        bonus(p_bonus), possition(p_possition)
+    Penalty(int p_bonus):
+        bonus(p_bonus)
     {}
 
-    int action() const override;
-    unsigned int getPossition() const override;
+    void actionOnStop(Player&) const override;
+    void actionOnWalkThrought(Player&) const override;
 private:
     int bonus;
-    unsigned int possition;
 };

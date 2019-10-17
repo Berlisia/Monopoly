@@ -10,25 +10,19 @@ public:
     Player(std::string p_name, Piece p_piece, const Dice & p_dice):
         name(p_name),
         piece(p_piece),
-        dice(p_dice){}
+        dice(p_dice)
+    {}
 
-    void turn()
-    {
-        const Square& square = piece.move(throwDice());
-
-        result += square.action();
-        std::cout << name << ": " << result << endl;
-    }
+    void turn();
+    void setNewResult(int newResult);
+    const int getActualResult();
+    void withdrawMoney(unsigned int money);
 
 private:
     std::string name;
     Piece piece;
     const Dice & dice;
     int result = 0;
-    int deposite = 0;
 
-    int throwDice()
-    {
-        return dice.diceThrow();
-    }
+    int throwDice();
 };

@@ -1,17 +1,12 @@
 #include "monopolygame.h"
 #include "player.h"
-#include "die.h"
 
 
 void MonopolyGame::startGame()
 {
-    Dice dice;
-    Player janek("janek", Piece(board), dice);
-    Player krzysiek("krzysiek", Piece(board), dice);
+    Player janek("janek", Piece(board.createBoardIteratorWithStartPossition()), dice);
+    Player krzysiek("krzysiek", Piece(board.createBoardIteratorWithStartPossition()), dice);
 
     janek.turn();
     krzysiek.turn();
-
-
-
 }

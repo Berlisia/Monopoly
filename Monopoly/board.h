@@ -1,16 +1,19 @@
 #pragma once
 #include <vector>
-#include "square.h"
 #include <memory>
+#include "cycliciterator.h"
+
+class Square;
+typedef std::vector<std::shared_ptr<Square>> Squers;
+typedef CyclicIterator<std::shared_ptr<Square>, Squers::iterator> BoardIterator;
 
 class Board
 {
 public:
-    Board();
+    Board(Squers p_squares);
 
-    const Square& getSquareFromBoard(const Square& start, int value) const;
-    const Square& getStart() const;
+    BoardIterator createBoardIteratorWithStartPossition();
 private:
-    std::vector<std::shared_ptr<Square>> squares;
+    Squers squares;
     const int numberOfSquares = 40;
 };
