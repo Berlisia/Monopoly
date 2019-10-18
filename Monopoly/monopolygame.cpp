@@ -1,22 +1,38 @@
 #include "monopolygame.h"
 #include "player.h"
 
+
+void MonopolyGame::processActionOnThrought(Player& player)
+{
+    auto actualSquare = player.moveNextSquare();
+    actualSquare->actionOnWalkThrought(player);
+}
+
+void MonopolyGame::processActionOnStop(Player& player)
+{
+    auto actualSquare = player.moveNextSquare();
+    actualSquare->actionOnStop(player);
+}
+
 void MonopolyGame::processTrun(Player& player)
 {
-    auto squarePath = player.turn();
-    for(unsigned int i = 0; i < squarePath.size() - 1; i++)
+    auto valueOfSteps = player.throwDice();
+    for(unsigned int i = 0; i < valueOfSteps - 1; i++)
     {
-        squarePath[i]->actionOnWalkThrought(player);
+        processActionOnThrought(player);
     }
-    squarePath[squarePath.size() - 1]->actionOnStop(player);
+    processActionOnStop(player);
     player.printStatus();
 }
 
-void MonopolyGame::startGame()
+void MonopolyGame::startGame(unsigned int numberOfTurns)
 {
-    Player janek("janek", dice, board.createBoardIterator());
-    Player krzysiek("krzysiek", dice, board.createBoardIterator());
+    std::unique_ptr<Player> janek = std::make_unique<Player>("JANEK", board.createBoardIterator());
+    std::unique_ptr<Player> krzysiek = std::make_unique<Player>("KRZYSIEK", board.createBoardIterator());
 
-    processTrun(janek);
-    processTrun(krzysiek);
+    for(unsigned int i = 0; i < numberOfTurns; i++)
+    {
+        processTrun(*janek);
+        processTrun(*krzysiek);
+    }
 }

@@ -7,25 +7,30 @@
 class Player
 {
 public:
-    Player(std::string p_name, const Dice & p_dice, BoardIterator p_boardIterator):
+    Player(std::string p_name, BoardIterator p_boardIterator):
         name(p_name),
-        dice(p_dice),
         actualPossisionOnBoard(p_boardIterator)
     {}
 
-    std::vector<Square*> turn();
+    Square* moveNextSquare();
+    unsigned int throwDice();
+
     void setNewResult(int newResult);
     int getActualResult();
-    void withdrawMoney(unsigned int money);
+    unsigned int withdrawMoney(unsigned int money);
     void printStatus();
+    bool comparePlayer(const Player& player);
+    bool wantBuyProperty(unsigned int price);
+    unsigned int lockInPrison(unsigned int numberfOfTurns);
+    bool isInPrison();
 
 private:
     std::string name;
-    const Dice & dice;
     BoardIterator actualPossisionOnBoard;
-    int result = 0;
+    Dice dice;
 
-    unsigned int throwDice();
-    std::vector<Square*> move(unsigned int valueOfSteps);
+    unsigned int numberOfSkipedTurns = 0;
+    int result = 0;
+    bool isBancrut = false;
 
 };

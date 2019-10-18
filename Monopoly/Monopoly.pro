@@ -11,7 +11,11 @@ SOURCES += \
     penalty.cpp \
     reward.cpp \
     player.cpp \
-    deposite.cpp
+    deposite.cpp \
+    property.cpp \
+    randomsquare.cpp \
+    blackhole.cpp \
+    prison.cpp
 
 HEADERS += \
     square.h \
@@ -23,4 +27,8 @@ HEADERS += \
     penalty.h \
     reward.h \
     cycliciterator.h \
-    deposite.h
+    deposite.h \
+    property.h \
+    randomsquare.h \
+    blackhole.h \
+    prison.h

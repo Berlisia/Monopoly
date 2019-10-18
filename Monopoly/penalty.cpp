@@ -6,10 +6,10 @@
 void Penalty::actionOnStop(Player& player)
 {
     player.setNewResult(player.getActualResult() - bonus);
-    std::cout << "Stop on penalty - " << bonus << std::endl;
+    std::cout << "  Stop on penalty - " << bonus << std::endl;
 }
 
 void Penalty::actionOnWalkThrought(Player&)
 {
-    std::cout << "Walk throught penalty" << std::endl;
+    std::cout << "  Walk throught penalty" << std::endl;
 }

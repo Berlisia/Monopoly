@@ -5,14 +5,14 @@
 class MonopolyGame
 {
 public:
-    MonopolyGame(Board p_board, Dice p_dice):
-        board(std::move(p_board)),
-        dice(p_dice) {}
+    MonopolyGame(Board p_board):
+        board(std::move(p_board)) {}
 
-    void startGame();
+    void startGame(unsigned int numberOfTurns);
 private:
     Board board;
-    Dice dice;
 
     void processTrun(Player& player);
+    void processActionOnThrought(Player& player);
+    void processActionOnStop(Player& player);
 };

@@ -6,10 +6,10 @@
 void Reward::actionOnStop(Player& player)
 {
     player.setNewResult(player.getActualResult() + bonus);
-    std::cout << "Stop on REWARD + " <<  bonus << std::endl;
+    std::cout << "  Stop on REWARD + " <<  bonus << std::endl;
 }
 
 void Reward::actionOnWalkThrought(Player &)
 {
-    std::cout << "Walk throught REWARD" << std::endl;
+    std::cout << "  Walk throught REWARD" << std::endl;
 }

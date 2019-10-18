@@ -4,11 +4,6 @@
 #include "player.h"
 #include "square.h"
 
-std::vector<Square *> Player::turn()
-{
-    return move(throwDice());
-}
-
 void Player::setNewResult(int newResult)
 {
     result = newResult;
@@ -19,9 +14,16 @@ int Player::getActualResult()
     return result;
 }
 
-void Player::withdrawMoney(unsigned int )
+unsigned int Player::withdrawMoney(unsigned int valueToTake)
 {
-    //int resutAfterWithraw = result - money;
+    unsigned int money = result - valueToTake;
+    if(money > 0)
+    {
+        result = money;
+        return valueToTake;
+    }
+    isBancrut = true;
+    return result;
 }
 
 void Player::printStatus()
@@ -29,18 +31,43 @@ void Player::printStatus()
     std::cout << name << ": " << result << std::endl;
 }
 
-unsigned int Player::throwDice()
+bool Player::comparePlayer(const Player &player)
 {
-    return dice.diceThrow();
+    return name.compare(player.name);
 }
 
-std::vector<Square*> Player::move(unsigned int valueOfSteps)
+bool Player::wantBuyProperty(unsigned int price)
 {
-    std::vector<Square*> visitSquares;
-    for(auto i = 0; i < valueOfSteps; i++)
+    if(price < result)
     {
-        ++actualPossisionOnBoard;
-        visitSquares.push_back((*actualPossisionOnBoard).get());
+        return true;
     }
-    return visitSquares;
+    return false;
 }
+
+unsigned int Player::lockInPrison(unsigned int numberfOfTurns)
+{
+    numberOfSkipedTurns = numberfOfTurns;
+}
+
+bool Player::isInPrison()
+{
+    return numberOfSkipedTurns == 0;
+}
+
+Square* Player::moveNextSquare()
+{
+    ++actualPossisionOnBoard;
+    return (*actualPossisionOnBoard).get();
+}
+
+unsigned int Player::throwDice()
+{
+    if(numberOfSkipedTurns == 0)
+    {
+        return dice.diceThrow();
+    }
+    numberOfSkipedTurns--;
+    return 0;
+}
+
