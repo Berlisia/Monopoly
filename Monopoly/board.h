@@ -15,5 +15,4 @@ public:
     BoardIterator createBoardIterator();
 private:
     Squers squares;
-    const int numberOfSquares = 40;
 };

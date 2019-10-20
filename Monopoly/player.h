@@ -3,34 +3,49 @@
 
 #include "die.h"
 #include "board.h"
+#include "event.h"
+#include "stateMachine.h"
 
-class Player
+typedef std::unique_ptr<State> State_ptr;
+
+class Player : public StateMachine
 {
 public:
-    Player(std::string p_name, BoardIterator p_boardIterator):
-        name(p_name),
-        actualPossisionOnBoard(p_boardIterator)
-    {}
+    Player(std::string p_name, BoardIterator p_boardIterator);
 
     Square* moveNextSquare();
     unsigned int throwDice();
+    void lockInPrison();
 
-    void setNewResult(int newResult);
-    int getActualResult();
     unsigned int withdrawMoney(unsigned int money);
-    void printStatus();
+    void addMoney(unsigned int money);
+
     bool comparePlayer(const Player& player);
     bool wantBuyProperty(unsigned int price);
-    unsigned int lockInPrison(unsigned int numberfOfTurns);
-    bool isInPrison();
+
+    void printStatus();
+    const std::string& myName();
+
+protected:
+    void stateTransition(State *state);
 
 private:
     std::string name;
     BoardIterator actualPossisionOnBoard;
     Dice dice;
 
+    const State_ptr active;
+    const State_ptr inPrisone;
+    const State_ptr bancrut;
+
+    Square* moveNextSquareInStateActive();
+    Square* moveNextSquareDefault();
+
+    unsigned int throwDiceInStateActive();
+    unsigned int throwDiceInStatePrisone();
+    unsigned int throwDiceInStateBancrut();
+
     unsigned int numberOfSkipedTurns = 0;
-    int result = 0;
-    bool isBancrut = false;
+    unsigned int result = 1000;
 
 };

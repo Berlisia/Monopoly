@@ -4,31 +4,46 @@
 #include "player.h"
 #include "square.h"
 
-void Player::setNewResult(int newResult)
+Player::Player(std::string p_name, BoardIterator p_boardIterator):
+    name(p_name),
+    actualPossisionOnBoard(p_boardIterator),
+    active(std::make_unique<State>(State{&Player::moveNextSquareInStateActive, &Player::throwDiceInStateActive})),
+    inPrisone(std::make_unique<State>(State{&Player::moveNextSquareDefault, &Player::throwDiceInStatePrisone})),
+    bancrut(std::make_unique<State>(State{&Player::moveNextSquareDefault, &Player::throwDiceInStateBancrut}))
 {
-    result = newResult;
+    currentState = active.get();
 }
 
-int Player::getActualResult()
+void Player::addMoney(unsigned int money)
 {
-    return result;
+    result += money;
 }
 
 unsigned int Player::withdrawMoney(unsigned int valueToTake)
 {
-    unsigned int money = result - valueToTake;
-    if(money > 0)
+    auto resultBeforeWithdraw = int(result - valueToTake);
+    if(resultBeforeWithdraw >= 0)
     {
-        result = money;
+        result = resultBeforeWithdraw;
         return valueToTake;
     }
-    isBancrut = true;
+    stateTransition(bancrut.get());
     return result;
 }
 
 void Player::printStatus()
 {
-    std::cout << name << ": " << result << std::endl;
+    std::cout << "Result: " << result << std::endl;
+}
+
+const std::string &Player::myName()
+{
+    return name;
+}
+
+void Player::stateTransition(State* state)
+{
+    currentState = state;
 }
 
 bool Player::comparePlayer(const Player &player)
@@ -45,29 +60,52 @@ bool Player::wantBuyProperty(unsigned int price)
     return false;
 }
 
-unsigned int Player::lockInPrison(unsigned int numberfOfTurns)
+void Player::lockInPrison()
 {
-    numberOfSkipedTurns = numberfOfTurns;
-}
-
-bool Player::isInPrison()
-{
-    return numberOfSkipedTurns == 0;
+    numberOfSkipedTurns = 2;
+    stateTransition(inPrisone.get());
 }
 
 Square* Player::moveNextSquare()
+{
+    return currentState->moveNextSquare(*this);
+}
+
+Square* Player::moveNextSquareInStateActive()
 {
     ++actualPossisionOnBoard;
     return (*actualPossisionOnBoard).get();
 }
 
+Square* Player::moveNextSquareDefault()
+{
+    return nullptr;
+}
+
 unsigned int Player::throwDice()
 {
+    std::cout << "Turn " << name << " ";
+    return currentState->throwDice(*this);
+}
+
+unsigned int Player::throwDiceInStateActive()
+{
+    return dice.diceThrow();
+}
+
+unsigned int Player::throwDiceInStatePrisone()
+{
+    numberOfSkipedTurns--;
     if(numberOfSkipedTurns == 0)
     {
-        return dice.diceThrow();
+        stateTransition(active.get());
     }
-    numberOfSkipedTurns--;
+    return 0;
+}
+
+unsigned int Player::throwDiceInStateBancrut()
+{
+    std::cout << name << " is BUNCRUT" << std::endl;
     return 0;
 }
 

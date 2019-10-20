@@ -18,6 +18,7 @@ SOURCES += \
     prison.cpp
 
 HEADERS += \
+    event.h \
     square.h \
     start.h \
     board.h \
@@ -31,4 +32,6 @@ HEADERS += \
     property.h \
     randomsquare.h \
     blackhole.h \
-    prison.h
+    prison.h \
+    state.h \
+    stateMachine.h

@@ -5,23 +5,33 @@
 void MonopolyGame::processActionOnThrought(Player& player)
 {
     auto actualSquare = player.moveNextSquare();
-    actualSquare->actionOnWalkThrought(player);
+    if(actualSquare)
+        actualSquare->actionOnWalkThrought(player);
 }
 
 void MonopolyGame::processActionOnStop(Player& player)
 {
     auto actualSquare = player.moveNextSquare();
-    actualSquare->actionOnStop(player);
+    if(actualSquare)
+        actualSquare->actionOnStop(player);
 }
 
-void MonopolyGame::processTrun(Player& player)
+void MonopolyGame::processTurn(Player& player, unsigned int valueOfSteps)
 {
-    auto valueOfSteps = player.throwDice();
     for(unsigned int i = 0; i < valueOfSteps - 1; i++)
     {
         processActionOnThrought(player);
     }
     processActionOnStop(player);
+}
+
+void MonopolyGame::turn(Player& player)
+{
+    auto valueOfSteps = player.throwDice();
+    if(valueOfSteps != 0)
+    {
+        processTurn(player, valueOfSteps);
+    }
     player.printStatus();
 }
 
@@ -32,7 +42,10 @@ void MonopolyGame::startGame(unsigned int numberOfTurns)
 
     for(unsigned int i = 0; i < numberOfTurns; i++)
     {
-        processTrun(*janek);
-        processTrun(*krzysiek);
+        std::cout << "------Turn: " << i + 1 << "------" << std::endl;
+        turn(*janek);
+        turn(*krzysiek);
     }
+
+    std::cout << "END OF THE GAME" << std::endl;
 }

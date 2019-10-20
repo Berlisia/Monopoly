@@ -14,5 +14,5 @@ public:
     void actionOnStop(Player& player) override;
     void actionOnWalkThrought(Player& player) override;
 private:
-    int bonus;
+    unsigned int bonus;
 };

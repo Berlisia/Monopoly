@@ -9,7 +9,6 @@ void RandomSquare::actionOnStop(Player& player)
 
 void RandomSquare::actionOnWalkThrought(Player& )
 {
-
 }
 
 unsigned int RandomSquare::randomNumber()

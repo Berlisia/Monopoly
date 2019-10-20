@@ -3,7 +3,7 @@
 
 void Deposite::actionOnStop(Player& player)
 {
-    player.setNewResult(player.getActualResult() + depositeMoney);
+    player.addMoney(depositeMoney);
     std::cout << "  Stop on DEPOSITE get money: " << depositeMoney << std::endl;
     depositeMoney = 0;
 }

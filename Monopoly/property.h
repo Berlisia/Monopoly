@@ -17,8 +17,8 @@ public:
 private:
     unsigned int price;
     unsigned int rent;
-    Player* owner;
+    Player* owner = nullptr;
 
-    void bayPropertyByNewOwner(Player& player);
+    void buyPropertyByNewOwner(Player& player);
     void payRentByGuest(Player& player);
 };

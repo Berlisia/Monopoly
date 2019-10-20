@@ -3,12 +3,12 @@
 
 void Start::actionOnStop(Player& player)
 {
-    player.setNewResult(player.getActualResult() + bonus);
+    player.addMoney(bonus);
     std::cout << "  Stop on START + " <<  bonus << std::endl;
 }
 
 void Start::actionOnWalkThrought(Player& player)
 {
-    player.setNewResult(player.getActualResult() + bonus);
+    player.addMoney(bonus);
     std::cout << "  Walk throught START + " <<  bonus << std::endl;
 }

@@ -12,7 +12,8 @@ public:
 private:
     Board board;
 
-    void processTrun(Player& player);
+    void turn(Player& player);
+    void processTurn(Player& player, unsigned int valueOfSteps);
     void processActionOnThrought(Player& player);
     void processActionOnStop(Player& player);
 };

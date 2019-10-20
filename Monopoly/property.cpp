@@ -3,19 +3,19 @@
 
 void Property::actionOnStop(Player& player)
 {
+    std::cout << " stop on PROPERTY ";
     if(owner)
     {
         payRentByGuest(player);
     }
     else
     {
-        bayPropertyByNewOwner(player);
+        buyPropertyByNewOwner(player);
     }
 }
 
 void Property::actionOnWalkThrought(Player &)
 {
-    std::cout << "  Walk throught PROPERTY" <<  std::endl;
 }
 
 void Property::payRentByGuest(Player& player)
@@ -23,15 +23,17 @@ void Property::payRentByGuest(Player& player)
     if(!owner->comparePlayer(player))
     {
         auto money = player.withdrawMoney(rent);
-        owner->setNewResult(owner->getActualResult() - money);
+        owner->addMoney(money);
+        std::cout << player.myName() << " buy rent for " << owner->myName() << std::endl;
     }
 }
 
-void Property::bayPropertyByNewOwner(Player& player)
+void Property::buyPropertyByNewOwner(Player& player)
 {
     if(player.wantBuyProperty(price))
     {
-        player.setNewResult(player.getActualResult() - price);
+        player.withdrawMoney(price);
         owner = &player;
+        std::cout << " New owner " << owner->myName() << std::endl;
     }
 }

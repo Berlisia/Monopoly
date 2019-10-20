@@ -3,13 +3,10 @@
 
 void Prisone::actionOnStop(Player& player)
 {
-    if(!player.isInPrison())
-    {
-        player.lockInPrison(numberfOfTurns);
-    }
+    player.lockInPrison();
+    std::cout<< " Stop on PRISON" << std::endl;
 }
 
 void Prisone::actionOnWalkThrought(Player &)
 {
-
 }
