@@ -1,17 +1,17 @@
 #include <iostream>
 #include <utility>
 
-#include "square.h"
+#include "Square/square.h"
 #include "monopolygame.h"
 #include "board.h"
-#include "start.h"
-#include "reward.h"
-#include "penalty.h"
-#include "deposite.h"
-#include "property.h"
-#include "randomsquare.h"
+#include "Square/start.h"
+#include "Square/reward.h"
+#include "Square/penalty.h"
+#include "Square/deposite.h"
+#include "Square/property.h"
+#include "Square/randomsquare.h"
 #include "board.h"
-#include "prison.h"
+#include "Square/prison.h"
 
 using namespace std;
 

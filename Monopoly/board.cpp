@@ -1,5 +1,4 @@
 #include "board.h"
-#include "square.h"
 #include <algorithm>
 
 

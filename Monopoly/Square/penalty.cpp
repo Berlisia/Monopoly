@@ -1,4 +1,4 @@
-#include "penalty.h"
+#include "Square/penalty.h"
 #include <iostream>
 
 #include "player.h"

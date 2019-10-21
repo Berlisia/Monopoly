@@ -2,7 +2,7 @@
 #include <vector>
 #include <memory>
 #include "cycliciterator.h"
-#include "square.h"
+#include "Square/square.h"
 
 typedef std::vector<std::unique_ptr<Square>> Squers;
 typedef CyclicIterator<std::unique_ptr<Square>, Squers::iterator> BoardIterator;

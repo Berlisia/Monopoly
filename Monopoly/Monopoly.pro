@@ -5,36 +5,35 @@ CONFIG -= qt
 
 SOURCES += \
         main.cpp \
-    start.cpp \
+    Square/start.cpp \
     board.cpp \
     monopolygame.cpp \
-    penalty.cpp \
-    reward.cpp \
+    Square/reward.cpp \
     player.cpp \
-    deposite.cpp \
-    property.cpp \
-    randomsquare.cpp \
-    blackhole.cpp \
-    prison.cpp
+    Square/deposite.cpp \
+    Square/property.cpp \
+    Square/randomsquare.cpp \
+    Square/blackhole.cpp \
+    Square/prison.cpp \
+    Square/penalty.cpp
 
 HEADERS += \
-    event.h \
-    square.h \
-    start.h \
+    Square/square.h \
+    Square/start.h \
     board.h \
     monopolygame.h \
     player.h \
     die.h \
-    penalty.h \
-    reward.h \
+    Square/reward.h \
     cycliciterator.h \
-    deposite.h \
-    property.h \
-    randomsquare.h \
-    blackhole.h \
-    prison.h \
+    Square/deposite.h \
+    Square/property.h \
+    Square/randomsquare.h \
+    Square/blackhole.h \
+    Square/prison.h \
     state.h \
     stateMachine.h \
     stateactiveplayer.h \
     stateplayerinprison.h \
-    stateplayerbancrut.h
+    stateplayerbancrut.h \
+    Square/penalty.h

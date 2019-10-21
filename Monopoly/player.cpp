@@ -2,7 +2,7 @@
 #include <iostream>
 
 #include "player.h"
-#include "square.h"
+#include "Square/square.h"
 #include "stateactiveplayer.h"
 #include "stateplayerbancrut.h"
 #include "stateplayerinprison.h"

@@ -3,7 +3,6 @@
 
 #include "die.h"
 #include "board.h"
-#include "event.h"
 #include "stateMachine.h"
 
 class Player : public StateMachine

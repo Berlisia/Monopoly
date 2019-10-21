@@ -1,5 +1,5 @@
 #pragma once
-#include "square.h"
+#include "Square/square.h"
 #include <functional>
 #include "player.h"
 
