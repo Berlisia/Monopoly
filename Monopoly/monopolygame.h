@@ -13,7 +13,4 @@ private:
     Board board;
 
     void turn(Player& player);
-    void processTurn(Player& player, unsigned int valueOfSteps);
-    void processActionOnThrought(Player& player);
-    void processActionOnStop(Player& player);
 };

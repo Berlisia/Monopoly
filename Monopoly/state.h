@@ -1,10 +1,12 @@
 #pragma once
-#include <functional>
 
 class Square;
 class Player;
-struct State
+
+class State
 {
-    std::function<Square*(Player&)> moveNextSquare;
-    std::function<unsigned int(Player&)> throwDice;
+public:
+    virtual ~State() = default;
+
+    virtual void turn(Player&) = 0;
 };

@@ -34,4 +34,7 @@ HEADERS += \
     blackhole.h \
     prison.h \
     state.h \
-    stateMachine.h
+    stateMachine.h \
+    stateactiveplayer.h \
+    stateplayerinprison.h \
+    stateplayerbancrut.h

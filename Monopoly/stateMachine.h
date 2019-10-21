@@ -8,7 +8,8 @@ class StateMachine
 {
 public:
     virtual ~StateMachine() = default;
+    virtual void stateTransition(std::unique_ptr<State> state) = 0;
+
 protected:
-    virtual void stateTransition(State* state) = 0;
-    State* currentState;
+    std::unique_ptr<State> currentState;
 };
