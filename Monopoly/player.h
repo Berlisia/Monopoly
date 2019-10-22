@@ -32,7 +32,7 @@ private:
     BoardIterator actualPossisionOnBoard;
     Dice dice;
 
-    unsigned int result = 1000;
+    unsigned int money = 1000;
 
     Square* moveNextSquare();
 };

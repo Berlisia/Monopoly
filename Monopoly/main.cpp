@@ -12,6 +12,7 @@
 #include "Square/randomsquare.h"
 #include "board.h"
 #include "Square/prison.h"
+#include "player.h"
 
 using namespace std;
 
@@ -75,11 +76,21 @@ Squers createSimpleBoard()
     return squares;
 }
 
+Players createSomePlayers(BoardIterator boardStart)
+{
+    Players players;
+    players.push_back(std::make_unique<Player>("JANEK", boardStart));
+    players.push_back(std::make_unique<Player>("KRZYSIEK", boardStart));
+    return players;
+}
+
 int main()
 {
-    Squers squares = createSimpleBoard();
+    auto squares = createSimpleBoard();
     Board board(std::move(squares));
-    MonopolyGame game(std::move(board));
+    auto players = createSomePlayers(board.createBoardIterator());
+
+    MonopolyGame game(std::move(board), std::move(players));
     game.startGame(10);
 
     return 0;

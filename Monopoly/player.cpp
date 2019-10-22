@@ -19,26 +19,26 @@ void Player::turn()
     currentState->turn(*this);
 }
 
-void Player::addMoney(unsigned int money)
+void Player::addMoney(unsigned int moneyToAdd)
 {
-    result += money;
+    money += moneyToAdd;
 }
 
 unsigned int Player::withdrawMoney(unsigned int valueToTake)
 {
-    auto resultBeforeWithdraw = int(result - valueToTake);
-    if(resultBeforeWithdraw >= 0)
+    auto moneyBeforeWithdraw = int(money - valueToTake);
+    if(moneyBeforeWithdraw >= 0)
     {
-        result = resultBeforeWithdraw;
+        money = moneyBeforeWithdraw;
         return valueToTake;
     }
     stateTransition(std::make_unique<StatePlayerBancrut>());
-    return result;
+    return money;
 }
 
 void Player::printStatus()
 {
-    std::cout << "Result: " << result << std::endl;
+    std::cout << "Result: " << money << std::endl;
 }
 
 const std::string &Player::myName()
@@ -58,7 +58,7 @@ bool Player::comparePlayer(const Player &player)
 
 bool Player::wantBuyProperty(unsigned int price)
 {
-    if(price < result)
+    if(price < money)
     {
         return true;
     }

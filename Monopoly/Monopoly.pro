@@ -20,6 +20,8 @@ SOURCES += \
 HEADERS += \
     Square/square.h \
     Square/start.h \
+    bank.h \
+    bankier.h \
     board.h \
     monopolygame.h \
     player.h \
