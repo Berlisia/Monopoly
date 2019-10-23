@@ -7,8 +7,8 @@ class RandomSquare: public Square
 public:
     RandomSquare(Squers p_squares):  squares(std::move(p_squares)){}
 
-    virtual void actionOnStop(Player&);
-    virtual void actionOnWalkThrought(Player&);
+    virtual void actionOnStop(Guest&);
+    virtual void actionOnWalkThrought(Guest&);
 
 private:
     Squers squares;

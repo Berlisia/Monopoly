@@ -1,12 +1,14 @@
-#include "prison.h"
-#include "player.h"
+#include <iostream>
 
-void Prisone::actionOnStop(Player& player)
+#include "prison.h"
+#include "guest.h"
+
+void Prisone::actionOnStop(Guest& player)
 {
     player.lockInPrison();
     std::cout<< " Stop on PRISON" << std::endl;
 }
 
-void Prisone::actionOnWalkThrought(Player &)
+void Prisone::actionOnWalkThrought(Guest &)
 {
 }

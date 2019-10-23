@@ -8,8 +8,8 @@ public:
         penaltyPrice(p_bonus)
     {}
 
-    void actionOnStop(Player&) override;
-    void actionOnWalkThrought(Player&) override;
+    void actionOnStop(Guest&) override;
+    void actionOnWalkThrought(Guest&) override;
 private:
     unsigned int penaltyPrice;
 };

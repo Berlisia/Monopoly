@@ -1,7 +1,5 @@
 #pragma once
 #include "Square/square.h"
-#include <functional>
-#include "player.h"
 
 class Start : public Square
 {
@@ -11,8 +9,8 @@ public:
     {
     }
 
-    void actionOnStop(Player& player) override;
-    void actionOnWalkThrought(Player& player) override;
+    void actionOnStop(Guest& player) override;
+    void actionOnWalkThrought(Guest& player) override;
 private:
     unsigned int bonus;
 };

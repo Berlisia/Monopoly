@@ -5,7 +5,6 @@
 #include "player.h"
 #include "Square/property.h"
 
-typedef std::map<Player*, std::vector<Property*>> Register;
 
 class Bank
 {
@@ -14,5 +13,4 @@ public:
     {
     }
 private:
-    Register registry;
 };

@@ -1,13 +1,15 @@
 #include "randomsquare.h"
+#include "guest.h"
+
 #include <random>
 
-void RandomSquare::actionOnStop(Player& player)
+void RandomSquare::actionOnStop(Guest& player)
 {
     std::cout << "---RANDOM SQUARE!---" << std::endl;
     squares[randomNumber()]->actionOnStop(player);
 }
 
-void RandomSquare::actionOnWalkThrought(Player& )
+void RandomSquare::actionOnWalkThrought(Guest& )
 {
 }
 

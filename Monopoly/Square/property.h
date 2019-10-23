@@ -3,6 +3,8 @@
 
 #include "square.h"
 
+class Player;
+
 class Property: public Square
 {
 public:
@@ -11,14 +13,14 @@ public:
         rent(p_rent)
     {
     }
-    virtual void actionOnStop(Player&);
-    virtual void actionOnWalkThrought(Player&);
+    virtual void actionOnStop(Guest&);
+    virtual void actionOnWalkThrought(Guest&);
 
 private:
     unsigned int price;
     unsigned int rent;
-    Player* owner = nullptr;
+    Guest* owner = nullptr;
 
-    void buyPropertyByNewOwner(Player& player);
-    void payRentByGuest(Player& player);
+    void buyPropertyByNewOwner(Guest& player);
+    void payRentByGuest(Guest& player);
 };

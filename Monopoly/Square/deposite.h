@@ -11,8 +11,8 @@ public:
     {
     }
 
-    virtual void actionOnStop(Player&);
-    virtual void actionOnWalkThrought(Player&);
+    virtual void actionOnStop(Guest&);
+    virtual void actionOnWalkThrought(Guest&);
 private:
     unsigned int valueToStore;
     unsigned int depositeMoney;

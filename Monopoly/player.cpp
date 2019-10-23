@@ -51,11 +51,6 @@ void Player::stateTransition(std::unique_ptr<State> state)
     currentState = std::move(state);
 }
 
-bool Player::comparePlayer(const Player &player)
-{
-    return name.compare(player.name);
-}
-
 bool Player::wantBuyProperty(unsigned int price)
 {
     if(price < money)

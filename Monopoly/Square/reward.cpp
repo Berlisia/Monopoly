@@ -1,14 +1,15 @@
 #include "reward.h"
+#include "guest.h"
+
 #include <iostream>
 
-#include "player.h"
 
-void Reward::actionOnStop(Player& player)
+void Reward::actionOnStop(Guest& player)
 {
     player.addMoney(bonus);
     std::cout << "  Stop on REWARD + " <<  bonus << std::endl;
 }
 
-void Reward::actionOnWalkThrought(Player &)
+void Reward::actionOnWalkThrought(Guest &)
 {
 }

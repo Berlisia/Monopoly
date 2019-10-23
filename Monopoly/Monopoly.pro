@@ -38,4 +38,5 @@ HEADERS += \
     stateactiveplayer.h \
     stateplayerinprison.h \
     stateplayerbancrut.h \
-    Square/penalty.h
+    Square/penalty.h \
+    guest.h

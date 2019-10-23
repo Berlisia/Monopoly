@@ -1,7 +1,9 @@
+#include <iostream>
+
 #include "property.h"
 #include "player.h"
 
-void Property::actionOnStop(Player& player)
+void Property::actionOnStop(Guest& player)
 {
     std::cout << " stop on PROPERTY ";
     if(owner)
@@ -14,13 +16,13 @@ void Property::actionOnStop(Player& player)
     }
 }
 
-void Property::actionOnWalkThrought(Player &)
+void Property::actionOnWalkThrought(Guest&)
 {
 }
 
-void Property::payRentByGuest(Player& player)
+void Property::payRentByGuest(Guest& player)
 {
-    if(!owner->comparePlayer(player))
+    if(!owner->myName().compare(player.myName()))
     {
         auto money = player.withdrawMoney(rent);
         owner->addMoney(money);
@@ -28,7 +30,7 @@ void Property::payRentByGuest(Player& player)
     }
 }
 
-void Property::buyPropertyByNewOwner(Player& player)
+void Property::buyPropertyByNewOwner(Guest& player)
 {
     if(player.wantBuyProperty(price))
     {

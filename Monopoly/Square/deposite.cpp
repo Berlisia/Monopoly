@@ -1,14 +1,16 @@
 #include "deposite.h"
-#include "player.h"
+#include "guest.h"
 
-void Deposite::actionOnStop(Player& player)
+#include <iostream>
+
+void Deposite::actionOnStop(Guest& player)
 {
     player.addMoney(depositeMoney);
     std::cout << "  Stop on DEPOSITE get money: " << depositeMoney << std::endl;
     depositeMoney = 0;
 }
 
-void Deposite::actionOnWalkThrought(Player& player)
+void Deposite::actionOnWalkThrought(Guest& player)
 {
     player.withdrawMoney(valueToStore);
     depositeMoney += valueToStore;

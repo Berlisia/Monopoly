@@ -1,6 +1,7 @@
 #include "blackhole.h"
+#include "guest.h"
 
-void BlackHole::actionOnStop(Player &)
+void BlackHole::actionOnStop(Guest &)
 {
     if(isActive)
     {
@@ -12,7 +13,7 @@ void BlackHole::actionOnStop(Player &)
     }
 }
 
-void BlackHole::actionOnWalkThrought(Player &)
+void BlackHole::actionOnWalkThrought(Guest &)
 {
 
 }

@@ -1,14 +1,14 @@
-#include "Square/penalty.h"
 #include <iostream>
 
-#include "player.h"
+#include "Square/penalty.h"
+#include "guest.h"
 
-void Penalty::actionOnStop(Player& player)
+void Penalty::actionOnStop(Guest& player)
 {
     player.withdrawMoney(penaltyPrice);
     std::cout << "  Stop on penalty - " << penaltyPrice << std::endl;
 }
 
-void Penalty::actionOnWalkThrought(Player&)
+void Penalty::actionOnWalkThrought(Guest&)
 {
 }
