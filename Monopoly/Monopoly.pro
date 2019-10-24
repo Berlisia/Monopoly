@@ -1,10 +1,33 @@
 TEMPLATE = app
-CONFIG += console c++14
+LIBS += -pthread
+
+CONFIG += console c++17 test unix pthread
 CONFIG -= app_bundle
 CONFIG -= qt
 
+monopoly{
+    TARGET = Monopoly
+    SOURCES += main.cpp
+}
+
+test{
+    DEFINES += GTEST_LINKED_AS_SHARED_LIBRARY=1
+    TARGET = MonopolyTest
+    SOURCES += ../Tests/monopolytestmain.cpp
+}
+
+unix{
+    DEFINES += GTEST_LINKED_AS_SHARED_LIBRARY=1
+    INCLUDEPATH += ../gtest/googletest/include gtest
+    DEPENDPATH += ../gtest/build
+    LIBS += -L../gtest/build/lib/ -lgtest
+}
+
+win32{
+
+}
+
 SOURCES += \
-        main.cpp \
     Square/start.cpp \
     board.cpp \
     monopolygame.cpp \
