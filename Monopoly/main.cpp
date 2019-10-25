@@ -46,7 +46,7 @@ Squers createSimpleBoard()
     squares.push_back(createSquare<Start>(PRICE_FOR_START));
     squares.push_back(createSquare<Property>(100, 20));
     createRandomSquare(squares);
-    squares.push_back(createSquare<Prisone>());
+    squares.push_back(createSquare<Prison>());
     for(int i = 4; i < 10; i++)
     {
         squares.push_back(createSquare<Reward>(PRICE_FOR_REWARD));
@@ -54,21 +54,21 @@ Squers createSimpleBoard()
     squares.push_back(createSquare<Property>(100, 20));
     createRandomSquare(squares);
     squares.push_back(createSquare<Deposite>(PRICE_FOR_DEPOSITE));
-    squares.push_back(createSquare<Prisone>());
+    squares.push_back(createSquare<Prison>());
     for(int i = 14; i < 20; i++)
     {
         squares.push_back(createSquare<Reward>(PRICE_FOR_REWARD));
     }
     squares.push_back(createSquare<Property>(200, 30));
     createRandomSquare(squares);
-    squares.push_back(createSquare<Prisone>());
+    squares.push_back(createSquare<Prison>());
     for(int i = 23; i < 30; i++)
     {
         squares.push_back(createSquare<Penalty>(PRICE_FOR_PENALTY));
     }
     squares.push_back(createSquare<Property>(300, 40));
     createRandomSquare(squares);
-    squares.push_back(createSquare<Prisone>());
+    squares.push_back(createSquare<Prison>());
     for(int i = 33; i < NUMBER_OF_SQUERS; i++)
     {
         squares.push_back(createSquare<Reward>(PRICE_FOR_REWARD));
@@ -76,11 +76,11 @@ Squers createSimpleBoard()
     return squares;
 }
 
-Players createSomePlayers(BoardIterator boardStart, const Dice& dice)
+Players createSomePlayers(const Board& board, const Dice& dice)
 {
     Players players;
-    players.push_back(std::make_unique<Player>("JANEK", boardStart, dice));
-    players.push_back(std::make_unique<Player>("KRZYSIEK", boardStart, dice));
+    players.push_back(std::make_unique<Player>("JANEK", std::move(board.createBoardIterator()), dice));
+    players.push_back(std::make_unique<Player>("KRZYSIEK", std::move(board.createBoardIterator()), dice));
     return players;
 }
 
@@ -89,7 +89,7 @@ int main()
     auto squares = createSimpleBoard();
     Board board(std::move(squares));
     Dice dice;
-    auto players = createSomePlayers(board.createBoardIterator(), dice);
+    auto players = createSomePlayers(board, dice);
 
     MonopolyGame game(std::move(board), std::move(players));
     game.startGame(10);

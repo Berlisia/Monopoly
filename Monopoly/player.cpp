@@ -9,7 +9,7 @@
 
 Player::Player(std::string p_name, BoardIterator p_boardIterator, const Dice& p_dice):
     name(p_name),
-    actualPossisionOnBoard(p_boardIterator),
+    actualPossisionOnBoard(std::move(p_boardIterator)),
     dice(p_dice)
 {
     stateTransition(std::make_unique<StateActivePlayer>());
@@ -28,8 +28,9 @@ void Player::move()
     actionOnStop();
 }
 
-void Player::lockInPrison()
+void Player::lockInPrison(Squers::iterator prison)
 {
+    actualPossisionOnBoard.moveToNewCursor(prison);
     stateTransition(std::make_unique<StatePlayerInPrison>());
 }
 

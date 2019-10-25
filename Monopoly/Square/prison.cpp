@@ -3,12 +3,11 @@
 #include "prison.h"
 #include "guest.h"
 
-void Prisone::actionOnStop(Guest& player)
+void Prison::actionOnStop(Guest& player)
 {
-    player.lockInPrison();
     std::cout<< " Stop on PRISON" << std::endl;
 }
 
-void Prisone::actionOnWalkThrought(Guest &)
+void Prison::actionOnWalkThrought(Guest &)
 {
 }

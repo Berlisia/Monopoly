@@ -1,9 +1,13 @@
 #pragma once
 
 #include "die.h"
-#include "board.h"
 #include "stateMachine.h"
 #include "guest.h"
+
+namespace
+{
+const unsigned int moneyOnStartGame = 1500;
+}
 
 class Property;
 
@@ -15,12 +19,12 @@ public:
     void turn();
 
     void move();
-    void lockInPrison();
+    void lockInPrison(Squers::iterator prison) override;
 
-    unsigned int withdrawMoney(unsigned int money);
-    void addMoney(unsigned int money);
-    bool wantBuyProperty(unsigned int price);
-    const std::string& myName();
+    unsigned int withdrawMoney(unsigned int money) override;
+    void addMoney(unsigned int money) override;
+    bool wantBuyProperty(unsigned int price) override;
+    const std::string& myName() override;
 
     void printStatus();
 
@@ -30,9 +34,9 @@ private:
     std::string name;
     BoardIterator actualPossisionOnBoard;
     const Dice& dice;
-    std::vector<Property*> propertis;
 
-    unsigned int money = 1000;
+    std::vector<Property*> propertis;
+    unsigned int money = moneyOnStartGame;
 
     void moveNextSquare();
     Square* actualSquare();

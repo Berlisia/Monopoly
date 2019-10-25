@@ -13,7 +13,10 @@ monopoly{
 test{
     DEFINES += GTEST_LINKED_AS_SHARED_LIBRARY=1
     TARGET = MonopolyTest
-    SOURCES += ../Tests/monopolytestmain.cpp
+    SOURCES += ../Tests/monopolytestmain.cpp \
+        ../Tests/gotoprisontestsuite.cpp
+    HEADERS += ../Tests/Mocks/playerMock.h \
+        ../Tests/Mocks/guestmock.h
 }
 
 unix{
@@ -37,7 +40,8 @@ SOURCES += \
     Square/randomsquare.cpp \
     Square/blackhole.cpp \
     Square/prison.cpp \
-    Square/penalty.cpp
+    Square/penalty.cpp \
+    Square/gotoprison.cpp
 
 HEADERS += \
     Square/square.h \
@@ -61,4 +65,6 @@ HEADERS += \
     stateplayerinprison.h \
     stateplayerbancrut.h \
     Square/penalty.h \
-    guest.h
+    guest.h \
+    Square/gotoprison.h \
+    ../Tests/Mocks/dicemock.h

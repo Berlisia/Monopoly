@@ -2,7 +2,7 @@
 
 #include "square.h"
 
-class Prisone: public Square
+class Prison: public Square
 {
 public:
     virtual void actionOnStop(Guest&);
