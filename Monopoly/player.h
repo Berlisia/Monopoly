@@ -10,14 +10,13 @@ class Property;
 class Player : public StateMachine, public Guest
 {
 public:
-    Player(std::string p_name, BoardIterator p_boardIterator);
+    Player(std::string p_name, BoardIterator p_boardIterator, const Dice& p_dice);
 
     void turn();
 
-    void moveOn(unsigned int valueOfSteps);
-    unsigned int throwDice();
-
+    void move();
     void lockInPrison();
+
     unsigned int withdrawMoney(unsigned int money);
     void addMoney(unsigned int money);
     bool wantBuyProperty(unsigned int price);
@@ -30,11 +29,14 @@ public:
 private:
     std::string name;
     BoardIterator actualPossisionOnBoard;
-    Dice dice;
-
+    const Dice& dice;
     std::vector<Property*> propertis;
 
     unsigned int money = 1000;
 
-    Square* moveNextSquare();
+    void moveNextSquare();
+    Square* actualSquare();
+    void walkThrought(unsigned int valueOfSteps);
+    void actionOnWalkThrought();
+    void actionOnStop();
 };

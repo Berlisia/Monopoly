@@ -17,7 +17,6 @@ test{
 }
 
 unix{
-    DEFINES += GTEST_LINKED_AS_SHARED_LIBRARY=1
     INCLUDEPATH += ../gtest/googletest/include gtest
     DEPENDPATH += ../gtest/build
     LIBS += -L../gtest/build/lib/ -lgtest

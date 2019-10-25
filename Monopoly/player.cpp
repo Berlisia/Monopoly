@@ -7,16 +7,30 @@
 #include "stateplayerbancrut.h"
 #include "stateplayerinprison.h"
 
-Player::Player(std::string p_name, BoardIterator p_boardIterator):
+Player::Player(std::string p_name, BoardIterator p_boardIterator, const Dice& p_dice):
     name(p_name),
-    actualPossisionOnBoard(p_boardIterator)
+    actualPossisionOnBoard(p_boardIterator),
+    dice(p_dice)
 {
     stateTransition(std::make_unique<StateActivePlayer>());
 }
 
 void Player::turn()
 {
+    std::cout << "Turn " << name << " ";
     currentState->turn(*this);
+}
+
+void Player::move()
+{
+    auto valueOfSteps = dice.diceThrow();
+    walkThrought(valueOfSteps);
+    actionOnStop();
+}
+
+void Player::lockInPrison()
+{
+    stateTransition(std::make_unique<StatePlayerInPrison>());
 }
 
 void Player::addMoney(unsigned int moneyToAdd)
@@ -60,31 +74,33 @@ bool Player::wantBuyProperty(unsigned int price)
     return false;
 }
 
-void Player::lockInPrison()
-{
-    stateTransition(std::make_unique<StatePlayerInPrison>());
-}
-
-void Player::moveOn(unsigned int valueOfSteps)
-{
-    auto actualSquare = moveNextSquare();
-    for(unsigned int i = 0; i < valueOfSteps - 1; i++)
-    {
-        actualSquare->actionOnWalkThrought(*this);
-        actualSquare = moveNextSquare();
-    }
-    actualSquare->actionOnStop(*this);
-}
-
-Square* Player::moveNextSquare()
+void Player::moveNextSquare()
 {
     ++actualPossisionOnBoard;
+}
+
+Square* Player::actualSquare()
+{
     return (*actualPossisionOnBoard).get();
 }
 
-unsigned int Player::throwDice()
+void Player::walkThrought(unsigned int valueOfSteps)
 {
-    std::cout << "Turn " << name << " ";
-    return dice.diceThrow();
+    moveNextSquare();
+    for(unsigned int i = 0; i < valueOfSteps - 1; i++)
+    {
+        actionOnWalkThrought();
+    }
+}
+
+void Player::actionOnWalkThrought()
+{
+    actualSquare()->actionOnWalkThrought(*this);
+    moveNextSquare();
+}
+
+void Player::actionOnStop()
+{
+    actualSquare()->actionOnStop(*this);
 }
 
