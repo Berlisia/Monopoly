@@ -1,7 +1,7 @@
 TEMPLATE = app
 LIBS += -pthread
 
-CONFIG += console c++17 test unix pthread
+CONFIG += console c++14 test win32 pthread
 CONFIG -= app_bundle
 CONFIG -= qt
 
@@ -11,7 +11,6 @@ monopoly{
 }
 
 test{
-    DEFINES += GTEST_LINKED_AS_SHARED_LIBRARY=1
     TARGET = MonopolyTest
     SOURCES += ../Tests/monopolytestmain.cpp \
         ../Tests/gotoprisontestsuite.cpp
@@ -26,7 +25,9 @@ unix{
 }
 
 win32{
-
+    INCLUDEPATH += D:\Monopoly\googletest\googletest\include
+    DEPENDPATH += D:\Monopoly\googletest\build
+    LIBS += -LD:\Monopoly\googletest\build\lib\ -lgtest
 }
 
 SOURCES += \
