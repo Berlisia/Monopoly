@@ -76,11 +76,11 @@ Squers createSimpleBoard()
     return squares;
 }
 
-Players createSomePlayers(const Board& board, const Dice& dice)
+Players createSomePlayers(BoardIterator board, const Dice& dice)
 {
     Players players;
-    players.push_back(std::make_unique<Player>("JANEK", std::move(board.createBoardIterator()), dice));
-    players.push_back(std::make_unique<Player>("KRZYSIEK", std::move(board.createBoardIterator()), dice));
+    players.push_back(std::make_unique<Player>("JANEK", board, dice));
+    players.push_back(std::make_unique<Player>("KRZYSIEK", board, dice));
     return players;
 }
 
@@ -89,7 +89,7 @@ int main()
     auto squares = createSimpleBoard();
     Board board(std::move(squares));
     Dice dice;
-    auto players = createSomePlayers(board, dice);
+    auto players = createSomePlayers(board.createBoardIterator(), dice);
 
     MonopolyGame game(std::move(board), std::move(players));
     game.startGame(10);

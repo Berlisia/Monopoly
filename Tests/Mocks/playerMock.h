@@ -1,3 +1,5 @@
+#include <gmock/gmock.h>
+
 #include "player.h"
 
 class PlayerMock : public Player
@@ -8,9 +10,9 @@ public:
 
     MOCK_METHOD0(move, void());
 
-    MOCK_METHOD01(lockInPrison, void(Squers::iterator));
-    MOCK_METHOD01(withdrawMoney, unsigned int(unsigned int));
-    MOCK_METHOD01(addMoney, void(unsigned int));
-    MOCK_METHOD01(wantBuyProperty, void(unsigned int));
-    MOCK_METHOD00(myName, const std::string&());
+    MOCK_METHOD1(lockInPrison, void(Squers::iterator));
+    MOCK_METHOD1(withdrawMoney, unsigned int(unsigned int));
+    MOCK_METHOD1(addMoney, void(unsigned int));
+    MOCK_METHOD1(wantBuyProperty, bool(unsigned int));
+    MOCK_METHOD0(myName, const std::string&());
 };

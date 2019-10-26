@@ -1,3 +1,5 @@
+#include <gmock/gmock.h>
+
 #include "die.h"
 
 class DiceMock: public Dice

@@ -12,7 +12,7 @@ class Board
 public:
     Board(Squers p_squares);
 
-    BoardIterator createBoardIterator() const;
+    BoardIterator createBoardIterator();
 private:
     Squers squares;
 };

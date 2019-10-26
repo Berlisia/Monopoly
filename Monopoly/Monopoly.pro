@@ -12,22 +12,29 @@ monopoly{
 
 test{
     TARGET = MonopolyTest
-    SOURCES += ../Tests/monopolytestmain.cpp \
+    SOURCES += \
         ../Tests/gotoprisontestsuite.cpp
-    HEADERS += ../Tests/Mocks/playerMock.h \
-        ../Tests/Mocks/guestmock.h
+    HEADERS += \
+        ../Tests/Mocks/playerMock.h \
+        ../Tests/Mocks/guestmock.h \
+        ../Tests/Mocks/dicemock.h
 }
 
 unix{
     INCLUDEPATH += ../gtest/googletest/include gtest
     DEPENDPATH += ../gtest/build
     LIBS += -L../gtest/build/lib/ -lgtest
+    LIBS += -L../gtest/build/lib/ -lgmock
+    LIBS += -L../gtest/build/lib/ -lgtest_main
 }
 
 win32{
     INCLUDEPATH += D:\Monopoly\googletest\googletest\include
+    INCLUDEPATH += D:\Monopoly\googletest\googlemock\include
     DEPENDPATH += D:\Monopoly\googletest\build
     LIBS += -LD:\Monopoly\googletest\build\lib\ -lgtest
+    LIBS += -LD:\Monopoly\googletest\build\lib\ -lgmock
+    LIBS += -LD:\Monopoly\googletest\build\lib\ -lgtest_main
 }
 
 SOURCES += \
@@ -67,5 +74,4 @@ HEADERS += \
     stateplayerbancrut.h \
     Square/penalty.h \
     guest.h \
-    Square/gotoprison.h \
-    ../Tests/Mocks/dicemock.h
+    Square/gotoprison.h

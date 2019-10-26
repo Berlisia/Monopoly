@@ -6,7 +6,7 @@
 class GoToPrison: public Square
 {
 public:
-    GoToPrison(BoardIterator p_prisonOnBoard):
+    GoToPrison(Squers::iterator p_prisonOnBoard):
         prisonPossisionOnBoard(p_prisonOnBoard){}
 
     virtual void actionOnStop(Guest&);
