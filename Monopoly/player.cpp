@@ -9,7 +9,7 @@
 
 Player::Player(std::string p_name, BoardIterator p_boardIterator, const Dice& p_dice):
     name(p_name),
-    actualPossisionOnBoard(std::move(p_boardIterator)),
+    actualPossisionOnBoard(p_boardIterator),
     dice(p_dice)
 {
     stateTransition(std::make_unique<StateActivePlayer>());
@@ -54,6 +54,13 @@ unsigned int Player::withdrawMoney(unsigned int valueToTake)
 void Player::printStatus()
 {
     std::cout << "Result: " << money << std::endl;
+}
+
+const PlayerStatus Player::status()
+{
+    return PlayerStatus {actualPossisionOnBoard,
+                         money,
+                         propertis};
 }
 
 const std::string &Player::myName()

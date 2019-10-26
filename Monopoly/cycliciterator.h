@@ -14,6 +14,9 @@ public:
     CyclicIterator(const Iterator& start, const Iterator& stop) :
         cursor(start), begin(start), end(stop) {}
 
+    CyclicIterator(const Iterator& start, const Iterator& stop, const Iterator& it) :
+        cursor(it), begin(start), end(stop) {}
+
     bool operator == (const CyclicIterator& x) const
     {
         return cursor == x.cursor;

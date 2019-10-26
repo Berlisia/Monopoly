@@ -20,8 +20,8 @@ public:
     Board simpleBoard;
     Squers::iterator prisonPossisionOnBoard;
 
-    Dice diceMock;
-    PlayerMock playerMock;
+    NiceMock<Dice> diceMock;
+    StrictMock<PlayerMock> playerMock;
 
     GoToPrison sut;
 
@@ -39,5 +39,6 @@ Squers GoToPrisonTestSuite::createSimpleSquares()
 
 TEST_F(GoToPrisonTestSuite, shouldPayerLockInPrisonWhenStopOn)
 {
+    EXPECT_CALL(playerMock, lockInPrison(prisonPossisionOnBoard));
     sut.actionOnStop(playerMock);
 }

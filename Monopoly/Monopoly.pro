@@ -13,7 +13,8 @@ monopoly{
 test{
     TARGET = MonopolyTest
     SOURCES += \
-        ../Tests/gotoprisontestsuite.cpp
+        ../Tests/gotoprisontestsuite.cpp \
+        ../Tests/playerTestSuite.cpp
     HEADERS += \
         ../Tests/Mocks/playerMock.h \
         ../Tests/Mocks/guestmock.h \

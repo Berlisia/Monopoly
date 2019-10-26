@@ -3,12 +3,12 @@
 class Reward : public Square
 {
 public:
-    Reward(int p_bonus):
+    Reward(const unsigned int p_bonus):
         bonus(p_bonus)
     {}
 
     void actionOnStop(Guest&) override;
     void actionOnWalkThrought(Guest&) override;
 private:
-    unsigned int bonus;
+    const unsigned int bonus;
 };
