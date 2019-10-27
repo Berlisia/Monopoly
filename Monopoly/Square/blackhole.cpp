@@ -17,3 +17,8 @@ void BlackHole::actionOnWalkThrought(Guest &)
 {
 
 }
+
+const std::string BlackHole::squareName()
+{
+    return BLACK_HOLE_NAME;
+}

@@ -4,7 +4,8 @@
 void MonopolyGame::turn(Player& player)
 {
     player.turn();
-    player.printStatus();
+    auto status = player.status();
+    status.update();
 }
 
 void MonopolyGame::startGame(unsigned int numberOfTurns)

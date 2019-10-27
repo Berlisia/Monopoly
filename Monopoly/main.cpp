@@ -44,14 +44,14 @@ Squers createSimpleBoard()
 {
     Squers squares;
     squares.push_back(createSquare<Start>(PRICE_FOR_START));
-    squares.push_back(createSquare<Property>(100, 20));
+    squares.push_back(createSquare<Property>(100, 20, "niedzwiedzia nora"));
     createRandomSquare(squares);
     squares.push_back(createSquare<Prison>());
     for(int i = 4; i < 10; i++)
     {
         squares.push_back(createSquare<Reward>(PRICE_FOR_REWARD));
     }
-    squares.push_back(createSquare<Property>(100, 20));
+    squares.push_back(createSquare<Property>(100, 20, "Stara hata"));
     createRandomSquare(squares);
     squares.push_back(createSquare<Deposite>(PRICE_FOR_DEPOSITE));
     squares.push_back(createSquare<Prison>());
@@ -59,14 +59,14 @@ Squers createSimpleBoard()
     {
         squares.push_back(createSquare<Reward>(PRICE_FOR_REWARD));
     }
-    squares.push_back(createSquare<Property>(200, 30));
+    squares.push_back(createSquare<Property>(200, 30, "Kocia kolyska"));
     createRandomSquare(squares);
     squares.push_back(createSquare<Prison>());
     for(int i = 23; i < 30; i++)
     {
         squares.push_back(createSquare<Penalty>(PRICE_FOR_PENALTY));
     }
-    squares.push_back(createSquare<Property>(300, 40));
+    squares.push_back(createSquare<Property>(300, 40, "Karczma 7 kotow"));
     createRandomSquare(squares);
     squares.push_back(createSquare<Prison>());
     for(int i = 33; i < NUMBER_OF_SQUERS; i++)

@@ -1,16 +1,18 @@
 #pragma once
 #include "Square/square.h"
 
+const std::string START_NAME = "START";
+
 class Start : public Square
 {
 public:
-    Start(int p_bonus):
-        bonus(p_bonus)
-    {
-    }
+    Start(unsigned int p_bonus):
+        bonus(p_bonus) {}
 
     void actionOnStop(Guest& player) override;
     void actionOnWalkThrought(Guest& player) override;
+    const std::string squareName() override;
+
 private:
-    unsigned int bonus;
+    const unsigned int bonus;
 };

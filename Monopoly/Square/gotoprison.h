@@ -3,14 +3,17 @@
 #include "square.h"
 #include "board.h"
 
+const std::string GO_TO_PRISON_NAME = "BLACK HOLE";
+
 class GoToPrison: public Square
 {
 public:
     GoToPrison(Squers::iterator p_prisonOnBoard):
-        prisonPossisionOnBoard(p_prisonOnBoard){}
+        prisonPossisionOnBoard(p_prisonOnBoard) {}
 
-    virtual void actionOnStop(Guest&);
-    virtual void actionOnWalkThrought(Guest&);
+    void actionOnStop(Guest&) override;
+    void actionOnWalkThrought(Guest&) override;
+    const std::string squareName() override;
 
 private:
     Squers::iterator prisonPossisionOnBoard;

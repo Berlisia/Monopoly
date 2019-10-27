@@ -13,6 +13,7 @@ monopoly{
 test{
     TARGET = MonopolyTest
     SOURCES += \
+        ../Tests/propertyTestSuite.cpp \
         ../Tests/gotoprisontestsuite.cpp \
         ../Tests/playerTestSuite.cpp
     HEADERS += \
@@ -50,7 +51,8 @@ SOURCES += \
     Square/blackhole.cpp \
     Square/prison.cpp \
     Square/penalty.cpp \
-    Square/gotoprison.cpp
+    Square/gotoprison.cpp \
+    playerStatus.cpp
 
 HEADERS += \
     Square/square.h \
@@ -68,6 +70,8 @@ HEADERS += \
     Square/randomsquare.h \
     Square/blackhole.h \
     Square/prison.h \
+    playerStatus.h \
+    printer.h \
     state.h \
     stateMachine.h \
     stateactiveplayer.h \

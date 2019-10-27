@@ -6,9 +6,13 @@
 void Penalty::actionOnStop(Guest& player)
 {
     player.withdrawMoney(penaltyPrice);
-    std::cout << "  Stop on penalty - " << penaltyPrice << std::endl;
 }
 
 void Penalty::actionOnWalkThrought(Guest&)
 {
+}
+
+const std::string Penalty::squareName()
+{
+    return PENALTY_NAME;
 }

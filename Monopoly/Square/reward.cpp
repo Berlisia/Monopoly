@@ -7,9 +7,13 @@
 void Reward::actionOnStop(Guest& player)
 {
     player.addMoney(bonus);
-    std::cout << "  Stop on REWARD + " <<  bonus << std::endl;
 }
 
 void Reward::actionOnWalkThrought(Guest &)
 {
+}
+
+const std::string Reward::squareName()
+{
+    return REWARD_NAME;
 }

@@ -6,9 +6,13 @@
 void GoToPrison::actionOnStop(Guest& player)
 {
     player.lockInPrison(prisonPossisionOnBoard);
-    std::cout<< " Stop on GO TO PRISON" << std::endl;
 }
 
 void GoToPrison::actionOnWalkThrought(Guest &)
 {
+}
+
+const std::string GoToPrison::squareName()
+{
+    return GO_TO_PRISON_NAME;
 }

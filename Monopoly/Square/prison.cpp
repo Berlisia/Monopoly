@@ -3,11 +3,15 @@
 #include "prison.h"
 #include "guest.h"
 
-void Prison::actionOnStop(Guest& player)
+void Prison::actionOnStop(Guest&)
 {
-    std::cout<< " Stop on PRISON" << std::endl;
 }
 
 void Prison::actionOnWalkThrought(Guest &)
 {
+}
+
+const std::string Prison::squareName()
+{
+    return PRISON_NAME;
 }

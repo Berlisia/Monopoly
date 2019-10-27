@@ -49,13 +49,13 @@ TEST_F(PlayerTestSuite, shouldChangePossitionToPrisionWhenItLockedInPrison)
     sut.lockInPrison(prisionPossition);
     auto status = sut.status();
 
-    auto prisionIt = BoardIterator(squares.begin(), squares.end(), prisionPossition);
-    EXPECT_EQ(status.actualPossisionOnBoard, prisionIt);
+    auto prisionIt = (*prisionPossition).get()->squareName();
+    EXPECT_EQ(status.possition(), prisionIt);
 }
 
 TEST_F(PlayerTestSuite, shouldAddMoney)
 {
     sut.addMoney(PRICE_FOR_REWARD);
     auto status = sut.status();
-    EXPECT_EQ(status.money, moneyOnStartGame+PRICE_FOR_REWARD);
+    EXPECT_EQ(status.money(), moneyOnStartGame+PRICE_FOR_REWARD);
 }

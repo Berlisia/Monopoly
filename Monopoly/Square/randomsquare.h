@@ -2,13 +2,16 @@
 #include "square.h"
 #include "board.h"
 
+const std::string RANDOM_SQUARE_NAME = "RANDOM SQUARE";
+
 class RandomSquare: public Square
 {
 public:
-    RandomSquare(Squers p_squares):  squares(std::move(p_squares)){}
+    RandomSquare(Squers p_squares):  squares(std::move(p_squares)) {}
 
-    virtual void actionOnStop(Guest&);
-    virtual void actionOnWalkThrought(Guest&);
+    void actionOnStop(Guest&) override;
+    void actionOnWalkThrought(Guest&) override;
+    const std::string squareName() override;
 
 private:
     Squers squares;

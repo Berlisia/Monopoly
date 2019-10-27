@@ -6,6 +6,7 @@
 #include "stateactiveplayer.h"
 #include "stateplayerbancrut.h"
 #include "stateplayerinprison.h"
+#include "die.h"
 
 Player::Player(std::string p_name, BoardIterator p_boardIterator, const Dice& p_dice):
     name(p_name),
@@ -37,6 +38,17 @@ void Player::lockInPrison(Squers::iterator prison)
 void Player::addMoney(unsigned int moneyToAdd)
 {
     money += moneyToAdd;
+}
+
+bool Player::buyProperty(unsigned int price, Property* property)
+{
+    if(price < money)
+    {
+        money -= price;
+        propertis.push_back(property);
+        return true;
+    }
+    return false;
 }
 
 unsigned int Player::withdrawMoney(unsigned int valueToTake)
@@ -71,15 +83,6 @@ const std::string &Player::myName()
 void Player::stateTransition(std::unique_ptr<State> state)
 {
     currentState = std::move(state);
-}
-
-bool Player::wantBuyProperty(unsigned int price)
-{
-    if(price < money)
-    {
-        return true;
-    }
-    return false;
 }
 
 void Player::moveNextSquare()

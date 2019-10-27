@@ -5,12 +5,16 @@
 
 void RandomSquare::actionOnStop(Guest& player)
 {
-    std::cout << "---RANDOM SQUARE!---" << std::endl;
     squares[randomNumber()]->actionOnStop(player);
 }
 
 void RandomSquare::actionOnWalkThrought(Guest& )
 {
+}
+
+const std::string RandomSquare::squareName()
+{
+    return RANDOM_SQUARE_NAME;
 }
 
 unsigned int RandomSquare::randomNumber()

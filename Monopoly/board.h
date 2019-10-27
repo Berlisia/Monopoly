@@ -1,6 +1,7 @@
 #pragma once
 #include <vector>
 #include <memory>
+
 #include "cycliciterator.h"
 #include "Square/square.h"
 

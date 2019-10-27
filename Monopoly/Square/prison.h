@@ -2,9 +2,12 @@
 
 #include "square.h"
 
+const std::string PRISON_NAME = "PRISON";
+
 class Prison: public Square
 {
 public:
-    virtual void actionOnStop(Guest&);
-    virtual void actionOnWalkThrought(Guest&);
+    void actionOnStop(Guest&) override;
+    void actionOnWalkThrought(Guest&) override;
+    const std::string squareName() override;
 };

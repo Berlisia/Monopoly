@@ -6,7 +6,6 @@
 void Deposite::actionOnStop(Guest& player)
 {
     player.addMoney(depositeMoney);
-    std::cout << "  Stop on DEPOSITE get money: " << depositeMoney << std::endl;
     depositeMoney = 0;
 }
 
@@ -14,5 +13,9 @@ void Deposite::actionOnWalkThrought(Guest& player)
 {
     player.withdrawMoney(valueToStore);
     depositeMoney += valueToStore;
-    std::cout << "  Walk throught DEPOSITE money  in deposite: " << depositeMoney << std::endl;
+}
+
+const std::string Deposite::squareName()
+{
+    return DEPOSITE_NAME;
 }

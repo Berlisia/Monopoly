@@ -2,17 +2,19 @@
 
 #include "square.h"
 
+const std::string DEPOSITE_NAME = "DEPOSITE";
+
 class Deposite : public Square
 {
 public:
     Deposite(unsigned int p_valueToStore):
         valueToStore(p_valueToStore),
-        depositeMoney(0)
-    {
-    }
+        depositeMoney(0) {}
 
-    virtual void actionOnStop(Guest&);
-    virtual void actionOnWalkThrought(Guest&);
+    void actionOnStop(Guest&) override;
+    void actionOnWalkThrought(Guest&) override;
+    const std::string squareName() override;
+
 private:
     unsigned int valueToStore;
     unsigned int depositeMoney;
