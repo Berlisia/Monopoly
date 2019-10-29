@@ -1,21 +1,21 @@
 #pragma once
 #include <vector>
 
-class Property;
+class Estate;
 class District
 {
 public:
-    void assignPropertisToDistrict(const std::vector<Property*>& propertis)
+    void assignPropertisToDistrict(const std::vector<Estate*>& propertis)
     {
         propertisInDistrict = propertis;
     }
 
-    const std::vector<Property*>& propertis() const
+    const std::vector<Estate*>& propertis() const
     {
         return propertisInDistrict;
     }
 
 private:
-    std::vector<Property*> propertisInDistrict;
+    std::vector<Estate*> propertisInDistrict;
 };
 

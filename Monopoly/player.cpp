@@ -4,7 +4,7 @@
 
 #include "player.h"
 #include "Square/square.h"
-#include "Square/property.h"
+#include "Square/estate.h"
 #include "stateactiveplayer.h"
 #include "stateplayerbancrut.h"
 #include "stateplayerinprison.h"
@@ -42,7 +42,7 @@ void Player::addMoney(unsigned int moneyToAdd)
     money += moneyToAdd;
 }
 
-bool Player::buyProperty(unsigned int price, Property* property)
+bool Player::buyProperty(unsigned int price, Estate* property)
 {
     if(price < money)
     {
@@ -53,13 +53,13 @@ bool Player::buyProperty(unsigned int price, Property* property)
     return false;
 }
 
-std::vector<Property*>::iterator Player::findInPropertis(Property* property)
+std::vector<Estate*>::iterator Player::findInPropertis(Estate* property)
 {
     return std::find_if(propertis.begin(), propertis.end(),
-                        [property](Property* playerProperty){return *property == *playerProperty;});
+                        [property](Estate* playerProperty){return *property == *playerProperty;});
 }
 
-unsigned int Player::checkPropertisInDistrict(const std::vector<Property*>& propertisInDistrict)
+unsigned int Player::checkPropertisInDistrict(const std::vector<Estate*>& propertisInDistrict)
 {
     unsigned int countPropertisFromDistrict = 0;
     for(const auto districtProperty: propertisInDistrict)

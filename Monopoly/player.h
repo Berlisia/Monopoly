@@ -8,7 +8,7 @@ namespace{
 const unsigned int moneyOnStartGame = 1500;
 }
 
-class Property;
+class Estate;
 class Dice;
 
 class Player : public StateMachine, public Guest
@@ -23,8 +23,8 @@ public:
 
     unsigned int withdrawMoney(unsigned int money) override;
     void addMoney(unsigned int money) override;
-    bool buyProperty(unsigned int price, Property* property) override;
-    unsigned int checkPropertisInDistrict(const std::vector<Property *>& propertisInDistrict) override;
+    bool buyProperty(unsigned int price, Estate* property) override;
+    unsigned int checkPropertisInDistrict(const std::vector<Estate *>& propertisInDistrict) override;
 
     const std::string& myName() override;
     void printStatus();
@@ -37,12 +37,12 @@ private:
     BoardIterator actualPossisionOnBoard;
     const Dice& dice;
 
-    std::vector<Property*> propertis;
+    std::vector<Estate*> propertis;
     unsigned int money = moneyOnStartGame;
 
     void moveNextSquare();
     Square* actualSquare();
-    std::vector<Property*>::iterator findInPropertis(Property* property);
+    std::vector<Estate*>::iterator findInPropertis(Estate* property);
     void walkThrought(unsigned int valueOfSteps);
     void actionOnWalkThrought();
     void actionOnStop();

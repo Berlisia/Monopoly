@@ -56,6 +56,7 @@ SOURCES += \
     playerStatus.cpp
 
 HEADERS += \
+    Square/estate.h \
     Square/square.h \
     Square/start.h \
     bank.h \

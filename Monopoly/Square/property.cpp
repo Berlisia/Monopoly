@@ -24,10 +24,9 @@ const std::string Property::squareName()
     return name;
 }
 
-bool Property::operator ==(const Property &prop) const
+const std::string& Property::estateName()
 {
-    return name == prop.name &&
-           price == prop.price;
+    return name;
 }
 
 void Property::payRentByGuest(Guest& player)

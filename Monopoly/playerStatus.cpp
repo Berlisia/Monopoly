@@ -1,7 +1,7 @@
 #include<iostream>
 
 #include "playerStatus.h"
-#include "Square/property.h"
+#include "Square/estate.h"
 
 void PlayerStatus::update()
 {
@@ -20,7 +20,7 @@ unsigned int PlayerStatus::money()
     return moneyInWalet;
 }
 
-const std::vector<Property *> PlayerStatus::havePropertis()
+const std::vector<Estate *> PlayerStatus::havePropertis()
 {
     return propertis;
 }
@@ -31,7 +31,7 @@ void PlayerStatus::printPropertis()
     std::cout << "  ";
     for(auto prop: propertis)
     {
-        std::cout << prop->squareName() << " | ";
+        std::cout << prop->estateName() << " | ";
     }
     std::cout << std::endl;
 }

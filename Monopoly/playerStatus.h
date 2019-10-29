@@ -3,12 +3,12 @@
 #include "board.h"
 #include "printer.h"
 
-class Property;
+class Estate;
 
 class PlayerStatus : public Printer
 {
 public:
-    PlayerStatus(const BoardIterator& possition, unsigned int money, const std::vector<Property*>& props):
+    PlayerStatus(const BoardIterator& possition, unsigned int money, const std::vector<Estate*>& props):
          actualPossisionOnBoard(possition),
          moneyInWalet(money),
          propertis(props){}
@@ -17,12 +17,12 @@ public:
 
     const std::string possition();
     unsigned int money();
-    const std::vector<Property*> havePropertis();
+    const std::vector<Estate*> havePropertis();
 
 private:
     BoardIterator actualPossisionOnBoard;
     unsigned int moneyInWalet;
-    std::vector<Property*> propertis;
+    std::vector<Estate*> propertis;
 
     void printPropertis();
 };
