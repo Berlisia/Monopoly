@@ -10,6 +10,11 @@ public:
         propertisInDistrict = propertis;
     }
 
+    const std::vector<Property*>& propertis() const
+    {
+        return propertisInDistrict;
+    }
+
 private:
     std::vector<Property*> propertisInDistrict;
 };

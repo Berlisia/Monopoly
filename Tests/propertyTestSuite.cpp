@@ -43,8 +43,8 @@ void PropertyTestSuite::setupTestBoard()
 {
     districts.push_back(District());
     districts.push_back(District());
-    auto propertyPub = std::make_unique<Property>(districts[0],PUB_PRICE, PUB_RENT, PUB_NAME);
-    auto propertyBear = std::make_unique<Property>(districts[0], BEAR_PRICE, EXPENSIVE_RENT, EXPENSIVE_NAME);
+    auto propertyPub = std::make_unique<Property>(districts[0], PUB_PRICE, PUB_RENT, PUB_NAME);
+    auto propertyBear = std::make_unique<Property>(districts[0], BEAR_PRICE, BEAR_RENT, BEAR_NAME);
     auto propertyExpensive = std::make_unique<Property>(districts[1], EXPENSIVE_PRICE, EXPENSIVE_RENT, EXPENSIVE_NAME);
 
     districts[0].assignPropertisToDistrict({propertyPub.get(), propertyBear.get()});
@@ -62,8 +62,8 @@ void PropertyTestSuite::diceRoll(unsigned int steps)
 
 TEST_F(PropertyTestSuite, playerSecondShouldPayRentForPlayerFirst_OnePropertyInDistrict)
 {
-    auto steps = 1;
-    auto haveOnePropertyFromDistrict = 1;
+    unsigned int steps = 1;
+    unsigned int haveOnePropertyFromDistrict = 1;
 
     diceRoll(steps);
 
@@ -73,9 +73,41 @@ TEST_F(PropertyTestSuite, playerSecondShouldPayRentForPlayerFirst_OnePropertyInD
     auto statusPlayerFirst = playerFirst->status();
     auto statusPlayerSecond = playerSecond->status();
 
-    const auto expectedMoneyForPlayerFirst = moneyOnStartGame - PUB_PRICE + PUB_RENT.at(haveOnePropertyFromDistrict);
+    const auto expectedMoneyForPlayerFirst = moneyOnStartGame - BEAR_PRICE + BEAR_RENT.at(haveOnePropertyFromDistrict);
     EXPECT_EQ(statusPlayerFirst.money(), expectedMoneyForPlayerFirst);
 
-    const auto expectedMoneyForPlayerSecond = moneyOnStartGame - PUB_RENT.at(haveOnePropertyFromDistrict);
+    const auto expectedMoneyForPlayerSecond = moneyOnStartGame - BEAR_RENT.at(haveOnePropertyFromDistrict);
     EXPECT_EQ(statusPlayerSecond.money(), expectedMoneyForPlayerSecond);
 }
+
+TEST_F(PropertyTestSuite, playerSecondShouldPayRentForPlayerFirst_TwoPropertyInDistrict)
+{
+    unsigned int steps = 1;
+    unsigned int haveOnePropertyFromDistrict = 1;
+    unsigned int haveTwoPropertyFromDistrict = 2;
+
+    diceRoll(steps);
+    playerFirst->turn();
+    playerSecond->turn();
+
+    diceRoll(steps + 1);
+    playerFirst->turn();
+    playerSecond->turn();
+
+    auto statusPlayerFirst = playerFirst->status();
+    auto statusPlayerSecond = playerSecond->status();
+
+    const auto expectedMoneyForPlayerFirst = moneyOnStartGame -
+                                             BEAR_PRICE -
+                                             PUB_PRICE +
+                                             BEAR_RENT.at(haveOnePropertyFromDistrict) +
+                                             PUB_RENT.at(haveTwoPropertyFromDistrict);
+    EXPECT_EQ(statusPlayerFirst.money(), expectedMoneyForPlayerFirst);
+
+    const auto expectedMoneyForPlayerSecond = moneyOnStartGame -
+                                              BEAR_RENT.at(haveOnePropertyFromDistrict) -
+                                              PUB_RENT.at(haveTwoPropertyFromDistrict);
+    EXPECT_EQ(statusPlayerSecond.money(), expectedMoneyForPlayerSecond);
+}
+
+

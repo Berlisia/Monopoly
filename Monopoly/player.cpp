@@ -53,18 +53,20 @@ bool Player::buyProperty(unsigned int price, Property* property)
     return false;
 }
 
+std::vector<Property*>::iterator Player::findInPropertis(Property* property)
+{
+    return std::find_if(propertis.begin(), propertis.end(),
+                        [property](Property* playerProperty){return *property == *playerProperty;});
+}
+
 unsigned int Player::checkPropertisInDistrict(const std::vector<Property*>& propertisInDistrict)
 {
     unsigned int countPropertisFromDistrict = 0;
     for(const auto districtProperty: propertisInDistrict)
     {
-        auto it = std::find_if(propertis.begin(), propertis.end(),
-                     [districtProperty](Property* playerProperty){return *districtProperty == *playerProperty;});
-
+        auto it = findInPropertis(districtProperty);
         if(it != propertis.end())
-        {
             countPropertisFromDistrict++;
-        }
     }
     return countPropertisFromDistrict;
 }

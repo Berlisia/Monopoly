@@ -1,6 +1,5 @@
 #pragma once
 
-//#include "die.h"
 #include "stateMachine.h"
 #include "guest.h"
 #include "playerStatus.h"
@@ -43,6 +42,7 @@ private:
 
     void moveNextSquare();
     Square* actualSquare();
+    std::vector<Property*>::iterator findInPropertis(Property* property);
     void walkThrought(unsigned int valueOfSteps);
     void actionOnWalkThrought();
     void actionOnStop();
