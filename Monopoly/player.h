@@ -25,6 +25,7 @@ public:
     void addMoney(unsigned int money) override;
     bool buyProperty(unsigned int price, Estate* property) override;
     unsigned int checkPropertisInDistrict(const std::vector<Estate *>& propertisInDistrict) override;
+    unsigned int rollDice() override;
 
     const std::string& myName() override;
     void printStatus();

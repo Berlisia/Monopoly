@@ -41,6 +41,7 @@ win32{
 }
 
 SOURCES += \
+    Square/publicfacilities.cpp \
     Square/start.cpp \
     board.cpp \
     monopolygame.cpp \
@@ -57,6 +58,7 @@ SOURCES += \
 
 HEADERS += \
     Square/estate.h \
+    Square/publicfacilities.h \
     Square/square.h \
     Square/start.h \
     bank.h \

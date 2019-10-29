@@ -26,7 +26,7 @@ void Player::turn()
 
 void Player::move()
 {
-    auto valueOfSteps = dice.diceThrow();
+    auto valueOfSteps = rollDice();
     walkThrought(valueOfSteps);
     actionOnStop();
 }
@@ -69,6 +69,11 @@ unsigned int Player::checkPropertisInDistrict(const std::vector<Estate*>& proper
             countPropertisFromDistrict++;
     }
     return countPropertisFromDistrict;
+}
+
+unsigned int Player::rollDice()
+{
+    return dice.diceThrow();
 }
 
 unsigned int Player::withdrawMoney(unsigned int valueToTake)
