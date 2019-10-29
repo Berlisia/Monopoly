@@ -6,11 +6,17 @@
 
 namespace{
 constexpr unsigned int PUB_PRICE = 100;
-constexpr unsigned int PUB_RENT = 10;
 const std::string PUB_NAME = "Karczma 7 kotow";
+const Rent PUB_RENT = {{1, 10}, {2, 20}};
+
 constexpr unsigned int EXPENSIVE_PRICE = 500;
-constexpr unsigned int EXPENSIVE_RENT = 100;
 const std::string EXPENSIVE_NAME = "Zimorodek";
+const Rent EXPENSIVE_RENT = {{1, 30}};
+
+constexpr unsigned int BEAR_PRICE = 200;
+const std::string BEAR_NAME = "Niedzwiedzia hata";
+const Rent BEAR_RENT = {{1, 20}, {2, 40}};
+
 }
 
 class PropertyTestSuite: public ::testing::Test
@@ -23,16 +29,53 @@ public:
         playerSecond = std::make_unique<Player>("tester Dawid", BoardIterator(propertisSut.begin(), propertisSut.end()), dice);
     }
 
-    ::testing::NiceMock<Dice> dice;
+    ::testing::NiceMock<DiceMock> dice;
     std::unique_ptr<Player> playerFirst;
     std::unique_ptr<Player> playerSecond;
+    std::vector<District> districts;
     Squers propertisSut;
 
     void setupTestBoard();
+    void diceRoll(unsigned int steps);
 };
 
 void PropertyTestSuite::setupTestBoard()
 {
-    propertisSut.push_back(std::make_unique<Property>(PUB_PRICE, PUB_RENT, PUB_NAME));
-    propertisSut.push_back(std::make_unique<Property>(EXPENSIVE_PRICE, EXPENSIVE_RENT, EXPENSIVE_NAME));
+    districts.push_back(District());
+    districts.push_back(District());
+    auto propertyPub = std::make_unique<Property>(districts[0],PUB_PRICE, PUB_RENT, PUB_NAME);
+    auto propertyBear = std::make_unique<Property>(districts[0], BEAR_PRICE, EXPENSIVE_RENT, EXPENSIVE_NAME);
+    auto propertyExpensive = std::make_unique<Property>(districts[1], EXPENSIVE_PRICE, EXPENSIVE_RENT, EXPENSIVE_NAME);
+
+    districts[0].assignPropertisToDistrict({propertyPub.get(), propertyBear.get()});
+    districts[1].assignPropertisToDistrict({propertyExpensive.get()});
+
+    propertisSut.push_back(std::move(propertyPub));
+    propertisSut.push_back(std::move(propertyBear));
+    propertisSut.push_back(std::move(propertyExpensive));
+}
+
+void PropertyTestSuite::diceRoll(unsigned int steps)
+{
+    ON_CALL(dice, diceThrow()).WillByDefault(::testing::Return(steps));
+}
+
+TEST_F(PropertyTestSuite, playerSecondShouldPayRentForPlayerFirst_OnePropertyInDistrict)
+{
+    auto steps = 1;
+    auto haveOnePropertyFromDistrict = 1;
+
+    diceRoll(steps);
+
+    playerFirst->turn();
+    playerSecond->turn();
+
+    auto statusPlayerFirst = playerFirst->status();
+    auto statusPlayerSecond = playerSecond->status();
+
+    const auto expectedMoneyForPlayerFirst = moneyOnStartGame - PUB_PRICE + PUB_RENT.at(haveOnePropertyFromDistrict);
+    EXPECT_EQ(statusPlayerFirst.money(), expectedMoneyForPlayerFirst);
+
+    const auto expectedMoneyForPlayerSecond = moneyOnStartGame - PUB_RENT.at(haveOnePropertyFromDistrict);
+    EXPECT_EQ(statusPlayerSecond.money(), expectedMoneyForPlayerSecond);
 }

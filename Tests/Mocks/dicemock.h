@@ -6,5 +6,5 @@
 class DiceMock: public Dice
 {
 public:
-    MOCK_METHOD0(diceThrow, unsigned int());
+    MOCK_CONST_METHOD0(diceThrow, unsigned int());
 };

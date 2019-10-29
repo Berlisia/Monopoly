@@ -24,11 +24,17 @@ const std::string Property::squareName()
     return name;
 }
 
+bool Property::operator ==(const Property &prop) const
+{
+    return name.compare(prop.name) &&
+           price == prop.price;
+}
+
 void Property::payRentByGuest(Guest& player)
 {
     if(!owner->myName().compare(player.myName()))
     {
-        auto money = player.withdrawMoney(rent);
+        auto money = player.withdrawMoney(rent.at(1));
         owner->addMoney(money);
     }
 }

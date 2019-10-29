@@ -1,7 +1,7 @@
 TEMPLATE = app
 LIBS += -pthread
 
-CONFIG += console c++14 test win32 pthread
+CONFIG += console c++14 test pthread
 CONFIG -= app_bundle
 CONFIG -= qt
 
@@ -24,6 +24,7 @@ test{
 
 unix{
     INCLUDEPATH += ../gtest/googletest/include gtest
+    INCLUDEPATH += ../gtest/googlemock/include
     DEPENDPATH += ../gtest/build
     LIBS += -L../gtest/build/lib/ -lgtest
     LIBS += -L../gtest/build/lib/ -lgmock
@@ -79,4 +80,5 @@ HEADERS += \
     stateplayerbancrut.h \
     Square/penalty.h \
     guest.h \
-    Square/gotoprison.h
+    Square/gotoprison.h \
+    Square/district.h

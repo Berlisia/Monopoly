@@ -5,8 +5,7 @@
 #include "guest.h"
 #include "playerStatus.h"
 
-namespace
-{
+namespace{
 const unsigned int moneyOnStartGame = 1500;
 }
 
@@ -26,6 +25,7 @@ public:
     unsigned int withdrawMoney(unsigned int money) override;
     void addMoney(unsigned int money) override;
     bool buyProperty(unsigned int price, Property* property) override;
+    unsigned int checkPropertisInDistrict(const std::vector<Property *>& propertisInDistrict) override;
 
     const std::string& myName() override;
     void printStatus();

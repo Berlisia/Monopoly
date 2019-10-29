@@ -1,8 +1,10 @@
 #include <vector>
 #include <iostream>
+#include <algorithm>
 
 #include "player.h"
 #include "Square/square.h"
+#include "Square/property.h"
 #include "stateactiveplayer.h"
 #include "stateplayerbancrut.h"
 #include "stateplayerinprison.h"
@@ -49,6 +51,22 @@ bool Player::buyProperty(unsigned int price, Property* property)
         return true;
     }
     return false;
+}
+
+unsigned int Player::checkPropertisInDistrict(const std::vector<Property*>& propertisInDistrict)
+{
+    unsigned int countPropertisFromDistrict = 0;
+    for(const auto districtProperty: propertisInDistrict)
+    {
+        auto it = std::find_if(propertis.begin(), propertis.end(),
+                     [districtProperty](Property* playerProperty){return *districtProperty == *playerProperty;});
+
+        if(it != propertis.end())
+        {
+            countPropertisFromDistrict++;
+        }
+    }
+    return countPropertisFromDistrict;
 }
 
 unsigned int Player::withdrawMoney(unsigned int valueToTake)

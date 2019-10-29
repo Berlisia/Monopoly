@@ -7,7 +7,7 @@ class Dice
 {
 public:
 
-unsigned int diceThrow() const
+virtual unsigned int diceThrow() const
 {
     std::random_device dev;
     std::mt19937 rng(dev());
