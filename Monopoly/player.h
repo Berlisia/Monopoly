@@ -19,15 +19,15 @@ public:
     void turn();
 
     void move();
-    void lockInPrison(Squers::iterator prison) override;
 
+    void lockInPrison(Squers::iterator prison) override;
     unsigned int withdrawMoney(unsigned int money) override;
     void addMoney(unsigned int money) override;
     bool buyProperty(unsigned int price, Estate* property) override;
     unsigned int checkPropertisInDistrict(const std::vector<Estate *>& propertisInDistrict) override;
     unsigned int rollDice() override;
-
     const std::string& myName() override;
+
     void printStatus();
     const PlayerStatus status();
 

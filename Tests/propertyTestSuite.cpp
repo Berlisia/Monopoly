@@ -3,6 +3,7 @@
 #include "Mocks/dicemock.h"
 #include "Square/property.h"
 #include "player.h"
+#include "Square/buildingproperty.h"
 
 namespace{
 constexpr unsigned int PUB_PRICE = 100;
@@ -14,7 +15,7 @@ const std::string EXPENSIVE_NAME = "Zimorodek";
 const Rent EXPENSIVE_RENT = {{1, 30}};
 
 constexpr unsigned int BEAR_PRICE = 200;
-const std::string BEAR_NAME = "Niedzwiedzia hata";
+const std::string BEAR_NAME = "Niedzwiedzia chata";
 const Rent BEAR_RENT = {{1, 20}, {2, 40}};
 
 }
@@ -43,9 +44,9 @@ void PropertyTestSuite::setupTestBoard()
 {
     districts.push_back(District());
     districts.push_back(District());
-    auto propertyPub = std::make_unique<Property>(districts[0], PUB_PRICE, PUB_RENT, PUB_NAME);
-    auto propertyBear = std::make_unique<Property>(districts[0], BEAR_PRICE, BEAR_RENT, BEAR_NAME);
-    auto propertyExpensive = std::make_unique<Property>(districts[1], EXPENSIVE_PRICE, EXPENSIVE_RENT, EXPENSIVE_NAME);
+    auto propertyPub = std::make_unique<Property>(PUB_PRICE, std::make_unique<BuildingProperty>(PUB_RENT, districts[0]), PUB_NAME);
+    auto propertyBear = std::make_unique<Property>(BEAR_PRICE, std::make_unique<BuildingProperty>(BEAR_RENT, districts[0]), BEAR_NAME);
+    auto propertyExpensive = std::make_unique<Property>(EXPENSIVE_PRICE, std::make_unique<BuildingProperty>(EXPENSIVE_RENT, districts[0]), EXPENSIVE_NAME);
 
     districts[0].assignPropertisToDistrict({propertyPub.get(), propertyBear.get()});
     districts[1].assignPropertisToDistrict({propertyExpensive.get()});
@@ -109,5 +110,3 @@ TEST_F(PropertyTestSuite, playerSecondShouldPayRentForPlayerFirst_TwoPropertyInD
                                               PUB_RENT.at(haveTwoPropertyFromDistrict);
     EXPECT_EQ(statusPlayerSecond.money(), expectedMoneyForPlayerSecond);
 }
-
-

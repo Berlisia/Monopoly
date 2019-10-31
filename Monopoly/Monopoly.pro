@@ -54,7 +54,9 @@ SOURCES += \
     Square/prison.cpp \
     Square/penalty.cpp \
     Square/gotoprison.cpp \
-    playerStatus.cpp
+    playerStatus.cpp \
+    Square/buildingproperty.cpp \
+    ../Tests/publicfaciliiestestsuite.cpp
 
 HEADERS += \
     Square/estate.h \
@@ -84,4 +86,6 @@ HEADERS += \
     Square/penalty.h \
     guest.h \
     Square/gotoprison.h \
-    Square/district.h
+    Square/district.h \
+    Square/rentpaymode.h \
+    Square/buildingproperty.h

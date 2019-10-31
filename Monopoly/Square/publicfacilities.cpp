@@ -1,34 +1,21 @@
 #include "publicfacilities.h"
-#include "player.h"
+#include "estate.h"
+#include "guest.h"
 
-void PublicFacilities::actionOnStop(Guest& player)
+void PublicFacilities::payRent(Guest& player, Guest& owner) const
 {
-    if(owner)
+    auto ownerHaveSecondFacility = owner.checkPropertisInDistrict(district.propertis());
+    auto rent = calculateRent(ownerHaveSecondFacility, player.rollDice());
+    auto money = player.withdrawMoney(rent);
+    owner.addMoney(money);
+}
+
+unsigned int PublicFacilities::calculateRent(unsigned int ownerHaveSecondFacility, unsigned int numberOfDice)
+{
+    auto rent = 0;
+    if(ownerHaveSecondFacility == 0)
     {
-        if(not (owner->myName() == player.myName()))
-        {
-            auto ownerHavePropertis = owner->checkPropertisInDistrict(otherPublicFacilities.propertis());
-        }
+        rent = numberOfDice * FACTOR_OWNER_HAVE_ONE_FACILITY;
     }
-    else
-    {
-        if(player.buyProperty(price, this))
-        {
-            owner = &player;
-        }
-    }
-}
-
-void PublicFacilities::actionOnWalkThrought(Guest &)
-{
-}
-
-const std::string PublicFacilities::squareName()
-{
-    return name;
-}
-
-const std::string &PublicFacilities::estateName()
-{
-    return name;
+    rent = numberOfDice * FACTOR_OWNER_HAVE_TWO_FACILITY;
 }

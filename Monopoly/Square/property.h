@@ -1,23 +1,19 @@
 #pragma once
 #include <memory>
-#include <map>
 
 #include "square.h"
 #include "estate.h"
-#include "district.h"
-
-typedef std::map<unsigned int, unsigned int> Rent;
+#include "rentpaymode.h"
 
 class Player;
 
 class Property: public Square, public Estate
 {
 public:
-    Property(const District& p_district, unsigned int p_price, const Rent p_rent, const std::string p_name):
+    Property(unsigned int p_price, std::unique_ptr<RentPayMode> p_rent, const std::string p_name):
         Estate(p_name),
-        district(p_district),
         price(p_price),
-        rent(p_rent){}
+        payRentMode(std::move(p_rent)){}
 
     void actionOnStop(Guest&) override;
     void actionOnWalkThrought(Guest&) override;
@@ -26,12 +22,9 @@ public:
     const std::string& estateName() override;
 
 private:
-    const District& district;
     unsigned int price;
-    const Rent rent;
-
+    std::unique_ptr<RentPayMode> payRentMode;
     Guest* owner = nullptr;
 
     void buyPropertyByNewOwner(Guest& player);
-    void payRentByGuest(Guest& player);
 };

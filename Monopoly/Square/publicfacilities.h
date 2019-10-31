@@ -1,27 +1,25 @@
 #pragma once
 #include <vector>
 
-#include "square.h"
-#include "estate.h"
+#include "rentpaymode.h"
 #include "district.h"
 
-class PublicFacilities: public Square, public Estate
+namespace{
+constexpr unsigned int FACTOR_OWNER_HAVE_ONE_FACILITY = 4;
+constexpr unsigned int FACTOR_OWNER_HAVE_TWO_FACILITY = 10;
+}
+
+class Estate;
+
+class PublicFacilities: public RentPayMode
 {
-public: //TODO maybe this should be strategy for Property???
-        // Strategy PayRentByGuest!
-    PublicFacilities(const std::string& p_name, const District& p_district, unsigned int p_price):
-        Estate(p_name),
-        price(p_price),
-        otherPublicFacilities(p_district){}
+public:
+    PublicFacilities(const District& p_district): district(p_district) {}
 
-    void actionOnStop(Guest&) override;
-    void actionOnWalkThrought(Guest&) override;
-    const std::string squareName() override;
-
-    const std::string& estateName() override;
+    void payRent(Guest& player, Guest& owner) const override;
 
 private:
-    Guest* owner = nullptr;
-    unsigned int price;
-    const District& otherPublicFacilities;
+    const District& district;
+
+    unsigned int calculateRent(unsigned int, unsigned int numberOfDice);
 };

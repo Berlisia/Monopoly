@@ -7,7 +7,10 @@ void Property::actionOnStop(Guest& player)
 {
     if(owner)
     {
-        payRentByGuest(player);
+        if(not (owner.myName() == player.myName()))
+        {
+            payRentMode->payRent(player, *owner);
+        }
     }
     else
     {
@@ -27,16 +30,6 @@ const std::string Property::squareName()
 const std::string& Property::estateName()
 {
     return name;
-}
-
-void Property::payRentByGuest(Guest& player)
-{
-    if(not (owner->myName() == player.myName()))
-    {
-        auto ownerHavePropertis = owner->checkPropertisInDistrict(district.propertis());
-        auto money = player.withdrawMoney(rent.at(ownerHavePropertis));
-        owner->addMoney(money);
-    }
 }
 
 void Property::buyPropertyByNewOwner(Guest& player)
