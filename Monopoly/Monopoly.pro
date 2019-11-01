@@ -13,6 +13,7 @@ monopoly{
 test{
     TARGET = MonopolyTest
     SOURCES += \
+        ../Tests/railwaystationtestsuite.cpp \
         ../Tests/propertyTestSuite.cpp \
         ../Tests/gotoprisontestsuite.cpp \
         ../Tests/playerTestSuite.cpp
@@ -42,6 +43,7 @@ win32{
 
 SOURCES += \
     Square/publicfacilities.cpp \
+    Square/railwaystation.cpp \
     Square/start.cpp \
     board.cpp \
     monopolygame.cpp \
@@ -61,6 +63,7 @@ SOURCES += \
 HEADERS += \
     Square/estate.h \
     Square/publicfacilities.h \
+    Square/railwaystation.h \
     Square/square.h \
     Square/start.h \
     bank.h \

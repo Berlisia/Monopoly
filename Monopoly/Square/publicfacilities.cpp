@@ -2,6 +2,11 @@
 #include "estate.h"
 #include "guest.h"
 
+namespace{
+constexpr unsigned int FACTOR_OWNER_HAVE_ONE_FACILITY = 4;
+constexpr unsigned int FACTOR_OWNER_HAVE_TWO_FACILITY = 10;
+}
+
 void PublicFacilities::payRent(Guest& player, Guest& owner) const
 {
     auto ownerHaveSecondFacility = owner.checkPropertisInDistrict(district.propertis());
@@ -10,12 +15,11 @@ void PublicFacilities::payRent(Guest& player, Guest& owner) const
     owner.addMoney(money);
 }
 
-unsigned int PublicFacilities::calculateRent(unsigned int ownerHaveSecondFacility, unsigned int numberOfDice)
+unsigned int PublicFacilities::calculateRent(unsigned int ownerHaveSecondFacility, unsigned int numberOfDice) const
 {
-    auto rent = 0;
-    if(ownerHaveSecondFacility == 0)
+    if(ownerHaveSecondFacility == 1)
     {
-        rent = numberOfDice * FACTOR_OWNER_HAVE_ONE_FACILITY;
+        return numberOfDice * FACTOR_OWNER_HAVE_ONE_FACILITY;
     }
-    rent = numberOfDice * FACTOR_OWNER_HAVE_TWO_FACILITY;
+    return numberOfDice * FACTOR_OWNER_HAVE_TWO_FACILITY;
 }

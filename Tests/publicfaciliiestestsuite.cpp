@@ -6,6 +6,9 @@
 #include "Square/publicfacilities.h"
 
 namespace{
+constexpr unsigned int FACTOR_OWNER_HAVE_ONE_FACILITY = 4;
+constexpr unsigned int FACTOR_OWNER_HAVE_TWO_FACILITY = 10;
+
 constexpr unsigned int WATER_SUPPLY_PRICE = 100;
 const std::string WATER_SUPPLY_NAME = "Wodociagi";
 
@@ -51,17 +54,59 @@ void PropertyPublicFacilitiesTestSuite::diceRoll(unsigned int steps)
 
 TEST_F(PropertyPublicFacilitiesTestSuite, dawidShouldPayRentForMarekWhenMarekHaveOnlyPowerStation)
 {
-    auto steps = 1;
+    unsigned int steps = 1;
     diceRoll(steps);
 
     playerFirst->turn();
+
+    unsigned int rollDice = 4;
+    EXPECT_CALL(dice, diceThrow()).Times(2).
+            WillOnce(::testing::Return(steps)).
+            WillOnce(::testing::Return(rollDice));
     playerSecond->turn();
-    auto statusPlayerFirst = playerFirst->status();
-    auto statusPlayerSecond = playerSecond->status();
 
-    auto expectedRent = FACTOR_OWNER_HAVE_TWO_FACILITY;
+    auto statusMarek = playerFirst->status();
+    auto statusDawid = playerSecond->status();
 
-    const auto expectedMoneyForPlayerFirst = moneyOnStartGame - POWER_STATION_PRICE;
+    auto expectedRent = FACTOR_OWNER_HAVE_ONE_FACILITY * rollDice;
+    const auto expectedMoneyForMarek = moneyOnStartGame - POWER_STATION_PRICE + expectedRent;
+    EXPECT_EQ(statusMarek.money(), expectedMoneyForMarek);
 
+    const auto expectedMoneyForDawid = moneyOnStartGame - expectedRent;
+    EXPECT_EQ(statusDawid.money(), expectedMoneyForDawid);
+}
+
+TEST_F(PropertyPublicFacilitiesTestSuite, dawidShouldPayRentForMarekWhenMarekHaveTwoPublicFacilities)
+{
+    unsigned int steps = 1;
+    unsigned int rollDiceFirstTurn = 4;
+    unsigned int rollDiceSecondTurn = 5;
+
+    EXPECT_CALL(dice, diceThrow()).Times(6).
+            WillOnce(::testing::Return(steps)). //Marek run to Elektrownia and buy it
+            WillOnce(::testing::Return(steps)). //Dawid run to Electrownia
+            WillOnce(::testing::Return(rollDiceFirstTurn)). //Dawid roll dice to pay rent
+            WillOnce(::testing::Return(steps)). //Marek run to Wodociagi and buy it
+            WillOnce(::testing::Return(steps)). //Dawid run to Wodociagi
+            WillOnce(::testing::Return(rollDiceSecondTurn)); //Dawid roll dice to pay rent
+
+    playerFirst->turn();
+    playerSecond->turn();
+
+    playerFirst->turn();
+    playerSecond->turn();
+
+    auto expectedRentFirstTurn = FACTOR_OWNER_HAVE_ONE_FACILITY * rollDiceFirstTurn;
+    auto expectedRentSecondTurn = FACTOR_OWNER_HAVE_TWO_FACILITY * rollDiceSecondTurn;
+
+    auto statusMarek = playerFirst->status();
+    auto statusDawid = playerSecond->status();
+
+    const auto expectedMoneyForMarek = moneyOnStartGame - POWER_STATION_PRICE + expectedRentFirstTurn
+                                                        - WATER_SUPPLY_PRICE + expectedRentSecondTurn;
+    EXPECT_EQ(statusMarek.money(), expectedMoneyForMarek);
+
+    const auto expectedMoneyForDawid = moneyOnStartGame - expectedRentFirstTurn - expectedRentSecondTurn;
+    EXPECT_EQ(statusDawid.money(), expectedMoneyForDawid);
 }
 

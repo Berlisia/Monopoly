@@ -7,7 +7,7 @@ void Property::actionOnStop(Guest& player)
 {
     if(owner)
     {
-        if(not (owner.myName() == player.myName()))
+        if(not (owner->myName() == player.myName()))
         {
             payRentMode->payRent(player, *owner);
         }
