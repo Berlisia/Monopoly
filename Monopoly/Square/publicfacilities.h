@@ -4,8 +4,6 @@
 #include "rentpaymode.h"
 #include "district.h"
 
-class Estate;
-
 class PublicFacilities: public RentPayMode
 {
 public:

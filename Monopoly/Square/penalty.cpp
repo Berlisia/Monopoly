@@ -5,7 +5,7 @@
 
 void Penalty::actionOnStop(Guest& player)
 {
-    player.withdrawMoney(penaltyPrice);
+    player.withdrawMoney(penaltyPrice); //TODO goTo bancrut if can't pay
 }
 
 void Penalty::actionOnWalkThrought(Guest&)

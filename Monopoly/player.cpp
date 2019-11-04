@@ -76,16 +76,16 @@ unsigned int Player::rollDice()
     return dice.diceThrow();
 }
 
-unsigned int Player::withdrawMoney(unsigned int valueToTake)
+bool Player::withdrawMoney(unsigned int valueToTake)
 {
     auto moneyBeforeWithdraw = int(money - valueToTake);
     if(moneyBeforeWithdraw >= 0)
     {
         money = moneyBeforeWithdraw;
-        return valueToTake;
+        return true;
     }
-    stateTransition(std::make_unique<StatePlayerBancrut>());
-    return money;
+    //stateTransition(std::make_unique<StatePlayerBancrut>());
+    return false;
 }
 
 void Player::printStatus()

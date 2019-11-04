@@ -6,17 +6,23 @@
 #include "Square/buildingproperty.h"
 
 namespace{
+constexpr unsigned int HOUSE_PRICE = 10;
+constexpr unsigned int HOTEL_PRICE = 50;
+
 constexpr unsigned int PUB_PRICE = 100;
 const std::string PUB_NAME = "Karczma 7 kotow";
-const Rent PUB_RENT = {{1, 10}, {2, 20}};
+const RentAtNumberOfBuildings PUB_RENT_BUILDING = {{1, 10}, {2, 20}, {3, 30}, {4, 40}, {5, 50}};
+constexpr Rent PUB_RENT = 5;
 
 constexpr unsigned int EXPENSIVE_PRICE = 500;
 const std::string EXPENSIVE_NAME = "Zimorodek";
-const Rent EXPENSIVE_RENT = {{1, 30}};
+const RentAtNumberOfBuildings EXPENSIVE_RENT_BUILDING = {{1, 20}, {2, 30}, {3, 40}, {4, 50}, {5, 60}};
+constexpr Rent EXPENSIVE_RENT = 10;
 
 constexpr unsigned int BEAR_PRICE = 200;
 const std::string BEAR_NAME = "Niedzwiedzia chata";
-const Rent BEAR_RENT = {{1, 20}, {2, 40}};
+const RentAtNumberOfBuildings BEAR_RENT_BUILDING = {{1, 10}, {2, 20}, {3, 30}, {4, 40}, {5, 50}};
+constexpr Rent BEAR_RENT = 5;
 
 }
 
@@ -34,6 +40,7 @@ public:
     std::unique_ptr<Player> playerFirst;
     std::unique_ptr<Player> playerSecond;
     std::vector<District> districts;
+    std::vector<HouseDevelop*> buildingModes;
     Squers propertisSut;
 
     void setupTestBoard();
@@ -44,9 +51,17 @@ void PropertyTestSuite::setupTestBoard()
 {
     districts.push_back(District());
     districts.push_back(District());
-    auto propertyPub = std::make_unique<Property>(PUB_PRICE, std::make_unique<BuildingProperty>(PUB_RENT, districts[0]), PUB_NAME);
-    auto propertyBear = std::make_unique<Property>(BEAR_PRICE, std::make_unique<BuildingProperty>(BEAR_RENT, districts[0]), BEAR_NAME);
-    auto propertyExpensive = std::make_unique<Property>(EXPENSIVE_PRICE, std::make_unique<BuildingProperty>(EXPENSIVE_RENT, districts[0]), EXPENSIVE_NAME);
+    auto buildingModeForPub = std::make_unique<BuildingProperty>(PUB_RENT, PUB_RENT_BUILDING, districts[0], HOUSE_PRICE, HOTEL_PRICE);
+    auto buildingModeForBear = std::make_unique<BuildingProperty>(BEAR_RENT, BEAR_RENT_BUILDING, districts[0], HOUSE_PRICE, HOTEL_PRICE);
+    auto buildingModeForExpensive = std::make_unique<BuildingProperty>(EXPENSIVE_RENT, EXPENSIVE_RENT_BUILDING, districts[0], HOUSE_PRICE, HOTEL_PRICE);
+
+    buildingModes.push_back(buildingModeForPub.get());
+    buildingModes.push_back(buildingModeForBear.get());
+    buildingModes.push_back(buildingModeForExpensive.get());
+
+    auto propertyPub = std::make_unique<Property>(PUB_PRICE, std::move(buildingModeForPub), PUB_NAME);
+    auto propertyBear = std::make_unique<Property>(BEAR_PRICE, std::move(buildingModeForBear), BEAR_NAME);
+    auto propertyExpensive = std::make_unique<Property>(EXPENSIVE_PRICE, std::move(buildingModeForExpensive), EXPENSIVE_NAME);
 
     districts[0].assignPropertisToDistrict({propertyPub.get(), propertyBear.get()});
     districts[1].assignPropertisToDistrict({propertyExpensive.get()});
@@ -64,7 +79,6 @@ void PropertyTestSuite::diceRoll(unsigned int steps)
 TEST_F(PropertyTestSuite, playerSecondShouldPayRentForPlayerFirst_OnePropertyInDistrict)
 {
     unsigned int steps = 1;
-    unsigned int haveOnePropertyFromDistrict = 1;
 
     diceRoll(steps);
 
@@ -74,18 +88,16 @@ TEST_F(PropertyTestSuite, playerSecondShouldPayRentForPlayerFirst_OnePropertyInD
     auto statusPlayerFirst = playerFirst->status();
     auto statusPlayerSecond = playerSecond->status();
 
-    const auto expectedMoneyForPlayerFirst = moneyOnStartGame - BEAR_PRICE + BEAR_RENT.at(haveOnePropertyFromDistrict);
+    const auto expectedMoneyForPlayerFirst = moneyOnStartGame - BEAR_PRICE + BEAR_RENT;
     EXPECT_EQ(statusPlayerFirst.money(), expectedMoneyForPlayerFirst);
 
-    const auto expectedMoneyForPlayerSecond = moneyOnStartGame - BEAR_RENT.at(haveOnePropertyFromDistrict);
+    const auto expectedMoneyForPlayerSecond = moneyOnStartGame - BEAR_RENT;
     EXPECT_EQ(statusPlayerSecond.money(), expectedMoneyForPlayerSecond);
 }
 
-TEST_F(PropertyTestSuite, playerSecondShouldPayRentForPlayerFirst_TwoPropertyInDistrict)
+TEST_F(PropertyTestSuite, playerSecondShouldPayRentx2ForPlayerFirst_AllPropertyInDistrict)
 {
     unsigned int steps = 1;
-    unsigned int haveOnePropertyFromDistrict = 1;
-    unsigned int haveTwoPropertyFromDistrict = 2;
 
     diceRoll(steps);
     playerFirst->turn();
@@ -101,12 +113,12 @@ TEST_F(PropertyTestSuite, playerSecondShouldPayRentForPlayerFirst_TwoPropertyInD
     const auto expectedMoneyForPlayerFirst = moneyOnStartGame -
                                              BEAR_PRICE -
                                              PUB_PRICE +
-                                             BEAR_RENT.at(haveOnePropertyFromDistrict) +
-                                             PUB_RENT.at(haveTwoPropertyFromDistrict);
+                                             BEAR_RENT +
+                                             (PUB_RENT * 2);
     EXPECT_EQ(statusPlayerFirst.money(), expectedMoneyForPlayerFirst);
 
     const auto expectedMoneyForPlayerSecond = moneyOnStartGame -
-                                              BEAR_RENT.at(haveOnePropertyFromDistrict) -
-                                              PUB_RENT.at(haveTwoPropertyFromDistrict);
+                                              BEAR_RENT -
+                                              (PUB_RENT * 2);
     EXPECT_EQ(statusPlayerSecond.money(), expectedMoneyForPlayerSecond);
 }

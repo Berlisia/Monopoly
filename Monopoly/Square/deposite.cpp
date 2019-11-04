@@ -11,8 +11,10 @@ void Deposite::actionOnStop(Guest& player)
 
 void Deposite::actionOnWalkThrought(Guest& player)
 {
-    player.withdrawMoney(valueToStore);
-    depositeMoney += valueToStore;
+    if(player.withdrawMoney(valueToStore))//TODO goTo bancrut if can't pay.
+    {
+        depositeMoney += valueToStore;
+    }
 }
 
 const std::string Deposite::squareName()

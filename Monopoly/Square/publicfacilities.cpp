@@ -11,8 +11,10 @@ void PublicFacilities::payRent(Guest& player, Guest& owner) const
 {
     auto ownerHaveSecondFacility = owner.checkPropertisInDistrict(district.propertis());
     auto rent = calculateRent(ownerHaveSecondFacility, player.rollDice());
-    auto money = player.withdrawMoney(rent);
-    owner.addMoney(money);
+    if(player.withdrawMoney(rent))
+    {
+        owner.addMoney(rent);
+    }//TODO goTo bancrut if can't pay
 }
 
 unsigned int PublicFacilities::calculateRent(unsigned int ownerHaveSecondFacility, unsigned int numberOfDice) const
