@@ -1,37 +1,29 @@
 #include "buildingproperty.h"
 #include "guest.h"
 
-namespace{
-constexpr unsigned int MAX_NUMBER_OF_HOUSES = 4;
-constexpr unsigned int HOTEL = 5;
-}
-
-void BuildingProperty::payRent(Guest &player, Guest &owner) const
+void BuildingProperty::payRent(Guest& player, Guest& owner) const
 {
-    auto tmpRent = rent;
-    if(numberOfHouses != 0)
-    {
-        tmpRent  = buildingRent.at(numberOfHouses);
-    }
-    else
-    {
-        if(haveAllPropertisFromDistrict(owner))
-        {
-            tmpRent = rent * 2;
-        }
-    }
-    withdrawRent(tmpRent, player, owner);
+    withdrawRent(currentState->calculateRent(), player, owner);
 }
 
 void BuildingProperty::buyHouse(unsigned int numberOfNewHouses, Guest& owner)
 {
-    if(haveAllPropertisFromDistrict(owner) && canBuyNewHouses(numberOfNewHouses))
-    {
-        if(owner.withdrawMoney(numberOfNewHouses * housePrice))
-        {
-            numberOfHouses += numberOfNewHouses;
-        }
-    }
+    currentState = currentState->buyHouse(numberOfNewHouses, owner);
+}
+
+void BuildingProperty::buyHotel(Guest& owner)
+{
+    currentState = currentState->buyHotel(owner);
+}
+
+void BuildingProperty::sellHouse(unsigned int numberOfHouse, Guest &owner)
+{
+    currentState = currentState->sellHouse(numberOfHouse, owner);
+}
+
+void BuildingProperty::sellHotel(Guest& owner)
+{
+    currentState = currentState->sellHotel(owner);
 }
 
 void BuildingProperty::withdrawRent(Rent newRent, Guest &player, Guest &owner) const
@@ -45,14 +37,4 @@ void BuildingProperty::withdrawRent(Rent newRent, Guest &player, Guest &owner) c
 bool BuildingProperty::haveAllPropertisFromDistrict(Guest& owner) const
 {
     return owner.checkPropertisInDistrict(district.propertis()) == district.propertis().size();
-}
-
-bool BuildingProperty::canBuyNewHouses(unsigned int numberOfNewHouses) const
-{
-    auto housesAfterAdd = numberOfHouses + numberOfNewHouses;
-
-    auto haveHausesLessThanMax = numberOfNewHouses <= MAX_NUMBER_OF_HOUSES;
-    auto housesAfterAddIsLessThanMax = housesAfterAdd <= MAX_NUMBER_OF_HOUSES;
-
-    return haveHausesLessThanMax && housesAfterAddIsLessThanMax;
 }

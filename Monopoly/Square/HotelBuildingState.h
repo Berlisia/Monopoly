@@ -2,12 +2,15 @@
 
 #include "buildingMachine.h"
 
-class AllPropertisBuildingState: public BuildingMachine
+class HotelBuildingState: public BuildingMachine
 {
 public:
-    AllPropertisBuildingState(const Rent p_rent, const RentAtNumberOfBuildings& p_buildingRent):
-        rent(p_rent*2),
-        buildingRent(p_buildingRent){}
+    HotelBuildingState(const Rent p_rentForHotel, const RentAtNumberOfBuildings& p_buildingRent,
+                       unsigned int p_hotelPrice, unsigned int p_housePrice):
+        rent(p_rentForHotel),
+        buildingRent(p_buildingRent),
+        hotelPrice(p_hotelPrice),
+        housePrice(p_housePrice){}
 
     Rent calculateRent() override;
 
@@ -19,4 +22,6 @@ public:
 private:
     const Rent rent;
     const RentAtNumberOfBuildings& buildingRent;
+    const unsigned int hotelPrice;
+    const unsigned int housePrice;
 };

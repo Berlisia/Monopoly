@@ -2,27 +2,31 @@
 
 #include "defultbuildingstate.h"
 
-const Rent DefaultBuildingState::calculateRent()
+Rent DefaultBuildingState::calculateRent()
 {
     return rent;
 }
 
-void DefaultBuildingState::buyHouse(unsigned int numberOfHouse, Guest&)
+std::unique_ptr<BuildingMachine> DefaultBuildingState::buyHouse(unsigned int, Guest&)
 {
     std::cout << "You can't buy house when you haven't all propertis from district" << std::endl;
+    return std::make_unique<DefaultBuildingState>(this);
 }
 
-void DefaultBuildingState::buyHotel(Guest&)
+std::unique_ptr<BuildingMachine> DefaultBuildingState::buyHotel(Guest&)
 {
     std::cout << "You can't buy hotel when you haven't 4 houses" << std::endl;
+    return std::make_unique<DefaultBuildingState>(this);
 }
 
-void DefaultBuildingState::sellHouse(unsigned int numberOfHouse, Guest&)
+std::unique_ptr<BuildingMachine> DefaultBuildingState::sellHouse(unsigned int, Guest&)
 {
     std::cout << "You havn't houses" << std::endl;
+    return std::make_unique<DefaultBuildingState>(this);
 }
 
-void DefaultBuildingState::sellHotel(Guest&)
+std::unique_ptr<BuildingMachine> DefaultBuildingState::sellHotel(Guest&)
 {
     std::cout << "You havn't hotel" << std::endl;
+    return std::make_unique<DefaultBuildingState>(this);
 }

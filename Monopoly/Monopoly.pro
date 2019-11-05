@@ -42,6 +42,9 @@ win32{
 }
 
 SOURCES += \
+    Square/HotelBuildingState.cpp \
+    Square/allpropertisbuildingstate.cpp \
+    Square/housesBuildingState.cpp \
     Square/publicfacilities.cpp \
     Square/railwaystation.cpp \
     Square/start.cpp \
@@ -62,7 +65,10 @@ SOURCES += \
     Square/defultbuildingstate.cpp
 
 HEADERS += \
+    Square/HotelBuildingState.h \
+    Square/buildingMachine.h \
     Square/estate.h \
+    Square/housesBuildingState.h \
     Square/publicfacilities.h \
     Square/railwaystation.h \
     Square/square.h \
@@ -95,5 +101,4 @@ HEADERS += \
     Square/buildingproperty.h \
     Square/housedevelop.h \
     Square/defultbuildingstate.h \
-    Square/allpropertisbuildingstate.h \
-    Square/buildingstate.h
+    Square/allpropertisbuildingstate.h
