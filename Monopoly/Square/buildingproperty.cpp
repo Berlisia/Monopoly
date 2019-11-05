@@ -3,30 +3,33 @@
 
 namespace{
 constexpr unsigned int MAX_NUMBER_OF_HOUSES = 4;
+constexpr unsigned int HOTEL = 5;
 }
 
 void BuildingProperty::payRent(Guest &player, Guest &owner) const
 {
-    auto ownerHavePropertis = owner.checkPropertisInDistrict(district.propertis());
-    if(ownerHavePropertis == district.propertis().size())
+    auto tmpRent = rent;
+    if(numberOfHouses != 0)
     {
-        withdrawRent(rent * 2, player, owner);
-        return;
+        tmpRent  = buildingRent.at(numberOfHouses);
     }
-    withdrawRent(rent, player, owner);
+    else
+    {
+        if(haveAllPropertisFromDistrict(owner))
+        {
+            tmpRent = rent * 2;
+        }
+    }
+    withdrawRent(tmpRent, player, owner);
 }
 
 void BuildingProperty::buyHouse(unsigned int numberOfNewHouses, Guest& owner)
 {
-    if(numberOfNewHouses <= MAX_NUMBER_OF_HOUSES)
+    if(haveAllPropertisFromDistrict(owner) && canBuyNewHouses(numberOfNewHouses))
     {
-        auto houses = numberOfHouses + numberOfNewHouses;
-        if(houses <= MAX_NUMBER_OF_HOUSES)
+        if(owner.withdrawMoney(numberOfNewHouses * housePrice))
         {
-            if(owner.withdrawMoney(numberOfNewHouses * housePrice))
-            {
-                numberOfHouses = houses;
-            }
+            numberOfHouses += numberOfNewHouses;
         }
     }
 }
@@ -37,4 +40,19 @@ void BuildingProperty::withdrawRent(Rent newRent, Guest &player, Guest &owner) c
     {
         owner.addMoney(newRent);
     }
+}
+
+bool BuildingProperty::haveAllPropertisFromDistrict(Guest& owner) const
+{
+    return owner.checkPropertisInDistrict(district.propertis()) == district.propertis().size();
+}
+
+bool BuildingProperty::canBuyNewHouses(unsigned int numberOfNewHouses) const
+{
+    auto housesAfterAdd = numberOfHouses + numberOfNewHouses;
+
+    auto haveHausesLessThanMax = numberOfNewHouses <= MAX_NUMBER_OF_HOUSES;
+    auto housesAfterAddIsLessThanMax = housesAfterAdd <= MAX_NUMBER_OF_HOUSES;
+
+    return haveHausesLessThanMax && housesAfterAddIsLessThanMax;
 }

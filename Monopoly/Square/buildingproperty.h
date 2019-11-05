@@ -3,17 +3,11 @@
 
 #include "rentpaymode.h"
 #include "district.h"
+#include "housedevelop.h"
 
-typedef unsigned int Rent;
+#include "defultbuildingstate.h"
+
 typedef std::map<unsigned int, Rent> RentAtNumberOfBuildings;
-
-class HouseDevelop
-{
-public:
-    virtual ~HouseDevelop() = default;
-
-    virtual void buyHouse(unsigned int numberOfHouse, Guest& owner) = 0;
-};
 
 class BuildingProperty: public RentPayMode, public HouseDevelop
 {
@@ -24,21 +18,28 @@ public:
         buildingRent(p_buildingRent),
         district(p_district),
         housePrice(p_housePrice),
-        hotelPrice(p_hotelPrice) {}
+        hotelPrice(p_hotelPrice),
+        currentState(std::make_unique<DefaultBuildingState>(p_rent)) {}
 
     void payRent(Guest& player, Guest& owner) const override;
 
     void buyHouse(unsigned int numberOfHouse, Guest& owner) override;
+    void buyHotel(Guest& owner) override;
+    void sellHouse(unsigned int numberOfHouse, Guest& owner) override;
+    void sellHotel(Guest& owner) override;
 private:
     const Rent rent;
     const RentAtNumberOfBuildings buildingRent;
     const District& district;
 
+    std::unique_ptr<HouseDevelop> currentState;
+
     const unsigned int housePrice;
     const unsigned int hotelPrice;
 
     unsigned int numberOfHouses = 0;
-    bool hotel = false;
 
     void withdrawRent(Rent rent, Guest &player, Guest &owner) const;
+    bool haveAllPropertisFromDistrict(Guest& owner) const;
+    bool canBuyNewHouses(unsigned int numberOfNewHouses) const;
 };

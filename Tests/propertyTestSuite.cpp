@@ -122,3 +122,33 @@ TEST_F(PropertyTestSuite, playerSecondShouldPayRentx2ForPlayerFirst_AllPropertyI
                                               (PUB_RENT * 2);
     EXPECT_EQ(statusPlayerSecond.money(), expectedMoneyForPlayerSecond);
 }
+
+TEST_F(PropertyTestSuite, DawidShouldPayRentWhenMarekHaveTwoHousesOnBearProperty)
+{
+    unsigned int steps = 1;
+    unsigned int stepsInSecondTrun = 2;
+    unsigned int pubPropertyBuildingMode = 0;
+    unsigned int numberOfHousesToBuy = 2;
+
+    EXPECT_CALL(dice, diceThrow()).Times(4).
+            WillOnce(::testing::Return(steps)).
+            WillOnce(::testing::Return(steps)).
+            WillOnce(::testing::Return(stepsInSecondTrun)).
+            WillOnce(::testing::Return(stepsInSecondTrun));
+
+    playerFirst->turn();
+    playerSecond->turn();
+
+    playerFirst->turn();
+    buildingModes[pubPropertyBuildingMode]->buyHouse(numberOfHousesToBuy, *playerFirst);
+    playerSecond->turn();
+
+    auto statusMarek = playerFirst->status();
+    auto statusDawid = playerSecond->status();
+
+    const auto expectedMoneyForMarek = moneyOnStartGame - BEAR_PRICE + BEAR_RENT - PUB_PRICE - (HOUSE_PRICE*2) + PUB_RENT_BUILDING.at(numberOfHousesToBuy);
+    EXPECT_EQ(statusMarek.money(), expectedMoneyForMarek);
+
+    const auto expectedMoneyForDawid = moneyOnStartGame - BEAR_RENT - PUB_RENT_BUILDING.at(numberOfHousesToBuy);
+    EXPECT_EQ(statusDawid.money(), expectedMoneyForDawid);
+}
