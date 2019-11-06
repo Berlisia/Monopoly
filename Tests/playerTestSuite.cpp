@@ -21,11 +21,12 @@ public:
     PlayerTestSuite():
         board(createSquares()),
         squares(createSquares()),
-        sut("tester", board.createBoardIterator(), diceMock)
+        sut("tester", board.createBoardIterator(), diceMock, subjectBuildingProperty)
         {}
 
     Board board;
     Squers squares;
+    SubjectBuildingProperty subjectBuildingProperty;
     NiceMock<Dice> diceMock;
     Player sut;
 

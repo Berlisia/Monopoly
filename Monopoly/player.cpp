@@ -10,10 +10,11 @@
 #include "stateplayerinprison.h"
 #include "die.h"
 
-Player::Player(std::string p_name, BoardIterator p_boardIterator, const Dice& p_dice):
+Player::Player(std::string p_name, BoardIterator p_boardIterator, const Dice& p_dice, const SubjectBuildingProperty& p_buildingProperty):
     name(p_name),
     actualPossisionOnBoard(p_boardIterator),
-    dice(p_dice)
+    dice(p_dice),
+    buildingProperty(p_buildingProperty)
 {
     stateTransition(std::make_unique<StateActivePlayer>());
 }
@@ -42,12 +43,13 @@ void Player::addMoney(unsigned int moneyToAdd)
     money += moneyToAdd;
 }
 
-bool Player::buyProperty(unsigned int price, Estate* property)
+bool Player::buyProperty(unsigned int price, Estate* property, const District& district)
 {
     if(price < money)
     {
         money -= price;
         propertis.push_back(property);
+        notifyBuildingProperty(district);
         return true;
     }
     return false;
@@ -95,9 +97,7 @@ void Player::printStatus()
 
 const PlayerStatus Player::status()
 {
-    return PlayerStatus {actualPossisionOnBoard,
-                         money,
-                         propertis};
+    return PlayerStatus {actualPossisionOnBoard, money, propertis};
 }
 
 const std::string &Player::myName()
@@ -138,5 +138,14 @@ void Player::actionOnWalkThrought()
 void Player::actionOnStop()
 {
     actualSquare()->actionOnStop(*this);
+}
+
+void Player::notifyBuildingProperty(const District& district)
+{
+    auto allPropertis = checkPropertisInDistrict(district.propertis());
+    if(allPropertis == district.propertis().size())
+    {
+        buildingProperty.notifyForHaveAllPropertis(district);
+    }
 }
 

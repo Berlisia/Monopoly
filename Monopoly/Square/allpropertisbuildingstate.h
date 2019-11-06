@@ -5,9 +5,8 @@
 class AllPropertisBuildingState: public BuildingMachine
 {
 public:
-    AllPropertisBuildingState(const Rent p_rent, const RentAtNumberOfBuildings& p_buildingRent):
-        rent(p_rent*2),
-        buildingRent(p_buildingRent){}
+    AllPropertisBuildingState(const CardInfo& p_card):
+        card(p_card) {}
 
     Rent calculateRent() override;
 
@@ -17,6 +16,5 @@ public:
     std::unique_ptr<BuildingMachine> sellHotel(Guest& owner) override;
 
 private:
-    const Rent rent;
-    const RentAtNumberOfBuildings& buildingRent;
+    const CardInfo& card;
 };

@@ -32,11 +32,12 @@ public:
     PropertyTestSuite()
     {
         setupTestBoard();
-        playerFirst = std::make_unique<Player>("tester Marek", BoardIterator(propertisSut.begin(), propertisSut.end()), dice);
-        playerSecond = std::make_unique<Player>("tester Dawid", BoardIterator(propertisSut.begin(), propertisSut.end()), dice);
+        playerFirst = std::make_unique<Player>("tester Marek", BoardIterator(propertisSut.begin(), propertisSut.end()), dice,subjectBuildingProperty);
+        playerSecond = std::make_unique<Player>("tester Dawid", BoardIterator(propertisSut.begin(), propertisSut.end()), dice, subjectBuildingProperty);
     }
 
     ::testing::NiceMock<DiceMock> dice;
+    SubjectBuildingProperty subjectBuildingProperty;
     std::unique_ptr<Player> playerFirst;
     std::unique_ptr<Player> playerSecond;
     std::vector<District> districts;
@@ -51,17 +52,17 @@ void PropertyTestSuite::setupTestBoard()
 {
     districts.push_back(District());
     districts.push_back(District());
-    auto buildingModeForPub = std::make_unique<BuildingProperty>(PUB_RENT, PUB_RENT_BUILDING, districts[0], HOUSE_PRICE, HOTEL_PRICE);
-    auto buildingModeForBear = std::make_unique<BuildingProperty>(BEAR_RENT, BEAR_RENT_BUILDING, districts[0], HOUSE_PRICE, HOTEL_PRICE);
-    auto buildingModeForExpensive = std::make_unique<BuildingProperty>(EXPENSIVE_RENT, EXPENSIVE_RENT_BUILDING, districts[0], HOUSE_PRICE, HOTEL_PRICE);
+    auto buildingModeForPub = std::make_unique<BuildingProperty>(CardInfo{PUB_RENT, PUB_RENT_BUILDING, HOUSE_PRICE, HOTEL_PRICE}, districts[0]);
+    auto buildingModeForBear = std::make_unique<BuildingProperty>(CardInfo{BEAR_RENT, BEAR_RENT_BUILDING, HOUSE_PRICE, HOTEL_PRICE}, districts[0]);
+    auto buildingModeForExpensive = std::make_unique<BuildingProperty>(CardInfo{EXPENSIVE_RENT, EXPENSIVE_RENT_BUILDING, HOUSE_PRICE, HOTEL_PRICE}, districts[1]);
 
     buildingModes.push_back(buildingModeForPub.get());
     buildingModes.push_back(buildingModeForBear.get());
     buildingModes.push_back(buildingModeForExpensive.get());
 
-    auto propertyPub = std::make_unique<Property>(PUB_PRICE, std::move(buildingModeForPub), PUB_NAME);
-    auto propertyBear = std::make_unique<Property>(BEAR_PRICE, std::move(buildingModeForBear), BEAR_NAME);
-    auto propertyExpensive = std::make_unique<Property>(EXPENSIVE_PRICE, std::move(buildingModeForExpensive), EXPENSIVE_NAME);
+    auto propertyPub = std::make_unique<Property>(PUB_PRICE, std::move(buildingModeForPub), districts[0], PUB_NAME);
+    auto propertyBear = std::make_unique<Property>(BEAR_PRICE, std::move(buildingModeForBear), districts[0], BEAR_NAME);
+    auto propertyExpensive = std::make_unique<Property>(EXPENSIVE_PRICE, std::move(buildingModeForExpensive), districts[1], EXPENSIVE_NAME);
 
     districts[0].assignPropertisToDistrict({propertyPub.get(), propertyBear.get()});
     districts[1].assignPropertisToDistrict({propertyExpensive.get()});

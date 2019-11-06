@@ -1,5 +1,6 @@
 #include "buildingproperty.h"
 #include "guest.h"
+#include "allpropertisbuildingstate.h"
 
 void BuildingProperty::payRent(Guest& player, Guest& owner) const
 {
@@ -24,6 +25,21 @@ void BuildingProperty::sellHouse(unsigned int numberOfHouse, Guest &owner)
 void BuildingProperty::sellHotel(Guest& owner)
 {
     currentState = currentState->sellHotel(owner);
+}
+
+void BuildingProperty::updateForAllPropertis()
+{
+    currentState = std::make_unique<AllPropertisBuildingState>(card);
+}
+
+void BuildingProperty::updateForNotAllPropertis()
+{
+    currentState = std::make_unique<DefaultBuildingState>(card.rent);
+}
+
+const District &BuildingProperty::getDistrict()
+{
+    return district;
 }
 
 void BuildingProperty::withdrawRent(Rent newRent, Guest &player, Guest &owner) const

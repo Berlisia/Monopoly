@@ -2,20 +2,14 @@
 #include <vector>
 
 class Estate;
+
 class District
 {
 public:
-    void assignPropertisToDistrict(const std::vector<Estate*>& propertis)
-    {
-        propertisInDistrict = propertis;
-    }
-
-    const std::vector<Estate*>& propertis() const
-    {
-        return propertisInDistrict;
-    }
+    void assignPropertisToDistrict(const std::vector<Estate*>& propertis);
+    const std::vector<Estate*>& propertis() const;
+    bool operator == (const District& dist) const;
 
 private:
     std::vector<Estate*> propertisInDistrict;
 };
-

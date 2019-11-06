@@ -8,11 +8,8 @@ public:
     virtual ~Estate() = default;
 
     virtual const std::string& estateName() = 0;
-
-    bool operator == (const Estate& e) const
-    {
-        return name == e.name;
-    }
+    bool operator == (const Estate& e) const;
+    bool operator != (const Estate& e) const;
 
 protected:
     const std::string name;

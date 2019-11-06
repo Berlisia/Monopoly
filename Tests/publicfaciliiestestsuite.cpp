@@ -22,11 +22,12 @@ public:
     PropertyPublicFacilitiesTestSuite()
     {
         setupPropertyWithPublicFacilitesPayMode();
-        playerFirst = std::make_unique<Player>("tester Marek", BoardIterator(propertisSut.begin(), propertisSut.end()), dice);
-        playerSecond = std::make_unique<Player>("tester Dawid", BoardIterator(propertisSut.begin(), propertisSut.end()), dice);
+        playerFirst = std::make_unique<Player>("tester Marek", BoardIterator(propertisSut.begin(), propertisSut.end()), dice, subjectBuildingProperty);
+        playerSecond = std::make_unique<Player>("tester Dawid", BoardIterator(propertisSut.begin(), propertisSut.end()), dice, subjectBuildingProperty);
     }
 
     ::testing::NiceMock<DiceMock> dice;
+    SubjectBuildingProperty subjectBuildingProperty;
     std::unique_ptr<Player> playerFirst;
     std::unique_ptr<Player> playerSecond;
     District district;
@@ -38,8 +39,8 @@ public:
 
 void PropertyPublicFacilitiesTestSuite::setupPropertyWithPublicFacilitesPayMode()
 {
-    auto waterSupply = std::make_unique<Property>(WATER_SUPPLY_PRICE, std::make_unique<PublicFacilities>(district), WATER_SUPPLY_NAME);
-    auto powerStation = std::make_unique<Property>(POWER_STATION_PRICE, std::make_unique<PublicFacilities>(district), POWER_STATION_NAME);
+    auto waterSupply = std::make_unique<Property>(WATER_SUPPLY_PRICE, std::make_unique<PublicFacilities>(district), district, WATER_SUPPLY_NAME);
+    auto powerStation = std::make_unique<Property>(POWER_STATION_PRICE, std::make_unique<PublicFacilities>(district), district, POWER_STATION_NAME);
 
     district.assignPropertisToDistrict({waterSupply.get(), powerStation.get()});
 

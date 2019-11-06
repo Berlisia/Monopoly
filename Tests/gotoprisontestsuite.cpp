@@ -13,12 +13,13 @@ class GoToPrisonTestSuite: public Test
 public:
     GoToPrisonTestSuite():
         simpleBoard(createSimpleSquares()),
-        playerMock("tester", simpleBoard.createBoardIterator(), diceMock),
+        playerMock("tester", simpleBoard.createBoardIterator(), diceMock, subjectBuildingProperty),
         sut(prisonPossisionOnBoard){}
 
 
     Board simpleBoard;
     Squers::iterator prisonPossisionOnBoard;
+    SubjectBuildingProperty subjectBuildingProperty;
 
     NiceMock<Dice> diceMock;
     StrictMock<PlayerMock> playerMock;

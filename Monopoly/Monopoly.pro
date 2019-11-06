@@ -62,7 +62,10 @@ SOURCES += \
     playerStatus.cpp \
     Square/buildingproperty.cpp \
     ../Tests/publicfaciliiestestsuite.cpp \
-    Square/defultbuildingstate.cpp
+    Square/defultbuildingstate.cpp \
+    Square/district.cpp \
+    Square/estate.cpp \
+    Square/subjectbuildingproperty.cpp
 
 HEADERS += \
     Square/HotelBuildingState.h \
@@ -101,4 +104,5 @@ HEADERS += \
     Square/buildingproperty.h \
     Square/housedevelop.h \
     Square/defultbuildingstate.h \
-    Square/allpropertisbuildingstate.h
+    Square/allpropertisbuildingstate.h \
+    Square/subjectbuildingproperty.h

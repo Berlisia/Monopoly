@@ -34,7 +34,7 @@ const std::string& Property::estateName()
 
 void Property::buyPropertyByNewOwner(Guest& player)
 {
-    if(player.buyProperty(price, this))
+    if(player.buyProperty(price, this, district))
     {
         owner = &player;
     }

@@ -28,11 +28,12 @@ public:
     PropertyRailwayStationTestSuite()
     {
         setupTestBoard();
-        playerFirst = std::make_unique<Player>("tester Marek", BoardIterator(propertisSut.begin(), propertisSut.end()), dice);
-        playerSecond = std::make_unique<Player>("tester Dawid", BoardIterator(propertisSut.begin(), propertisSut.end()), dice);
+        playerFirst = std::make_unique<Player>("tester Marek", BoardIterator(propertisSut.begin(), propertisSut.end()), dice, subjectBuildingProperty);
+        playerSecond = std::make_unique<Player>("tester Dawid", BoardIterator(propertisSut.begin(), propertisSut.end()), dice, subjectBuildingProperty);
     }
 
     ::testing::NiceMock<DiceMock> dice;
+    SubjectBuildingProperty subjectBuildingProperty;
     std::unique_ptr<Player> playerFirst;
     std::unique_ptr<Player> playerSecond;
     District districts;
@@ -44,10 +45,10 @@ public:
 
 void PropertyRailwayStationTestSuite::setupTestBoard()
 {
-    auto mainRailway = std::make_unique<Property>(MAIN_PRICE, std::make_unique<RailwayStation>(RENT, districts), MAIN_NAME);
-    auto swiebodzki = std::make_unique<Property>(SWIEBODZKI_PRICE, std::make_unique<RailwayStation>(RENT, districts), SWIEBODZKI_NAME);
-    auto mikolajow = std::make_unique<Property>(MIKOLAJOW_PRICE, std::make_unique<RailwayStation>(RENT, districts), MIKOLAJOW_NAME);
-    auto brochow = std::make_unique<Property>(BROCHOW_PRICE, std::make_unique<RailwayStation>(RENT, districts), BROCHOW_NAME);
+    auto mainRailway = std::make_unique<Property>(MAIN_PRICE, std::make_unique<RailwayStation>(RENT, districts), districts, MAIN_NAME);
+    auto swiebodzki = std::make_unique<Property>(SWIEBODZKI_PRICE, std::make_unique<RailwayStation>(RENT, districts), districts, SWIEBODZKI_NAME);
+    auto mikolajow = std::make_unique<Property>(MIKOLAJOW_PRICE, std::make_unique<RailwayStation>(RENT, districts), districts, MIKOLAJOW_NAME);
+    auto brochow = std::make_unique<Property>(BROCHOW_PRICE, std::make_unique<RailwayStation>(RENT, districts), districts, BROCHOW_NAME);
 
     districts.assignPropertisToDistrict({mainRailway.get(), swiebodzki.get(), mikolajow.get(), brochow.get()});
 

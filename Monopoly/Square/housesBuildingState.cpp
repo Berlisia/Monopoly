@@ -10,7 +10,7 @@ constexpr unsigned int HOTEL = 5;
 
 Rent HousesBuildingState::calculateRent()
 {
-    return buildingRent.at(numberOfHouses);
+    return card.buildingRent.at(numberOfHouses);
 }
 
 std::unique_ptr<BuildingMachine> HousesBuildingState::buyHouse(unsigned int numberOfNewHouses, Guest& owner)
@@ -18,7 +18,7 @@ std::unique_ptr<BuildingMachine> HousesBuildingState::buyHouse(unsigned int numb
     auto numberOfHausesAfterAdd = numberOfHouses + numberOfNewHouses;
     if(numberOfHouses <= MAX_NUMBER_OF_HOUSES and numberOfHausesAfterAdd <= MAX_NUMBER_OF_HOUSES)
     {
-        owner.withdrawMoney(numberOfNewHouses * housePrice);
+        owner.withdrawMoney(numberOfNewHouses * card.housePrice);
         numberOfHouses = numberOfHausesAfterAdd;
     }
     return yourself();
@@ -28,9 +28,8 @@ std::unique_ptr<BuildingMachine> HousesBuildingState::buyHotel(Guest& owner)
 {
     if(numberOfHouses == MAX_NUMBER_OF_HOUSES)
     {
-        std::unique_ptr<BuildingMachine> newState =
-                std::make_unique<HotelBuildingState>(buildingRent.at(HOTEL), buildingRent, hotelPrice, housePrice);
-        newState->buyHotel(owner);
+       HotelBuildingState newState(card);
+       newState.buyHotel(owner);
         return std::make_unique<HotelBuildingState>(newState);
     }
     std::cout << "You can't buy hotel when haven't 4 houses" << std::endl;
@@ -39,12 +38,12 @@ std::unique_ptr<BuildingMachine> HousesBuildingState::buyHotel(Guest& owner)
 
 std::unique_ptr<BuildingMachine> HousesBuildingState::sellHouse(unsigned int houses, Guest& owner)
 {
-    int housesAfterSell = int(numberOfHouses - houses);
-    if(housesAfterSell > 0)
+    if(numberOfHouses > houses)
     {
         return sellSomeHouses(houses, owner);
     }
 
+    unsigned int housesAfterSell = numberOfHouses - houses;
     if(housesAfterSell == 0)
     {
         return sellAllHouses(owner);
@@ -62,18 +61,18 @@ std::unique_ptr<BuildingMachine> HousesBuildingState::sellHotel(Guest &)
 
 std::unique_ptr<BuildingMachine> HousesBuildingState::sellAllHouses(Guest& owner)
 {
-    owner.addMoney(numberOfHouses * housePrice/2);
-    return std::make_unique<AllPropertisBuildingState>(rent, buildingRent);
+    owner.addMoney(numberOfHouses * card.housePrice/2);
+    return std::make_unique<AllPropertisBuildingState>(card);
 }
 
 std::unique_ptr<BuildingMachine> HousesBuildingState::sellSomeHouses(unsigned int houses, Guest &owner)
 {
-    owner.addMoney(houses * housePrice/2);
+    owner.addMoney(houses * card.housePrice/2);
     numberOfHouses -= houses;
     return yourself();
 }
 
 std::unique_ptr<BuildingMachine> HousesBuildingState::yourself()
 {
-    return std::make_unique<HousesBuildingState>(this);
+    return std::make_unique<HousesBuildingState>(*this);
 }
