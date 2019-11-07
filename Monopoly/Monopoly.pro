@@ -1,7 +1,7 @@
 TEMPLATE = app
 LIBS += -pthread
 
-CONFIG += console c++14 monopoly unix pthread
+CONFIG += console c++14 test pthread
 CONFIG -= app_bundle
 CONFIG -= qt
 

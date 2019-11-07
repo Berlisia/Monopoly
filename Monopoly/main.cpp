@@ -58,14 +58,18 @@ Squers createSimpleBoard(std::vector<District>& districts, std::vector<HouseDeve
 {
     Squers squares;
     squares.push_back(createSquare<Start>(PRICE_FOR_START));
-    auto property = createBuildingProperty({10, RENT_BUILDING, HOUSE_PRICE, HOTEL_PRICE}, 100, "niedzwiedzia buda", districts[0], buildingPropertyNotify, buildingModes);
+    auto property = createBuildingProperty({10, RENT_BUILDING, HOUSE_PRICE, HOTEL_PRICE},
+                                           100, "niedzwiedzia buda", districts[0], buildingPropertyNotify, buildingModes);
+    districts[0].assignPropertyToDistrict(property.get());
     squares.push_back(std::move(property));
     squares.push_back(createSquare<Prison>());
     for(int i = 4; i < 10; i++)
     {
         squares.push_back(createSquare<Reward>(PRICE_FOR_REWARD));
     }
-    property = createBuildingProperty({20, RENT_BUILDING, HOUSE_PRICE, HOTEL_PRICE}, 100, "Stara hata", districts[0], buildingPropertyNotify, buildingModes);
+    property = createBuildingProperty({20, RENT_BUILDING, HOUSE_PRICE, HOTEL_PRICE},
+                                      100, "Stara hata", districts[0], buildingPropertyNotify, buildingModes);
+    districts[0].assignPropertyToDistrict(property.get());
     squares.push_back(std::move(property));
     createRandomSquare(squares);
     squares.push_back(createSquare<Deposite>(PRICE_FOR_DEPOSITE));
@@ -74,14 +78,20 @@ Squers createSimpleBoard(std::vector<District>& districts, std::vector<HouseDeve
     {
         squares.push_back(createSquare<Reward>(PRICE_FOR_REWARD));
     }
-    squares.push_back(createSquare<Property>(200, 30, "Kocia kolyska"));
+    property = createBuildingProperty({30, RENT_BUILDING, HOUSE_PRICE, HOTEL_PRICE},
+                                      200, "Kocia kolyska", districts[1], buildingPropertyNotify, buildingModes);
+    districts[1].assignPropertyToDistrict(property.get());
+    squares.push_back(std::move(property));
     createRandomSquare(squares);
     squares.push_back(createSquare<Prison>());
     for(int i = 23; i < 30; i++)
     {
         squares.push_back(createSquare<Penalty>(PRICE_FOR_PENALTY));
     }
-    squares.push_back(createSquare<Property>(300, 40, "Karczma 7 kotow"));
+    property = createBuildingProperty({40, RENT_BUILDING, HOUSE_PRICE, HOTEL_PRICE},
+                                      300, "Karczma 7 kotow", districts[1], buildingPropertyNotify, buildingModes);
+    districts[1].assignPropertyToDistrict(property.get());
+    squares.push_back(std::move(property));
     createRandomSquare(squares);
     squares.push_back(createSquare<Prison>());
     for(int i = 33; i < NUMBER_OF_SQUERS; i++)
@@ -103,6 +113,8 @@ int main()
 {
     SubjectBuildingProperty buildingPropertyNotify;
     std::vector<District> districts;
+    districts.push_back(District());
+    districts.push_back(District());
     std::vector<HouseDevelop*> buildingModes;
 
     auto squares = createSimpleBoard(districts, buildingModes, buildingPropertyNotify);
