@@ -1,26 +1,13 @@
 TEMPLATE = app
 LIBS += -pthread
 
-CONFIG += console c++14 test pthread
+CONFIG += console c++14 monopoly unix pthread
 CONFIG -= app_bundle
 CONFIG -= qt
 
 monopoly{
     TARGET = Monopoly
     SOURCES += main.cpp
-}
-
-test{
-    TARGET = MonopolyTest
-    SOURCES += \
-        ../Tests/railwaystationtestsuite.cpp \
-        ../Tests/propertyTestSuite.cpp \
-        ../Tests/gotoprisontestsuite.cpp \
-        ../Tests/playerTestSuite.cpp
-    HEADERS += \
-        ../Tests/Mocks/playerMock.h \
-        ../Tests/Mocks/guestmock.h \
-        ../Tests/Mocks/dicemock.h
 }
 
 unix{
@@ -39,6 +26,20 @@ win32{
     LIBS += -LD:\Monopoly\googletest\build\lib\ -lgtest
     LIBS += -LD:\Monopoly\googletest\build\lib\ -lgmock
     LIBS += -LD:\Monopoly\googletest\build\lib\ -lgtest_main
+}
+
+test{
+    TARGET = MonopolyTest
+    SOURCES += \
+        ../Tests/railwaystationtestsuite.cpp \
+        ../Tests/propertyTestSuite.cpp \
+        ../Tests/gotoprisontestsuite.cpp \
+        ../Tests/playerTestSuite.cpp
+        ../Tests/publicfaciliiestestsuite.cpp
+    HEADERS += \
+        ../Tests/Mocks/playerMock.h \
+        ../Tests/Mocks/guestmock.h \
+        ../Tests/Mocks/dicemock.h
 }
 
 SOURCES += \
@@ -61,7 +62,6 @@ SOURCES += \
     Square/gotoprison.cpp \
     playerStatus.cpp \
     Square/buildingproperty.cpp \
-    ../Tests/publicfaciliiestestsuite.cpp \
     Square/defultbuildingstate.cpp \
     Square/district.cpp \
     Square/estate.cpp \

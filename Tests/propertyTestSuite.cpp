@@ -60,6 +60,10 @@ void PropertyTestSuite::setupTestBoard()
     buildingModes.push_back(buildingModeForBear.get());
     buildingModes.push_back(buildingModeForExpensive.get());
 
+    subjectBuildingProperty.attach(buildingModeForBear.get());
+    subjectBuildingProperty.attach(buildingModeForPub.get());
+    subjectBuildingProperty.attach(buildingModeForExpensive.get());
+
     auto propertyPub = std::make_unique<Property>(PUB_PRICE, std::move(buildingModeForPub), districts[0], PUB_NAME);
     auto propertyBear = std::make_unique<Property>(BEAR_PRICE, std::move(buildingModeForBear), districts[0], BEAR_NAME);
     auto propertyExpensive = std::make_unique<Property>(EXPENSIVE_PRICE, std::move(buildingModeForExpensive), districts[1], EXPENSIVE_NAME);

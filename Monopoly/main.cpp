@@ -14,6 +14,8 @@
 #include "Square/prison.h"
 #include "player.h"
 
+#include "Square/buildingproperty.h"
+
 using namespace std;
 
 namespace
@@ -23,6 +25,9 @@ int PRICE_FOR_PENALTY = 50;
 int PRICE_FOR_REWARD = 20;
 int NUMBER_OF_SQUERS = 40;
 unsigned int PRICE_FOR_DEPOSITE = 5;
+const RentAtNumberOfBuildings RENT_BUILDING = {{1, 10}, {2, 20}, {3, 30}, {4, 40}, {5, 50}};
+constexpr unsigned int HOUSE_PRICE = 10;
+constexpr unsigned int HOTEL_PRICE = 50;
 }
 
 template<typename T, typename ...Args>
@@ -40,18 +45,28 @@ void createRandomSquare(Squers& squares)
     squares.push_back(createSquare<RandomSquare>(std::move(randomSquares)));
 }
 
-Squers createSimpleBoard()
+std::unique_ptr<Property> createBuildingProperty(CardInfo card, unsigned int price, const std::string name, const District& district,
+                                                 SubjectBuildingProperty& subjectBuildingProperty, std::vector<HouseDevelop*>& buildingModes)
+{
+    auto buildingMode = std::make_unique<BuildingProperty>(card, district);
+    buildingModes.push_back(buildingMode.get());
+    subjectBuildingProperty.attach(buildingMode.get());
+    return std::make_unique<Property>(price, std::move(buildingMode), district, name);
+}
+
+Squers createSimpleBoard(std::vector<District>& districts, std::vector<HouseDevelop*>& buildingModes, SubjectBuildingProperty& buildingPropertyNotify)
 {
     Squers squares;
     squares.push_back(createSquare<Start>(PRICE_FOR_START));
-    squares.push_back(createSquare<Property>(100, 20, "niedzwiedzia nora"));
-    createRandomSquare(squares);
+    auto property = createBuildingProperty({10, RENT_BUILDING, HOUSE_PRICE, HOTEL_PRICE}, 100, "niedzwiedzia buda", districts[0], buildingPropertyNotify, buildingModes);
+    squares.push_back(std::move(property));
     squares.push_back(createSquare<Prison>());
     for(int i = 4; i < 10; i++)
     {
         squares.push_back(createSquare<Reward>(PRICE_FOR_REWARD));
     }
-    squares.push_back(createSquare<Property>(100, 20, "Stara hata"));
+    property = createBuildingProperty({20, RENT_BUILDING, HOUSE_PRICE, HOTEL_PRICE}, 100, "Stara hata", districts[0], buildingPropertyNotify, buildingModes);
+    squares.push_back(std::move(property));
     createRandomSquare(squares);
     squares.push_back(createSquare<Deposite>(PRICE_FOR_DEPOSITE));
     squares.push_back(createSquare<Prison>());
@@ -76,20 +91,25 @@ Squers createSimpleBoard()
     return squares;
 }
 
-Players createSomePlayers(BoardIterator board, const Dice& dice)
+Players createSomePlayers(BoardIterator board, const Dice& dice, const SubjectBuildingProperty& buildingPropertyNotify)
 {
     Players players;
-    players.push_back(std::make_unique<Player>("JANEK", board, dice));
-    players.push_back(std::make_unique<Player>("KRZYSIEK", board, dice));
+    players.push_back(std::make_unique<Player>("JANEK", board, dice, buildingPropertyNotify));
+    players.push_back(std::make_unique<Player>("KRZYSIEK", board, dice, buildingPropertyNotify));
     return players;
 }
 
 int main()
 {
-    auto squares = createSimpleBoard();
+    SubjectBuildingProperty buildingPropertyNotify;
+    std::vector<District> districts;
+    std::vector<HouseDevelop*> buildingModes;
+
+    auto squares = createSimpleBoard(districts, buildingModes, buildingPropertyNotify);
+
     Board board(std::move(squares));
     Dice dice;
-    auto players = createSomePlayers(board.createBoardIterator(), dice);
+    auto players = createSomePlayers(board.createBoardIterator(), dice, buildingPropertyNotify);
 
     MonopolyGame game(std::move(board), std::move(players));
     game.startGame(10);

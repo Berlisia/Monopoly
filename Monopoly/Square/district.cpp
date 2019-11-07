@@ -1,6 +1,11 @@
 #include "district.h"
 #include "estate.h"
 
+void District::assignPropertyToDistrict(Estate* property)
+{
+    propertisInDistrict.push_back(property);
+}
+
 void District::assignPropertisToDistrict(const std::vector<Estate *> &propertis)
 {
     propertisInDistrict = propertis;

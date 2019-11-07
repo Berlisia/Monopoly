@@ -47,6 +47,7 @@ bool Player::buyProperty(unsigned int price, Estate* property, const District& d
 {
     if(price < money)
     {
+        std::cout << "BUY prop" << std::endl;
         money -= price;
         propertis.push_back(property);
         notifyBuildingProperty(district);
@@ -146,6 +147,8 @@ void Player::notifyBuildingProperty(const District& district)
     if(allPropertis == district.propertis().size())
     {
         buildingProperty.notifyForHaveAllPropertis(district);
+        return;
     }
+    buildingProperty.notifyForNotAllPropertis(district);
 }
 

@@ -15,3 +15,14 @@ void SubjectBuildingProperty::notifyForHaveAllPropertis(const District& district
         }
     }
 }
+
+void SubjectBuildingProperty::notifyForNotAllPropertis(const District &district) const
+{
+    for(auto observer: buildingPropertis)
+    {
+        if((*observer).getDistrict() == district)
+        {
+            observer->updateForNotAllPropertis();
+        }
+    }
+}
