@@ -34,7 +34,7 @@ test{
         ../Tests/railwaystationtestsuite.cpp \
         ../Tests/propertyTestSuite.cpp \
         ../Tests/gotoprisontestsuite.cpp \
-        ../Tests/playerTestSuite.cpp
+        ../Tests/playerTestSuite.cpp \
         ../Tests/publicfaciliiestestsuite.cpp
     HEADERS += \
         ../Tests/Mocks/playerMock.h \

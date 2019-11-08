@@ -25,8 +25,8 @@ public:
     void lockInPrison(Squers::iterator prison) override;
     bool withdrawMoney(unsigned int money) override;
     void addMoney(unsigned int money) override;
-    bool buyProperty(unsigned int price, Estate* property, const District& district) override;
-    unsigned int checkPropertisInDistrict(const std::vector<Estate *>& propertisInDistrict) override;
+    bool buyProperty(unsigned int price, const Estate* property, const District& district) override;
+    unsigned int checkPropertisInDistrict(const std::vector<const Estate *>& propertisInDistrict) override;
     unsigned int rollDice() override;
     const std::string& myName() override;
 
@@ -41,12 +41,12 @@ private:
     const Dice& dice;
     const SubjectBuildingProperty& buildingProperty;
 
-    std::vector<Estate*> propertis;
+    std::vector<const Estate*> propertis;
     unsigned int money = moneyOnStartGame;
 
     void moveNextSquare();
     Square* actualSquare();
-    std::vector<Estate*>::iterator findInPropertis(Estate* property);
+    std::vector<const Estate*>::iterator findInPropertis(const Estate* property);
     void walkThrought(unsigned int valueOfSteps);
     void actionOnWalkThrought();
     void actionOnStop();

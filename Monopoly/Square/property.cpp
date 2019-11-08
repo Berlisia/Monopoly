@@ -27,7 +27,7 @@ const std::string Property::squareName()
     return name;
 }
 
-const std::string& Property::estateName()
+const std::string& Property::estateName() const
 {
     return name;
 }

@@ -22,7 +22,7 @@ public:
     void actionOnWalkThrought(Guest&) override;
     const std::string squareName() override;
 
-    const std::string& estateName() override;
+    const std::string& estateName() const override;
 
 private:
     unsigned int price;

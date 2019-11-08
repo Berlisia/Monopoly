@@ -20,7 +20,7 @@ unsigned int PlayerStatus::money()
     return moneyInWalet;
 }
 
-const std::vector<Estate *> PlayerStatus::havePropertis()
+const std::vector<const Estate*> PlayerStatus::havePropertis()
 {
     return propertis;
 }

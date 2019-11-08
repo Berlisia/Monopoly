@@ -6,11 +6,11 @@ class Estate;
 class District
 {
 public:
-    void assignPropertyToDistrict(Estate* property);
-    void assignPropertisToDistrict(const std::vector<Estate*>& propertis);
-    const std::vector<Estate*>& propertis() const;
+    void assignPropertyToDistrict(const Estate* property);
+    void assignPropertisToDistrict(const std::vector<const Estate*>& propertis);
+    const std::vector<const Estate *> &propertis() const;
     bool operator == (const District& dist) const;
 
 private:
-    std::vector<Estate*> propertisInDistrict = {};
+    std::vector<const Estate*> propertisInDistrict = {};
 };

@@ -43,7 +43,7 @@ void Player::addMoney(unsigned int moneyToAdd)
     money += moneyToAdd;
 }
 
-bool Player::buyProperty(unsigned int price, Estate* property, const District& district)
+bool Player::buyProperty(unsigned int price, const Estate* property, const District& district)
 {
     if(price < money)
     {
@@ -56,13 +56,13 @@ bool Player::buyProperty(unsigned int price, Estate* property, const District& d
     return false;
 }
 
-std::vector<Estate*>::iterator Player::findInPropertis(Estate* property)
+std::vector<const Estate*>::iterator Player::findInPropertis(const Estate* property)
 {
     return std::find_if(propertis.begin(), propertis.end(),
-                        [property](Estate* playerProperty){return *property == *playerProperty;});
+                        [property](const Estate* playerProperty){return *property == *playerProperty;});
 }
 
-unsigned int Player::checkPropertisInDistrict(const std::vector<Estate*>& propertisInDistrict)
+unsigned int Player::checkPropertisInDistrict(const std::vector<const Estate*>& propertisInDistrict)
 {
     unsigned int countPropertisFromDistrict = 0;
     for(const auto districtProperty: propertisInDistrict)

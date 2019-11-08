@@ -1,17 +1,17 @@
 #include "district.h"
 #include "estate.h"
 
-void District::assignPropertyToDistrict(Estate* property)
+void District::assignPropertyToDistrict(const Estate* property)
 {
     propertisInDistrict.push_back(property);
 }
 
-void District::assignPropertisToDistrict(const std::vector<Estate *> &propertis)
+void District::assignPropertisToDistrict(const std::vector<const Estate *> &propertis)
 {
     propertisInDistrict = propertis;
 }
 
-const std::vector<Estate *> &District::propertis() const
+const std::vector<const Estate *> &District::propertis() const
 {
     return propertisInDistrict;
 }
