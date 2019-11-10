@@ -34,8 +34,8 @@ public:
 
     ::testing::NiceMock<DiceMock> dice;
     SubjectBuildingProperty subjectBuildingProperty;
-    std::unique_ptr<Player> playerFirst;
-    std::unique_ptr<Player> playerSecond;
+    std::unique_ptr<Contestant> playerFirst;
+    std::unique_ptr<Contestant> playerSecond;
     District districts;
     Squers propertisSut;
 

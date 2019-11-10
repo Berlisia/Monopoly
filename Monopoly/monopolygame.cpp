@@ -1,7 +1,7 @@
 #include "monopolygame.h"
 #include "player.h"
 
-void MonopolyGame::turn(Player& player)
+void MonopolyGame::turn(Contestant &player)
 {
     player.turn();
     auto status = player.status();

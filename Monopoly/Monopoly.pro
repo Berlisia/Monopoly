@@ -68,6 +68,7 @@ SOURCES += \
     Square/subjectbuildingproperty.cpp
 
 HEADERS += \
+    Contestant.h \
     Square/HotelBuildingState.h \
     Square/buildingMachine.h \
     Square/estate.h \

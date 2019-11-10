@@ -3,7 +3,7 @@
 #include "die.h"
 #include "bank.h"
 
-typedef std::vector<std::unique_ptr<Player>> Players;
+typedef std::vector<std::unique_ptr<Contestant>> Players;
 
 class MonopolyGame
 {
@@ -20,5 +20,5 @@ private:
     Players players;
     Bank bank;
 
-    void turn(Player& player);
+    void turn(Contestant& player);
 };

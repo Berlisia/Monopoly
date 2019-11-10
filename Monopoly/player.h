@@ -1,9 +1,8 @@
 #pragma once
 
 #include "stateMachine.h"
-#include "guest.h"
-#include "playerStatus.h"
 #include "Square/subjectbuildingproperty.h"
+#include "Contestant.h"
 
 namespace{
 const unsigned int moneyOnStartGame = 1500;
@@ -12,15 +11,14 @@ const unsigned int moneyOnStartGame = 1500;
 class Estate;
 class Dice;
 
-class Player : public StateMachine, public Guest
+class Player : public StateMachine, public Contestant
 {
 public:
     Player(std::string p_name, BoardIterator p_boardIterator, const Dice& p_dice,
            const SubjectBuildingProperty& p_buildingProperty);
 
-    void turn();
-
-    void move();
+    void turn() override;
+    const PlayerStatus status() override;
 
     void lockInPrison(Squers::iterator prison) override;
     bool withdrawMoney(unsigned int money) override;
@@ -30,11 +28,10 @@ public:
     unsigned int rollDice() override;
     const std::string& myName() override;
 
-    void printStatus();
-    const PlayerStatus status();
-
     void stateTransition(std::unique_ptr<State> state) override;
 
+    void printStatus();
+    void move();
 private:
     std::string name;
     BoardIterator actualPossisionOnBoard;
