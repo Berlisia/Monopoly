@@ -13,8 +13,8 @@
 Player::Player(std::string p_name, BoardIterator p_boardIterator, const Dice& p_dice, const SubjectBuildingProperty& p_buildingProperty):
     name(p_name),
     actualPossisionOnBoard(p_boardIterator),
-    dice(p_dice),
-    buildingProperty(p_buildingProperty)
+    propertis(p_buildingProperty),
+    dice(p_dice)
 {
     stateTransition(std::make_unique<StateActivePlayer>());
 }
@@ -47,31 +47,22 @@ bool Player::buyProperty(unsigned int price, const Estate* property, const Distr
 {
     if(price < money)
     {
-        std::cout << "BUY prop" << std::endl;
         money -= price;
-        propertis.push_back(property);
-        notifyBuildingProperty(district);
+        propertis.addNew(property, district);
         return true;
     }
     return false;
 }
 
-std::vector<const Estate*>::iterator Player::findInPropertis(const Estate* property)
+void Player::sellProperty(unsigned int price, const Estate* property, const District& district)
 {
-    return std::find_if(propertis.begin(), propertis.end(),
-                        [property](const Estate* playerProperty){return *property == *playerProperty;});
+    money += price;
+    propertis.remove(property, district);
 }
 
 unsigned int Player::checkPropertisInDistrict(const std::vector<const Estate*>& propertisInDistrict)
 {
-    unsigned int countPropertisFromDistrict = 0;
-    for(const auto districtProperty: propertisInDistrict)
-    {
-        auto it = findInPropertis(districtProperty);
-        if(it != propertis.end())
-            countPropertisFromDistrict++;
-    }
-    return countPropertisFromDistrict;
+   return propertis.countPropertisInDistrict(propertisInDistrict);
 }
 
 unsigned int Player::rollDice()
@@ -98,7 +89,7 @@ void Player::printStatus()
 
 const PlayerStatus Player::status()
 {
-    return PlayerStatus {actualPossisionOnBoard, money, propertis};
+    return PlayerStatus {actualPossisionOnBoard, money, propertis.snapchotPropertis()};
 }
 
 const std::string &Player::myName()
@@ -139,16 +130,5 @@ void Player::actionOnWalkThrought()
 void Player::actionOnStop()
 {
     actualSquare()->actionOnStop(*this);
-}
-
-void Player::notifyBuildingProperty(const District& district)
-{
-    auto allPropertis = checkPropertisInDistrict(district.propertis());
-    if(allPropertis == district.propertis().size())
-    {
-        buildingProperty.notifyForHaveAllPropertis(district);
-        return;
-    }
-    buildingProperty.notifyForNotAllPropertis(district);
 }
 

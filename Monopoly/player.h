@@ -1,8 +1,8 @@
 #pragma once
 
 #include "stateMachine.h"
-#include "Square/subjectbuildingproperty.h"
 #include "Contestant.h"
+#include "PlayerPropertis.h"
 
 namespace{
 const unsigned int moneyOnStartGame = 1500;
@@ -24,6 +24,7 @@ public:
     bool withdrawMoney(unsigned int money) override;
     void addMoney(unsigned int money) override;
     bool buyProperty(unsigned int price, const Estate* property, const District& district) override;
+    void sellProperty(unsigned int price, const Estate* property, const District& district) override;
     unsigned int checkPropertisInDistrict(const std::vector<const Estate *>& propertisInDistrict) override;
     unsigned int rollDice() override;
     const std::string& myName() override;
@@ -35,15 +36,14 @@ public:
 private:
     std::string name;
     BoardIterator actualPossisionOnBoard;
-    const Dice& dice;
-    const SubjectBuildingProperty& buildingProperty;
-
-    std::vector<const Estate*> propertis;
+    PlayerPropertis propertis;
     unsigned int money = moneyOnStartGame;
+
+    const Dice& dice;
 
     void moveNextSquare();
     Square* actualSquare();
-    std::vector<const Estate*>::iterator findInPropertis(const Estate* property);
+
     void walkThrought(unsigned int valueOfSteps);
     void actionOnWalkThrought();
     void actionOnStop();

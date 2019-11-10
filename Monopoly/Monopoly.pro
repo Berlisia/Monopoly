@@ -43,6 +43,7 @@ test{
 }
 
 SOURCES += \
+    PlayerPropertis.cpp \
     Square/HotelBuildingState.cpp \
     Square/allpropertisbuildingstate.cpp \
     Square/housesBuildingState.cpp \
@@ -69,6 +70,7 @@ SOURCES += \
 
 HEADERS += \
     Contestant.h \
+    PlayerPropertis.h \
     Square/HotelBuildingState.h \
     Square/buildingMachine.h \
     Square/estate.h \
