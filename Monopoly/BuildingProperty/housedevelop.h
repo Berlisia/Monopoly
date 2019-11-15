@@ -12,4 +12,6 @@ public:
     virtual void buyHotel(Guest& owner) = 0;
     virtual void sellHouse(unsigned int numberOfHouse, Guest& owner) = 0;
     virtual void sellHotel(Guest& owner) = 0;
+    virtual void mortgage(Guest& owner) = 0;
+    virtual void relieveMortgage(Guest& owner) = 0;
 };

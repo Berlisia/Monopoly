@@ -1,7 +1,7 @@
 TEMPLATE = app
 LIBS += -pthread
 
-CONFIG += console c++14 test pthread
+CONFIG += console test win32 pthread c++17
 CONFIG -= app_bundle
 CONFIG -= qt
 
@@ -43,10 +43,13 @@ test{
 }
 
 SOURCES += \
+    Bankier.cpp \
     PlayerPropertis.cpp \
-    Square/HotelBuildingState.cpp \
-    Square/allpropertisbuildingstate.cpp \
-    Square/housesBuildingState.cpp \
+#    BuildingProperty/BuildingPropertyFsm.cpp \
+    BuildingProperty/HotelBuildingState.cpp \
+    BuildingProperty/MortgageBuildingState.cpp \
+    BuildingProperty/allpropertisbuildingstate.cpp \
+    BuildingProperty/housesBuildingState.cpp \
     Square/publicfacilities.cpp \
     Square/railwaystation.cpp \
     Square/start.cpp \
@@ -62,19 +65,24 @@ SOURCES += \
     Square/penalty.cpp \
     Square/gotoprison.cpp \
     playerStatus.cpp \
-    Square/buildingproperty.cpp \
-    Square/defultbuildingstate.cpp \
+    BuildingProperty/buildingproperty.cpp \
+    BuildingProperty/defultbuildingstate.cpp \
     Square/district.cpp \
     Square/estate.cpp \
-    Square/subjectbuildingproperty.cpp
+    BuildingProperty/subjectbuildingproperty.cpp
 
 HEADERS += \
     Contestant.h \
     PlayerPropertis.h \
-    Square/HotelBuildingState.h \
-    Square/buildingMachine.h \
+    BuildingProperty/BuildingObserver.h \
+#    BuildingProperty/BuildingPropertyFsm.h \
+#    BuildingProperty/EventVariant.h \
+    BuildingProperty/HotelBuildingState.h \
+    BuildingProperty/MortgageBuildingState.h \
+#    BuildingProperty/StateVariant.h \
+    BuildingProperty/buildingMachine.h \
     Square/estate.h \
-    Square/housesBuildingState.h \
+    BuildingProperty/housesBuildingState.h \
     Square/publicfacilities.h \
     Square/railwaystation.h \
     Square/square.h \
@@ -104,8 +112,8 @@ HEADERS += \
     Square/gotoprison.h \
     Square/district.h \
     Square/rentpaymode.h \
-    Square/buildingproperty.h \
-    Square/housedevelop.h \
-    Square/defultbuildingstate.h \
-    Square/allpropertisbuildingstate.h \
-    Square/subjectbuildingproperty.h
+    BuildingProperty/buildingproperty.h \
+    BuildingProperty/housedevelop.h \
+    BuildingProperty/defultbuildingstate.h \
+    BuildingProperty/allpropertisbuildingstate.h \
+    BuildingProperty/subjectbuildingproperty.h

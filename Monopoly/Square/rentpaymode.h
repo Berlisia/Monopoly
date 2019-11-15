@@ -6,5 +6,6 @@ class RentPayMode
 {
 public:
     virtual ~RentPayMode() = default;
-    virtual void payRent(Guest& player, Guest& owner) const = 0;
+    virtual void payRent(Guest& player) const = 0;
+    virtual void setNewOwner(Guest& owner) = 0;
 };

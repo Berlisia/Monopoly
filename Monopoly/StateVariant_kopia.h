@@ -1,0 +1,4 @@
+#ifndef STATEVARIANT_H
+#define STATEVARIANT_H
+
+#endif // STATEVARIANT_H

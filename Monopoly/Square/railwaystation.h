@@ -13,9 +13,11 @@ public:
         rent(p_rent),
         district(p_district) {}
 
-    void payRent(Guest& player, Guest& owner) const override;
+    void payRent(Guest& player) const override;
+    void setNewOwner(Guest& owner) override;
 
 private:
     const RentAtNumberOfRailways rent;
     const District& district;
+    Guest* owner;
 };

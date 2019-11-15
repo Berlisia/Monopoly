@@ -3,7 +3,8 @@
 #include "Mocks/dicemock.h"
 #include "Square/property.h"
 #include "player.h"
-#include "Square/buildingproperty.h"
+#include "BuildingProperty/buildingproperty.h"
+#include "bankier.h"
 
 namespace{
 constexpr unsigned int HOUSE_PRICE = 10;
@@ -42,6 +43,7 @@ public:
     std::unique_ptr<Contestant> playerSecond;
     std::vector<District> districts;
     std::vector<HouseDevelop*> buildingModes;
+    Bankier bankier;
     Squers propertisSut;
 
     void setupTestBoard();
@@ -64,9 +66,9 @@ void PropertyTestSuite::setupTestBoard()
     subjectBuildingProperty.attach(buildingModeForPub.get());
     subjectBuildingProperty.attach(buildingModeForExpensive.get());
 
-    auto propertyPub = std::make_unique<Property>(PUB_PRICE, std::move(buildingModeForPub), districts[0], PUB_NAME);
-    auto propertyBear = std::make_unique<Property>(BEAR_PRICE, std::move(buildingModeForBear), districts[0], BEAR_NAME);
-    auto propertyExpensive = std::make_unique<Property>(EXPENSIVE_PRICE, std::move(buildingModeForExpensive), districts[1], EXPENSIVE_NAME);
+    auto propertyPub = std::make_unique<Property>(PUB_PRICE, std::move(buildingModeForPub), districts[0], PUB_NAME, bankier);
+    auto propertyBear = std::make_unique<Property>(BEAR_PRICE, std::move(buildingModeForBear), districts[0], BEAR_NAME, bankier);
+    auto propertyExpensive = std::make_unique<Property>(EXPENSIVE_PRICE, std::move(buildingModeForExpensive), districts[1], EXPENSIVE_NAME, bankier);
 
     districts[0].assignPropertisToDistrict({propertyPub.get(), propertyBear.get()});
     districts[1].assignPropertisToDistrict({propertyExpensive.get()});

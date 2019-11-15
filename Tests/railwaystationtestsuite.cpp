@@ -4,6 +4,7 @@
 #include "Square/property.h"
 #include "player.h"
 #include "Square/railwaystation.h"
+#include "bankier.h"
 
 namespace{
 const RentAtNumberOfRailways RENT = {{1, 10}, {2, 20}, {3, 30}, {4, 40}};
@@ -37,6 +38,7 @@ public:
     std::unique_ptr<Contestant> playerFirst;
     std::unique_ptr<Contestant> playerSecond;
     District districts;
+    Bankier bankier;
     Squers propertisSut;
 
     void setupTestBoard();
@@ -45,10 +47,10 @@ public:
 
 void PropertyRailwayStationTestSuite::setupTestBoard()
 {
-    auto mainRailway = std::make_unique<Property>(MAIN_PRICE, std::make_unique<RailwayStation>(RENT, districts), districts, MAIN_NAME);
-    auto swiebodzki = std::make_unique<Property>(SWIEBODZKI_PRICE, std::make_unique<RailwayStation>(RENT, districts), districts, SWIEBODZKI_NAME);
-    auto mikolajow = std::make_unique<Property>(MIKOLAJOW_PRICE, std::make_unique<RailwayStation>(RENT, districts), districts, MIKOLAJOW_NAME);
-    auto brochow = std::make_unique<Property>(BROCHOW_PRICE, std::make_unique<RailwayStation>(RENT, districts), districts, BROCHOW_NAME);
+    auto mainRailway = std::make_unique<Property>(MAIN_PRICE, std::make_unique<RailwayStation>(RENT, districts), districts, MAIN_NAME, bankier);
+    auto swiebodzki = std::make_unique<Property>(SWIEBODZKI_PRICE, std::make_unique<RailwayStation>(RENT, districts), districts, SWIEBODZKI_NAME, bankier);
+    auto mikolajow = std::make_unique<Property>(MIKOLAJOW_PRICE, std::make_unique<RailwayStation>(RENT, districts), districts, MIKOLAJOW_NAME, bankier);
+    auto brochow = std::make_unique<Property>(BROCHOW_PRICE, std::make_unique<RailwayStation>(RENT, districts), districts, BROCHOW_NAME, bankier);
 
     districts.assignPropertisToDistrict({mainRailway.get(), swiebodzki.get(), mikolajow.get(), brochow.get()});
 

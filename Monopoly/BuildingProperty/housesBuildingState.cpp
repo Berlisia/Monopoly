@@ -2,13 +2,14 @@
 #include "guest.h"
 #include "HotelBuildingState.h"
 #include "allpropertisbuildingstate.h"
+#include "MortgageBuildingState.h"
 
 namespace{
 constexpr unsigned int MAX_NUMBER_OF_HOUSES = 4;
 constexpr unsigned int HOTEL = 5;
 }
 
-Rent HousesBuildingState::calculateRent()
+Rent HousesBuildingState::calculateRent() const
 {
     return card.buildingRent.at(numberOfHouses);
 }
@@ -28,7 +29,7 @@ std::unique_ptr<BuildingMachine> HousesBuildingState::buyHotel(Guest& owner)
 {
     if(numberOfHouses == MAX_NUMBER_OF_HOUSES)
     {
-       HotelBuildingState newState(card);
+       HotelBuildingState newState(card, district);
        newState.buyHotel(owner);
         return std::make_unique<HotelBuildingState>(newState);
     }
@@ -59,10 +60,22 @@ std::unique_ptr<BuildingMachine> HousesBuildingState::sellHotel(Guest &)
     return yourself();
 }
 
+std::unique_ptr<BuildingMachine> HousesBuildingState::mortgage(Guest &)
+{
+    std::cout << "Firstly sell your houses!" << std::endl;
+    return yourself();
+}
+
+std::unique_ptr<BuildingMachine> HousesBuildingState::relieveMortgage(Guest &)
+{
+    std::cout << "You haven't mortgage" << std::endl;
+    return yourself();
+}
+
 std::unique_ptr<BuildingMachine> HousesBuildingState::sellAllHouses(Guest& owner)
 {
     owner.addMoney(numberOfHouses * card.housePrice/2);
-    return std::make_unique<AllPropertisBuildingState>(card);
+    return std::make_unique<AllPropertisBuildingState>(card, district);
 }
 
 std::unique_ptr<BuildingMachine> HousesBuildingState::sellSomeHouses(unsigned int houses, Guest &owner)

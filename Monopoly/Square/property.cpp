@@ -5,16 +5,15 @@
 
 void Property::actionOnStop(Guest& player)
 {
-    if(owner)
-    {
-        if(not (owner->myName() == player.myName()))
-        {
-            payRentMode->payRent(player, *owner);
-        }
-    }
-    else
+    if(owner->myName() == "Bankier")
     {
         buyPropertyByNewOwner(player);
+        return;
+    }
+
+    if(owner->myName() != player.myName())
+    {
+        payRentMode->payRent(player);
     }
 }
 
@@ -37,5 +36,6 @@ void Property::buyPropertyByNewOwner(Guest& player)
     if(player.buyProperty(price, this, district))
     {
         owner = &player;
+        payRentMode->setNewOwner(*owner);
     }
 }

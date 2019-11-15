@@ -4,6 +4,7 @@
 #include "Square/property.h"
 #include "player.h"
 #include "Square/publicfacilities.h"
+#include "bankier.h"
 
 namespace{
 constexpr unsigned int FACTOR_OWNER_HAVE_ONE_FACILITY = 4;
@@ -31,6 +32,7 @@ public:
     std::unique_ptr<Player> playerFirst;
     std::unique_ptr<Player> playerSecond;
     District district;
+    Bankier bankier;
     Squers propertisSut;
 
     void setupPropertyWithPublicFacilitesPayMode();
@@ -39,8 +41,8 @@ public:
 
 void PropertyPublicFacilitiesTestSuite::setupPropertyWithPublicFacilitesPayMode()
 {
-    auto waterSupply = std::make_unique<Property>(WATER_SUPPLY_PRICE, std::make_unique<PublicFacilities>(district), district, WATER_SUPPLY_NAME);
-    auto powerStation = std::make_unique<Property>(POWER_STATION_PRICE, std::make_unique<PublicFacilities>(district), district, POWER_STATION_NAME);
+    auto waterSupply = std::make_unique<Property>(WATER_SUPPLY_PRICE, std::make_unique<PublicFacilities>(district), district, WATER_SUPPLY_NAME, bankier);
+    auto powerStation = std::make_unique<Property>(POWER_STATION_PRICE, std::make_unique<PublicFacilities>(district), district, POWER_STATION_NAME, bankier);
 
     district.assignPropertisToDistrict({waterSupply.get(), powerStation.get()});
 

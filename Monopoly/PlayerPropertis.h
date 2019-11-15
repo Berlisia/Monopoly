@@ -1,7 +1,7 @@
 #pragma once
 #include <vector>
 
-#include "Square/subjectbuildingproperty.h"
+#include "BuildingProperty/subjectbuildingproperty.h"
 
 class Estate;
 
