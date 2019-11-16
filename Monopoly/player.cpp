@@ -45,7 +45,7 @@ void Player::addMoney(unsigned int moneyToAdd)
 
 bool Player::buyProperty(unsigned int price, const Estate* property, const District& district)
 {
-    if(price < money)
+    if(haveEnoughtMoney(price))
     {
         money -= price;
         propertis.addNew(property, district);
@@ -80,6 +80,11 @@ bool Player::withdrawMoney(unsigned int valueToTake)
     }
     //stateTransition(std::make_unique<StatePlayerBancrut>());
     return false;
+}
+
+bool Player::haveEnoughtMoney(unsigned int price)
+{
+    return price < money;
 }
 
 void Player::printStatus()

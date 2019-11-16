@@ -16,18 +16,3 @@ struct CardInfo
     unsigned int hotelPrice;
     unsigned int mortgagePrice;
 };
-
-class BuildingMachine
-{
-public:
-    virtual ~BuildingMachine() = default;
-
-    virtual Rent calculateRent() const = 0;
-    virtual std::unique_ptr<BuildingMachine> buyHouse(unsigned int numberOfHouse, Guest& owner) = 0;
-    virtual std::unique_ptr<BuildingMachine> buyHotel(Guest& owner) = 0;
-    virtual std::unique_ptr<BuildingMachine> sellHouse(unsigned int numberOfHouse, Guest& owner) = 0;
-    virtual std::unique_ptr<BuildingMachine> sellHotel(Guest& owner) = 0;
-    virtual std::unique_ptr<BuildingMachine> mortgage(Guest& owner) = 0;
-    virtual std::unique_ptr<BuildingMachine> relieveMortgage(Guest& owner) = 0;
-
-};

@@ -9,7 +9,7 @@ class PublicFacilities: public RentPayMode
 public:
     PublicFacilities(const District& p_district): district(p_district) {}
 
-    void payRent(Guest& player) const override;
+    void payRent(Guest& player) override;
     void setNewOwner(Guest& owner) override;
 
 private:

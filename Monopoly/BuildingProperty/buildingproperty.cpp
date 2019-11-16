@@ -1,64 +1,72 @@
+#include <memory>
+#include <utility>
+
 #include "buildingproperty.h"
 #include "guest.h"
-#include "allpropertisbuildingstate.h"
+#include "EventVariant.h"
+#include "StateVariant.h"
 
-#include <memory>
-
-void BuildingProperty::payRent(Guest& player) const
+void BuildingProperty::payRent(Guest& player)
 {
-//    if(fsm){
-//        const auto& state = fsm->get_state();
-//        withdrawRent(std::get<BuildingMachine>(state).calculateRent(), player, owner);
-//    }
-    withdrawRent(currentState->calculateRent(), player);
+    Event rentEvent = PayRent{0};
+    fsm.dispatch(rentEvent);
+    auto rent = std::get<PayRent>(rentEvent).rentToPay;
+    withdrawRent(rent, player);
 }
 
 void BuildingProperty::setNewOwner(Guest& newOwner)
 {
     owner = &newOwner;
-    if(owner != nullptr){
-//        fsm.emplace(card, *owner);
-    }
+    Event ownerE = NewOwner{owner};
+    fsm.dispatch(ownerE);
 }
 
-void BuildingProperty::buyHouse(unsigned int numberOfNewHouses, Guest& owner)
+void BuildingProperty::buyHouse(unsigned int numberOfNewHouses, Guest&)
 {
-    currentState = currentState->buyHouse(numberOfNewHouses, owner);
+    Event buyHouseE = BuyHause{numberOfNewHouses};
+    fsm.dispatch(buyHouseE);
 }
 
-void BuildingProperty::buyHotel(Guest& owner)
+void BuildingProperty::buyHotel(Guest& )
 {
-    currentState = currentState->buyHotel(owner);
+    Event buyHotelE = BuyHotel{};
+    fsm.dispatch(buyHotelE);
 }
 
-void BuildingProperty::sellHouse(unsigned int numberOfHouse, Guest &owner)
+void BuildingProperty::sellHouse(unsigned int numberOfHouse, Guest &)
 {
-    currentState = currentState->sellHouse(numberOfHouse, owner);
+    Event sellHouseE = SellHouse{numberOfHouse};
+    fsm.dispatch(sellHouseE);
 }
 
-void BuildingProperty::sellHotel(Guest& owner)
+void BuildingProperty::sellHotel(Guest& )
 {
-    currentState = currentState->sellHotel(owner);
+    Event sellHotelE = SellHotel{};
+    fsm.dispatch(sellHotelE);
 }
 
-void BuildingProperty::mortgage(Guest &owner)
+void BuildingProperty::mortgage(Guest &)
 {
-    currentState = currentState->mortgage(owner);
+    Event mortgageE = GetMortgage{};
+    fsm.dispatch(mortgageE);
 }
 
-void BuildingProperty::relieveMortgage(Guest &owner)
+void BuildingProperty::relieveMortgage(Guest &)
 {
-    currentState = currentState->relieveMortgage(owner);
+    Event relieveMortgageE = RelieveMortgage{};
+    fsm.dispatch(relieveMortgageE);
 }
 
 void BuildingProperty::updateForAllPropertis()
 {
-    currentState = std::make_unique<AllPropertisBuildingState>(card, district);
+    Event allPropertis = HaveAllPropertis{};
+    fsm.dispatch(allPropertis);
 }
 
 void BuildingProperty::updateForNotAllPropertis()
 {
-    currentState = std::make_unique<DefaultBuildingState>(card, district);
+    Event notAllPropertis = HaveNotAllPropertis{};
+    fsm.dispatch(notAllPropertis);
 }
 
 const District &BuildingProperty::getDistrict()

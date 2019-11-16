@@ -54,9 +54,9 @@ void PropertyTestSuite::setupTestBoard()
 {
     districts.push_back(District());
     districts.push_back(District());
-    auto buildingModeForPub = std::make_unique<BuildingProperty>(CardInfo{PUB_RENT, PUB_RENT_BUILDING, HOUSE_PRICE, HOTEL_PRICE}, districts[0]);
-    auto buildingModeForBear = std::make_unique<BuildingProperty>(CardInfo{BEAR_RENT, BEAR_RENT_BUILDING, HOUSE_PRICE, HOTEL_PRICE}, districts[0]);
-    auto buildingModeForExpensive = std::make_unique<BuildingProperty>(CardInfo{EXPENSIVE_RENT, EXPENSIVE_RENT_BUILDING, HOUSE_PRICE, HOTEL_PRICE}, districts[1]);
+    auto buildingModeForPub = std::make_unique<BuildingProperty>(CardInfo{PUB_RENT, PUB_RENT_BUILDING, HOUSE_PRICE, HOTEL_PRICE, PUB_PRICE/2}, districts[0]);
+    auto buildingModeForBear = std::make_unique<BuildingProperty>(CardInfo{BEAR_RENT, BEAR_RENT_BUILDING, HOUSE_PRICE, HOTEL_PRICE, BEAR_PRICE/2}, districts[0]);
+    auto buildingModeForExpensive = std::make_unique<BuildingProperty>(CardInfo{EXPENSIVE_RENT, EXPENSIVE_RENT_BUILDING, HOUSE_PRICE, HOTEL_PRICE, EXPENSIVE_PRICE/2}, districts[1]);
 
     buildingModes.push_back(buildingModeForPub.get());
     buildingModes.push_back(buildingModeForBear.get());

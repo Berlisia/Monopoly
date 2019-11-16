@@ -7,7 +7,7 @@ constexpr unsigned int FACTOR_OWNER_HAVE_ONE_FACILITY = 4;
 constexpr unsigned int FACTOR_OWNER_HAVE_TWO_FACILITY = 10;
 }
 
-void PublicFacilities::payRent(Guest& player) const
+void PublicFacilities::payRent(Guest& player)
 {
     auto ownerHaveSecondFacility = owner->checkPropertisInDistrict(district.propertis());
     auto rent = calculateRent(ownerHaveSecondFacility, player.rollDice());

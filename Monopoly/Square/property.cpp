@@ -33,9 +33,10 @@ const std::string& Property::estateName() const
 
 void Property::buyPropertyByNewOwner(Guest& player)
 {
-    if(player.buyProperty(price, this, district))
+    if(player.haveEnoughtMoney(price))
     {
         owner = &player;
         payRentMode->setNewOwner(*owner);
+        player.buyProperty(price, this, district);
     }
 }

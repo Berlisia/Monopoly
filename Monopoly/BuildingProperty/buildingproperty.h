@@ -5,8 +5,7 @@
 #include "Square/district.h"
 #include "housedevelop.h"
 #include "BuildingObserver.h"
-//#include "BuildingPropertyFsm.h"
-#include "defultbuildingstate.h"
+#include "BuildingPropertyFsm.h"
 
 class BuildingProperty: public RentPayMode,
                         public HouseDevelop,
@@ -16,9 +15,9 @@ public:
     BuildingProperty(const CardInfo& p_card, const District& p_district):
         card(p_card),
         district(p_district),
-        currentState(std::make_unique<DefaultBuildingState>(card, district)) {}
+        fsm(card, owner, district) {}
 
-    void payRent(Guest& player) const override;
+    void payRent(Guest& player) override;
     void setNewOwner(Guest& owner) override;
 
     void buyHouse(unsigned int numberOfHouse, Guest& owner) override;
@@ -35,10 +34,8 @@ public:
 private:
     const CardInfo card;
     const District& district;
-    Guest* owner;
-    //std::optional<BuildingPropertyFsm> fsm;
-
-    std::unique_ptr<BuildingMachine> currentState;
+    Guest* owner = nullptr;
+    BuildingPropertyFsm fsm;
 
     void withdrawRent(Rent rent, Guest &player) const;
 };

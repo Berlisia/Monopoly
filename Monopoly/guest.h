@@ -14,6 +14,7 @@ public:
 
     virtual void lockInPrison(Squers::iterator) = 0;
     virtual bool withdrawMoney(unsigned int money) = 0;
+    virtual bool haveEnoughtMoney(unsigned int money) = 0;
     virtual void addMoney(unsigned int money) = 0;
     virtual bool buyProperty(unsigned int price, const Estate* property, const District& district) = 0;
     virtual void sellProperty(unsigned int price, const Estate* property, const District& district) = 0;

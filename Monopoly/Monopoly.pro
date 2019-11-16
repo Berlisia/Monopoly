@@ -44,12 +44,8 @@ test{
 
 SOURCES += \
     Bankier.cpp \
+    BuildingProperty/BuildingPropertyFsm.cpp \
     PlayerPropertis.cpp \
-#    BuildingProperty/BuildingPropertyFsm.cpp \
-    BuildingProperty/HotelBuildingState.cpp \
-    BuildingProperty/MortgageBuildingState.cpp \
-    BuildingProperty/allpropertisbuildingstate.cpp \
-    BuildingProperty/housesBuildingState.cpp \
     Square/publicfacilities.cpp \
     Square/railwaystation.cpp \
     Square/start.cpp \
@@ -66,23 +62,20 @@ SOURCES += \
     Square/gotoprison.cpp \
     playerStatus.cpp \
     BuildingProperty/buildingproperty.cpp \
-    BuildingProperty/defultbuildingstate.cpp \
     Square/district.cpp \
     Square/estate.cpp \
     BuildingProperty/subjectbuildingproperty.cpp
 
 HEADERS += \
+    BuildingProperty/BuildingPropertyFsm.h \
+    BuildingProperty/EventVariant.h \
+    BuildingProperty/StateVariant.h \
     Contestant.h \
     PlayerPropertis.h \
     BuildingProperty/BuildingObserver.h \
-#    BuildingProperty/BuildingPropertyFsm.h \
-#    BuildingProperty/EventVariant.h \
-    BuildingProperty/HotelBuildingState.h \
     BuildingProperty/MortgageBuildingState.h \
-#    BuildingProperty/StateVariant.h \
     BuildingProperty/buildingMachine.h \
     Square/estate.h \
-    BuildingProperty/housesBuildingState.h \
     Square/publicfacilities.h \
     Square/railwaystation.h \
     Square/square.h \
@@ -114,6 +107,4 @@ HEADERS += \
     Square/rentpaymode.h \
     BuildingProperty/buildingproperty.h \
     BuildingProperty/housedevelop.h \
-    BuildingProperty/defultbuildingstate.h \
-    BuildingProperty/allpropertisbuildingstate.h \
     BuildingProperty/subjectbuildingproperty.h

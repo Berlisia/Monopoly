@@ -22,6 +22,7 @@ public:
 
     void lockInPrison(Squers::iterator prison) override;
     bool withdrawMoney(unsigned int money) override;
+    bool haveEnoughtMoney(unsigned int money) override;
     void addMoney(unsigned int money) override;
     bool buyProperty(unsigned int price, const Estate* property, const District& district) override;
     void sellProperty(unsigned int price, const Estate* property, const District& district) override;

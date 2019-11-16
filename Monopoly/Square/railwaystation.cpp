@@ -1,7 +1,7 @@
 #include "railwaystation.h"
 #include "guest.h"
 
-void RailwayStation::payRent(Guest &player) const
+void RailwayStation::payRent(Guest &player)
 {
     auto ownerHavePropertis = owner->checkPropertisInDistrict(district.propertis());
     if(player.withdrawMoney(rent.at(ownerHavePropertis)))

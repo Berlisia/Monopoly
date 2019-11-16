@@ -9,12 +9,10 @@ class FsmBase
 public:
     using base_type = FsmBase<Derived, StateVariant, EventVariant>;
 
-    const StateVariant& get_state() const { return state; }
-
-    void dispatch(const EventVariant& event)
+    void dispatch(EventVariant& event)
     {
         Derived& fsm = static_cast<Derived&>(*this);
-        auto onEvent = [&](auto& s, const auto& e) -> std::optional<StateVariant> { return fsm.on_event(s, e); };
+        auto onEvent = [&](auto& s, auto& e) -> std::optional<StateVariant> { return fsm.on_event(s, e); };
         auto newState = std::visit(onEvent, state, event);
         if(newState)
         {
@@ -28,9 +26,9 @@ public:
     template<typename State> void on_enter(State&) {}
     template<typename State> void on_exit(State&) {}
     template<typename State, typename Event>
-    std::optional<StateVariant> on_event(State&, const Event&) { return std::nullopt; }
+    std::optional<StateVariant> on_event(State&, Event&) { return std::nullopt; }
 
-protected:
+private:
     StateVariant state;
 
 };

@@ -15,6 +15,10 @@ bool Bankier::withdrawMoney(unsigned int ){
 void Bankier::addMoney(unsigned int ){
 }
 
+bool Bankier::haveEnoughtMoney(unsigned int){
+    return false;
+}
+
 bool Bankier::buyProperty(unsigned int, const Estate*, const District&){
     return false;
 }
