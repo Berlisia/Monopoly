@@ -7,6 +7,18 @@ constexpr unsigned int MAX_NUMBER_OF_HOUSES = 4;
 constexpr unsigned int HOTEL = 5;
 }
 
+void BuildingPropertyFsm::dispatch(Event &event)
+{
+    auto& fsm = *this;
+    auto onEvent = [&](auto& s, auto& e) -> std::optional<StateBuilding> { return fsm.on_event(s, e); };
+    auto newState = std::visit(onEvent, state, event);
+    if(newState)
+    {
+        state = *std::move(newState);
+        std::visit([&](auto& s){ fsm.on_enter(s); }, state);
+    }
+}
+
 void BuildingPropertyFsm::on_enter(WithoutOwner&)
 {
     owner = nullptr;

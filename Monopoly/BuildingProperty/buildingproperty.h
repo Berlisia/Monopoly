@@ -7,6 +7,8 @@
 #include "BuildingObserver.h"
 #include "BuildingPropertyFsm.h"
 
+using BuildingFsm = std::unique_ptr<FsmBase<StateBuilding, Event>>;
+
 class BuildingProperty: public RentPayMode,
                         public HouseDevelop,
                         public BuildingObserver
@@ -15,7 +17,7 @@ public:
     BuildingProperty(const CardInfo& p_card, const District& p_district):
         card(p_card),
         district(p_district),
-        fsm(card, owner, district) {}
+        fsm(std::make_unique<BuildingPropertyFsm>(card, district)) {}
 
     void payRent(Guest& player) override;
     void setNewOwner(Guest& owner) override;
@@ -35,7 +37,7 @@ private:
     const CardInfo card;
     const District& district;
     Guest* owner = nullptr;
-    BuildingPropertyFsm fsm;
+    BuildingFsm fsm;
 
     void withdrawRent(Rent rent, Guest &player) const;
 };

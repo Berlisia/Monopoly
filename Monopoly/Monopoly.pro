@@ -43,6 +43,7 @@ test{
 }
 
 SOURCES += \
+    ../Tests/BuildingPropertyFsmTestSuite.cpp \
     Bankier.cpp \
     BuildingProperty/BuildingPropertyFsm.cpp \
     PlayerPropertis.cpp \
@@ -67,6 +68,7 @@ SOURCES += \
     BuildingProperty/subjectbuildingproperty.cpp
 
 HEADERS += \
+    ../Tests/Mocks/DistrictMock.h \
     BuildingProperty/BuildingPropertyFsm.h \
     BuildingProperty/EventVariant.h \
     BuildingProperty/StateVariant.h \

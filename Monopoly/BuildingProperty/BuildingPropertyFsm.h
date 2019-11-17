@@ -8,17 +8,22 @@
 #include "StateVariant.h"
 #include "EventVariant.h"
 
-class BuildingPropertyFsm: public FsmBase<BuildingPropertyFsm, StateBuilding, Event>
+class BuildingPropertyFsm: public FsmBase<StateBuilding, Event>
 {
 public:
     using FsmBase::on_event;
-    using FsmBase::on_exit;
     using FsmBase::on_enter;
 
-    BuildingPropertyFsm(const CardInfo& p_card, Guest* p_owner, const District& p_district):
+    BuildingPropertyFsm(const CardInfo& p_card, const District& p_district):
         card(p_card),
-        district(p_district),
-        owner(p_owner) {}
+        district(p_district) {}
+
+    void dispatch(Event& event) override;
+
+private:
+    const CardInfo& card;
+    const District& district;
+    Guest* owner;
 
     void on_enter(WithoutOwner& state);
     std::optional<StateBuilding> on_event(WithoutOwner& state, NewOwner& event);
@@ -47,11 +52,6 @@ public:
     std::optional<StateBuilding> on_event(HotelBuilding&, GetMortgage&);
 
     std::optional<StateBuilding> on_event(Mortgage&, RelieveMortgage&);
-
-private:
-    const CardInfo& card;
-    const District& district;
-    Guest* owner;
 
     void buyHouses(HouseBuilding& state, unsigned int numHousesToBuy);
     void sellSomeHouses(HouseBuilding& state, unsigned int houses);
