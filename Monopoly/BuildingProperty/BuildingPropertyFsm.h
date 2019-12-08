@@ -49,17 +49,26 @@ private:
     std::optional<StateBuilding> on_event(HouseBuilding&, SellHouse&);
     std::optional<StateBuilding> on_event(HouseBuilding&, BuyHotel&);
     std::optional<StateBuilding> on_event(HouseBuilding&, GetMortgage&);
+    std::optional<StateBuilding> on_event(HouseBuilding&, NewOwner&);
+    std::optional<StateBuilding> on_event(HouseBuilding&, SellToBank&);
+    std::optional<StateBuilding> on_event(HouseBuilding&, HaveNotAllPropertis&);
     void on_exit(HouseBuilding&);
 
     void on_enter(HotelBuilding&);
     std::optional<StateBuilding> on_event(HotelBuilding&, PayRent&);
     std::optional<StateBuilding> on_event(HotelBuilding&, SellHotel&);
     std::optional<StateBuilding> on_event(HotelBuilding&, GetMortgage&);
-    void on_exit(HotelBuilding&);
+    std::optional<StateBuilding> on_event(HotelBuilding&, NewOwner&);
+    std::optional<StateBuilding> on_event(HotelBuilding&, SellToBank&);
+    std::optional<StateBuilding> on_event(HotelBuilding&, HaveNotAllPropertis&);
+    //void on_exit(HotelBuilding&);
 
+    std::optional<StateBuilding> on_event(Mortgage&, NewOwner&);
     std::optional<StateBuilding> on_event(Mortgage&, RelieveMortgage&);
+    std::optional<StateBuilding> on_event(Mortgage&, HaveAllPropertis&);
 
     void buyHouses(HouseBuilding& state, unsigned int numHousesToBuy);
     void sellSomeHouses(HouseBuilding& state, unsigned int houses);
     void sellAllHouses(HouseBuilding& state);
+    void sellAllFromHotel();
 };

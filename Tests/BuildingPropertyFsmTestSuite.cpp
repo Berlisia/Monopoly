@@ -81,6 +81,45 @@ TEST_F(BuildingPropertyFsmDefault, PayRentShoulReturnZeroWhenGetMortgage)
     checkRent(0);
 }
 
+TEST_F(BuildingPropertyFsmDefault, shouldChangeRentAfterHandleHaveAllPropertis)
+{
+    checkRent(PUB_RENT);
+
+    Event haveAllPropertisE = HaveAllPropertis{};
+    sut.dispatch(haveAllPropertisE);
+    checkRent(PUB_RENT * 2);
+}
+
+TEST_F(BuildingPropertyFsmDefault, shouldNotChangeRentWhenNewOwner)
+{
+    checkRent(PUB_RENT);
+    ::testing::StrictMock<GuestMock> nextOwner;
+    Event newOwnerE = NewOwner{&nextOwner};
+    sut.dispatch(newOwnerE);
+    checkRent(PUB_RENT);
+}
+
+TEST_F(BuildingPropertyFsmDefault, shouldAddMoneyForSecondOwnerAfterChangeOwner)
+{
+    ::testing::StrictMock<GuestMock> nextOwner;
+    Event newOwnerE = NewOwner{&nextOwner};
+    sut.dispatch(newOwnerE);
+
+    EXPECT_CALL(nextOwner, addMoney(card.mortgagePrice));
+    Event mortgageE = GetMortgage{};
+    sut.dispatch(mortgageE);
+}
+
+TEST_F(BuildingPropertyFsmDefault, shouldDeleteOwner)
+{
+    Event sellToBankE = SellToBank{};
+    sut.dispatch(sellToBankE);
+
+    EXPECT_CALL(owner, addMoney(card.mortgagePrice)).Times(0);
+    Event mortgageE = GetMortgage{};
+    sut.dispatch(mortgageE);
+}
+
 struct BuildingPropertyFsmAllPropertis: public BuildingPropertyFsmDefault
 {
     BuildingPropertyFsmAllPropertis()
@@ -89,11 +128,6 @@ struct BuildingPropertyFsmAllPropertis: public BuildingPropertyFsmDefault
         sut.dispatch(haveAllPropertisE);
     }
 };
-
-TEST_F(BuildingPropertyFsmAllPropertis, PayRentEventShouldReturn2xPubRent)
-{
-    checkRent(PUB_RENT * 2);
-}
 
 TEST_F(BuildingPropertyFsmAllPropertis, PayRentShouldReturn2xPubRentAfterTryBuingMoreThanFourHouses)
 {
@@ -110,6 +144,43 @@ TEST_F(BuildingPropertyFsmAllPropertis, PayRentShouldChangeWhenBuyFirstHouse)
 
     sut.dispatch(buyHouseE);
     checkRent(PUB_RENT_BUILDING.at(1));
+}
+
+TEST_F(BuildingPropertyFsmAllPropertis, PayRentShoulReturnZeroWhenGetMortgage)
+{
+    Event mortgageE = GetMortgage{};
+    EXPECT_CALL(owner, addMoney(card.mortgagePrice));
+
+    sut.dispatch(mortgageE);
+    checkRent(0);
+}
+
+TEST_F(BuildingPropertyFsmAllPropertis, rentShouldChangeAfterHandleNotAllPropertis)
+{
+    Event notAllPropE = HaveNotAllPropertis{};
+    sut.dispatch(notAllPropE);
+    checkRent(PUB_RENT);
+}
+
+TEST_F(BuildingPropertyFsmAllPropertis, shouldAddMoneyForSecondOwnerAfterChangeOwner)
+{
+    ::testing::StrictMock<GuestMock> nextOwner;
+    Event newOwnerE = NewOwner{&nextOwner};
+    sut.dispatch(newOwnerE);
+
+    EXPECT_CALL(nextOwner, addMoney(card.mortgagePrice));
+    Event mortgageE = GetMortgage{};
+    sut.dispatch(mortgageE);
+}
+
+TEST_F(BuildingPropertyFsmAllPropertis, shouldDeleteOwner)
+{
+    Event sellToBankE = SellToBank{};
+    sut.dispatch(sellToBankE);
+
+    EXPECT_CALL(owner, addMoney(card.mortgagePrice)).Times(0);
+    Event mortgageE = GetMortgage{};
+    sut.dispatch(mortgageE);
 }
 
 struct BuildingPropertyFsmHousesBuilding: public BuildingPropertyFsmAllPropertis
@@ -200,6 +271,40 @@ TEST_F(BuildingPropertyFsmHousesBuilding, OwnerShouldGetMoneyWhenSellAllHouses_p
     checkRent(card.rent * 2);
 }
 
+TEST_F(BuildingPropertyFsmHousesBuilding, rentShouldChangeAfterHandleNotAllPropertis)
+{
+    Event notAllPropE = HaveNotAllPropertis{};
+
+    EXPECT_CALL(owner, addMoney(card.housePrice/2));
+    sut.dispatch(notAllPropE);
+
+    checkRent(PUB_RENT);
+}
+
+TEST_F(BuildingPropertyFsmHousesBuilding, shouldAddMoneyForSecondOwnerAfterChangeOwner)
+{
+    ::testing::StrictMock<GuestMock> nextOwner;
+    Event newOwnerE = NewOwner{&nextOwner};
+    Event mortgageE = GetMortgage{};
+
+    EXPECT_CALL(owner, addMoney(card.housePrice/2));
+    sut.dispatch(newOwnerE);
+
+    EXPECT_CALL(nextOwner, addMoney(card.mortgagePrice));
+    sut.dispatch(mortgageE);
+}
+
+TEST_F(BuildingPropertyFsmHousesBuilding, shouldDeleteOwner)
+{
+    Event sellToBankE = SellToBank{};
+    Event mortgageE = GetMortgage{};
+
+    EXPECT_CALL(owner, addMoney(card.housePrice/2));
+    EXPECT_CALL(owner, addMoney(card.mortgagePrice)).Times(0);
+    sut.dispatch(sellToBankE);
+    sut.dispatch(mortgageE);
+}
+
 struct BuildingPropertyFsmHotel: public BuildingPropertyFsmHousesBuilding
 {
     BuildingPropertyFsmHotel()
@@ -250,6 +355,43 @@ TEST_F(BuildingPropertyFsmHotel, OwnerShouldGetAllMoneyForBuildingWhenSellHotel)
     checkRent(card.rent * 2);
 }
 
+TEST_F(BuildingPropertyFsmHotel, rentShouldChangeAfterHandleNotAllPropertis)
+{
+    Event notAllPropE = HaveNotAllPropertis{};
+
+    EXPECT_CALL(owner, addMoney(HOTEL_PRICE/2));
+    EXPECT_CALL(owner, addMoney(HOUSE_PRICE/2 * 4));
+    sut.dispatch(notAllPropE);
+
+    checkRent(PUB_RENT);
+}
+
+TEST_F(BuildingPropertyFsmHotel, shouldAddMoneyForSecondOwnerAfterChangeOwner)
+{
+    ::testing::StrictMock<GuestMock> nextOwner;
+    Event newOwnerE = NewOwner{&nextOwner};
+    Event mortgageE = GetMortgage{};
+
+    EXPECT_CALL(owner, addMoney(HOTEL_PRICE/2));
+    EXPECT_CALL(owner, addMoney(HOUSE_PRICE/2 * 4));
+    sut.dispatch(newOwnerE);
+
+    EXPECT_CALL(nextOwner, addMoney(card.mortgagePrice));
+    sut.dispatch(mortgageE);
+}
+
+TEST_F(BuildingPropertyFsmHotel, shouldDeleteOwner)
+{
+    Event sellToBankE = SellToBank{};
+    Event mortgageE = GetMortgage{};
+
+    EXPECT_CALL(owner, addMoney(HOTEL_PRICE/2));
+    EXPECT_CALL(owner, addMoney(HOUSE_PRICE/2 * 4));
+    EXPECT_CALL(owner, addMoney(card.mortgagePrice)).Times(0);
+    sut.dispatch(sellToBankE);
+    sut.dispatch(mortgageE);
+}
+
 struct BuildingPropertyFsmMortgage: public BuildingPropertyFsmHotel
 {
     BuildingPropertyFsmMortgage()
@@ -266,9 +408,9 @@ TEST_F(BuildingPropertyFsmMortgage, ShouldPayOffDeptWhenReliveMortgageAndHaveAll
 {
     auto morgagePrice = static_cast<unsigned int>(std::round(card.mortgagePrice * 1.1));
     EXPECT_CALL(owner, withdrawMoney(morgagePrice))
-            .WillOnce(::testing::Return(true));
+            .WillOnce(testing::Return(true));
     EXPECT_CALL(owner, checkPropertisInDistrict(district.propertis()))
-            .WillOnce(::testing::Return(district.propertis().size()));
+            .WillOnce(testing::Return(district.propertis().size()));
 
     Event reliveMortgage = RelieveMortgage{};
     sut.dispatch(reliveMortgage);
@@ -280,11 +422,28 @@ TEST_F(BuildingPropertyFsmMortgage, ShouldPayOffDeptWhenReliveMortgageAndHaveNot
     auto morgagePrice = static_cast<unsigned int>(std::round(card.mortgagePrice * 1.1));
     auto badSize = 2;
     EXPECT_CALL(owner, withdrawMoney(morgagePrice))
-            .WillOnce(::testing::Return(true));
+            .WillOnce(testing::Return(true));
     EXPECT_CALL(owner, checkPropertisInDistrict(district.propertis()))
-            .WillOnce(::testing::Return(badSize));
+            .WillOnce(testing::Return(badSize));
 
     Event reliveMortgage = RelieveMortgage{};
+    sut.dispatch(reliveMortgage);
+    checkRent(card.rent);
+}
+
+TEST_F(BuildingPropertyFsmMortgage, newOwnerShouldNotChangeMortgage)
+{
+    ::testing::StrictMock<GuestMock> nextOwner;
+    Event newOwnerE = NewOwner{&nextOwner};
+    Event reliveMortgage = RelieveMortgage{};
+
+    auto morgagePrice = static_cast<unsigned int>(std::round(card.mortgagePrice * 1.1));
+    auto badSize = 2;
+
+    EXPECT_CALL(nextOwner, withdrawMoney(morgagePrice)).WillOnce(testing::Return(true));
+    EXPECT_CALL(nextOwner, checkPropertisInDistrict(district.propertis())).WillOnce(testing::Return(badSize));
+
+    sut.dispatch(newOwnerE);
     sut.dispatch(reliveMortgage);
     checkRent(card.rent);
 }

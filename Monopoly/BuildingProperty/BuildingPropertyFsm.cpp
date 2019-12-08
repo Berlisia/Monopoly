@@ -139,6 +139,23 @@ std::optional<StateBuilding> BuildingPropertyFsm::on_event(HouseBuilding&, GetMo
     return Mortgage{};
 }
 
+std::optional<StateBuilding> BuildingPropertyFsm::on_event(HouseBuilding& state, NewOwner& newOwner)
+{
+    sellAllHouses(state);
+    owner = newOwner.owner;
+    return Default{};
+}
+
+std::optional<StateBuilding> BuildingPropertyFsm::on_event(HouseBuilding &, SellToBank &)
+{
+    return WithoutOwner{};
+}
+
+std::optional<StateBuilding> BuildingPropertyFsm::on_event(HouseBuilding &, HaveNotAllPropertis &)
+{
+    return Default{};
+}
+
 void BuildingPropertyFsm::on_exit(HouseBuilding& state)
 {
     sellAllHouses(state);
@@ -158,19 +175,40 @@ std::optional<StateBuilding> BuildingPropertyFsm::on_event(HotelBuilding&, PayRe
 
 std::optional<StateBuilding> BuildingPropertyFsm::on_event(HotelBuilding&, SellHotel&)
 {
+    sellAllFromHotel();
     return AllPropertis{};
 }
 
 std::optional<StateBuilding> BuildingPropertyFsm::on_event(HotelBuilding&, GetMortgage&)
 {
+    sellAllFromHotel();
     owner->addMoney(card.mortgagePrice);
     return Mortgage{};
 }
 
-void BuildingPropertyFsm::on_exit(HotelBuilding&)
+std::optional<StateBuilding> BuildingPropertyFsm::on_event(HotelBuilding& state, NewOwner& newOwner)
 {
-    owner->addMoney(card.hotelPrice/2);
-    owner->addMoney(card.housePrice/2 * MAX_NUMBER_OF_HOUSES);
+    sellAllFromHotel();
+    owner = newOwner.owner;
+    return Default{};
+}
+
+std::optional<StateBuilding> BuildingPropertyFsm::on_event(HotelBuilding &, SellToBank &)
+{
+    sellAllFromHotel();
+    return WithoutOwner{};
+}
+
+std::optional<StateBuilding> BuildingPropertyFsm::on_event(HotelBuilding &, HaveNotAllPropertis &)
+{
+    sellAllFromHotel();
+    return Default{};
+}
+
+std::optional<StateBuilding> BuildingPropertyFsm::on_event(Mortgage &, NewOwner& newOwner)
+{
+    owner = newOwner.owner;
+    return std::nullopt;
 }
 
 std::optional<StateBuilding> BuildingPropertyFsm::on_event(Mortgage&, RelieveMortgage&)
@@ -182,6 +220,12 @@ std::optional<StateBuilding> BuildingPropertyFsm::on_event(Mortgage&, RelieveMor
         }
         return Default{};
     }
+    return std::nullopt;
+}
+
+std::optional<StateBuilding> BuildingPropertyFsm::on_event(Mortgage &, HaveAllPropertis &)
+{
+    //TODO ???
     return std::nullopt;
 }
 
@@ -202,5 +246,15 @@ void BuildingPropertyFsm::sellSomeHouses(HouseBuilding& state, unsigned int hous
 
 void BuildingPropertyFsm::sellAllHouses(HouseBuilding& state)
 {
-    owner->addMoney(state.numberOfHouses * card.housePrice/2);
+    if(state.numberOfHouses > 0)
+    {
+        owner->addMoney(state.numberOfHouses * card.housePrice/2);
+        state.numberOfHouses = 0;
+    }
+}
+
+void BuildingPropertyFsm::sellAllFromHotel()
+{
+    owner->addMoney(card.hotelPrice/2);
+    owner->addMoney(card.housePrice/2 * MAX_NUMBER_OF_HOUSES);
 }
