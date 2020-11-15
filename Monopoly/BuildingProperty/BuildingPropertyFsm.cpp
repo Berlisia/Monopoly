@@ -186,7 +186,7 @@ std::optional<StateBuilding> BuildingPropertyFsm::on_event(HotelBuilding&, GetMo
     return Mortgage{};
 }
 
-std::optional<StateBuilding> BuildingPropertyFsm::on_event(HotelBuilding& state, NewOwner& newOwner)
+std::optional<StateBuilding> BuildingPropertyFsm::on_event(HotelBuilding&, NewOwner& newOwner)
 {
     sellAllFromHotel();
     owner = newOwner.owner;
