@@ -4,9 +4,10 @@
 
 const std::string PRISON_NAME = "PRISON";
 
-class Prison : public Square {
+class Prison : public Square
+{
 public:
-  void actionOnStop(Guest &) override;
-  void actionOnWalkThrought(Guest &) override;
-  const std::string squareName() override;
+    void actionOnStop(Guest&) override;
+    void actionOnWalkThrought(Guest&) override;
+    const std::string squareName() override;
 };

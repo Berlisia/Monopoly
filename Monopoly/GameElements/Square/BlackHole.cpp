@@ -1,13 +1,22 @@
 #include "BlackHole.h"
 #include "Guest.h"
 
-void BlackHole::actionOnStop(Guest &) {
-  if (isActive) {
-    isActive = false;
-  } else {
-  }
+void BlackHole::actionOnStop(Guest&)
+{
+    if (isActive)
+    {
+        isActive = false;
+    }
+    else
+    {
+    }
 }
 
-void BlackHole::actionOnWalkThrought(Guest &) {}
+void BlackHole::actionOnWalkThrought(Guest&)
+{
+}
 
-const std::string BlackHole::squareName() { return BLACK_HOLE_NAME; }
+const std::string BlackHole::squareName()
+{
+    return BLACK_HOLE_NAME;
+}

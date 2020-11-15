@@ -4,23 +4,24 @@
 
 class Estate;
 
-class PlayerStatus {
+class PlayerStatus
+{
 public:
-  PlayerStatus(const BoardIterator &possition, unsigned int money,
-               const std::vector<const Estate *> &props)
-      : actualPossisionOnBoard(possition), moneyInWalet(money),
-        propertis(props) {}
+    PlayerStatus(const BoardIterator& possition, unsigned int money, const std::vector<const Estate*>& props) :
+        actualPossisionOnBoard(possition), moneyInWalet(money), propertis(props)
+    {
+    }
 
-  void update();
+    void update();
 
-  const std::string possition();
-  unsigned int money();
-  const std::vector<const Estate *> havePropertis();
+    const std::string possition();
+    unsigned int money();
+    const std::vector<const Estate*> havePropertis();
 
 private:
-  BoardIterator actualPossisionOnBoard;
-  unsigned int moneyInWalet;
-  std::vector<const Estate *> propertis;
+    BoardIterator actualPossisionOnBoard;
+    unsigned int moneyInWalet;
+    std::vector<const Estate*> propertis;
 
-  void printPropertis();
+    void printPropertis();
 };

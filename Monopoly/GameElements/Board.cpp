@@ -2,8 +2,11 @@
 
 #include "Board.h"
 
-Board::Board(Squers p_squares) : squares(std::move(p_squares)) {}
+Board::Board(Squers p_squares) : squares(std::move(p_squares))
+{
+}
 
-BoardIterator Board::createBoardIterator() {
-  return BoardIterator(squares.begin(), squares.end());
+BoardIterator Board::createBoardIterator()
+{
+    return BoardIterator(squares.begin(), squares.end());
 }

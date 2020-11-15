@@ -1,0 +1,58 @@
+---
+BreakBeforeBraces: Allman
+ColumnLimit: 120
+IndentWidth: 4
+TabWidth: 4
+UseTab: Never
+---
+Language: Cpp
+AccessModifierOffset: -4
+AlignAfterOpenBracket: AlwaysBreak
+AlignConsecutiveAssignments: false
+AlignConsecutiveDeclarations: false
+AlignOperands: false
+AlignTrailingComments: false
+AlignEscapedNewlinesLeft: true
+AllowAllParametersOfDeclarationOnNextLine: false
+AllowShortBlocksOnASingleLine: false
+AllowShortCaseLabelsOnASingleLine: true
+AllowShortIfStatementsOnASingleLine: true
+AllowShortLoopsOnASingleLine: false
+AllowShortFunctionsOnASingleLine: InlineOnly
+AllowShortLambdasOnASingleLine: All
+AlwaysBreakAfterDefinitionReturnType: None
+AlwaysBreakBeforeMultilineStrings: false
+AlwaysBreakTemplateDeclarations: true
+BinPackArguments: false
+BinPackParameters: false
+BreakBeforeBinaryOperators: None
+BreakBeforeTernaryOperators: true
+BreakConstructorInitializers: AfterColon
+BreakStringLiterals: true
+ConstructorInitializerAllOnOneLineOrOnePerLine: true
+ConstructorInitializerIndentWidth: 4
+ContinuationIndentWidth: 4
+Cpp11BracedListStyle: true
+DisableFormat: false
+FixNamespaceComments: true
+IncludeCategories:
+  - Regex:           '^<sys/'
+    Priority:        1
+  - Regex:           '^<'
+    Priority:        2
+  - Regex:           '^"'
+    Priority:        3
+IndentCaseLabels: true
+KeepEmptyLinesAtTheStartOfBlocks: false
+MaxEmptyLinesToKeep: 1
+BraceWrapping:
+   AfterNamespace: false
+   AfterUnion: true
+NamespaceIndentation: None
+PenaltyReturnTypeOnItsOwnLine: 5000
+PointerAlignment: Left
+SortIncludes: true
+SpaceBeforeAssignmentOperators: true
+SpaceBeforeParens: ControlStatements
+SpaceInEmptyParentheses: false
+Standard: Cpp11

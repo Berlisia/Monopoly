@@ -8,12 +8,13 @@
 typedef std::vector<std::unique_ptr<Square>> Squers;
 typedef CyclicIterator<std::unique_ptr<Square>, Squers::iterator> BoardIterator;
 
-class Board {
+class Board
+{
 public:
-  Board(Squers p_squares);
+    Board(Squers p_squares);
 
-  BoardIterator createBoardIterator();
+    BoardIterator createBoardIterator();
 
 private:
-  Squers squares;
+    Squers squares;
 };

@@ -2,9 +2,10 @@
 #include <map>
 #include <vector>
 
-class Bank {
+class Bank
+{
 public:
-  Bank() {}
+    Bank() {}
 
 private:
 };

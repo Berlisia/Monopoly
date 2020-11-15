@@ -4,11 +4,12 @@
 
 #include "State.h"
 
-class StateMachine {
+class StateMachine
+{
 public:
-  virtual ~StateMachine() = default;
-  virtual void stateTransition(std::unique_ptr<State> state) = 0;
+    virtual ~StateMachine() = default;
+    virtual void stateTransition(std::unique_ptr<State> state) = 0;
 
 protected:
-  std::unique_ptr<State> currentState;
+    std::unique_ptr<State> currentState;
 };

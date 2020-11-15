@@ -6,7 +6,8 @@
 #include "Property.h"
 #include "RailwayStation.h"
 
-namespace {
+namespace
+{
 const RentAtNumberOfRailways RENT = {{1, 10}, {2, 20}, {3, 30}, {4, 40}};
 
 constexpr unsigned int MAIN_PRICE = 100;
@@ -23,104 +24,96 @@ const std::string BROCHOW_NAME = "Brochow";
 
 } // namespace
 
-class PropertyRailwayStationTestSuite : public ::testing::Test {
+class PropertyRailwayStationTestSuite : public ::testing::Test
+{
 public:
-  PropertyRailwayStationTestSuite() {
-    setupTestBoard();
-    playerFirst = std::make_unique<Player>(
-        "tester Marek", BoardIterator(propertisSut.begin(), propertisSut.end()),
-        dice, subjectBuildingProperty);
-    playerSecond = std::make_unique<Player>(
-        "tester Dawid", BoardIterator(propertisSut.begin(), propertisSut.end()),
-        dice, subjectBuildingProperty);
-  }
+    PropertyRailwayStationTestSuite()
+    {
+        setupTestBoard();
+        playerFirst = std::make_unique<Player>(
+            "tester Marek", BoardIterator(propertisSut.begin(), propertisSut.end()), dice, subjectBuildingProperty);
+        playerSecond = std::make_unique<Player>(
+            "tester Dawid", BoardIterator(propertisSut.begin(), propertisSut.end()), dice, subjectBuildingProperty);
+    }
 
-  ::testing::NiceMock<DiceMock> dice;
-  SubjectBuildingProperty subjectBuildingProperty;
-  std::unique_ptr<Contestant> playerFirst;
-  std::unique_ptr<Contestant> playerSecond;
-  District districts;
-  Bankier bankier;
-  Squers propertisSut;
+    ::testing::NiceMock<DiceMock> dice;
+    SubjectBuildingProperty subjectBuildingProperty;
+    std::unique_ptr<Contestant> playerFirst;
+    std::unique_ptr<Contestant> playerSecond;
+    District districts;
+    Bankier bankier;
+    Squers propertisSut;
 
-  void setupTestBoard();
-  void diceRoll(unsigned int steps);
+    void setupTestBoard();
+    void diceRoll(unsigned int steps);
 };
 
-void PropertyRailwayStationTestSuite::setupTestBoard() {
-  auto mainRailway = std::make_unique<Property>(
-      MAIN_PRICE, std::make_unique<RailwayStation>(RENT, districts), districts,
-      MAIN_NAME, bankier);
-  auto swiebodzki = std::make_unique<Property>(
-      SWIEBODZKI_PRICE, std::make_unique<RailwayStation>(RENT, districts),
-      districts, SWIEBODZKI_NAME, bankier);
-  auto mikolajow = std::make_unique<Property>(
-      MIKOLAJOW_PRICE, std::make_unique<RailwayStation>(RENT, districts),
-      districts, MIKOLAJOW_NAME, bankier);
-  auto brochow = std::make_unique<Property>(
-      BROCHOW_PRICE, std::make_unique<RailwayStation>(RENT, districts),
-      districts, BROCHOW_NAME, bankier);
+void PropertyRailwayStationTestSuite::setupTestBoard()
+{
+    auto mainRailway = std::make_unique<Property>(
+        MAIN_PRICE, std::make_unique<RailwayStation>(RENT, districts), districts, MAIN_NAME, bankier);
+    auto swiebodzki = std::make_unique<Property>(
+        SWIEBODZKI_PRICE, std::make_unique<RailwayStation>(RENT, districts), districts, SWIEBODZKI_NAME, bankier);
+    auto mikolajow = std::make_unique<Property>(
+        MIKOLAJOW_PRICE, std::make_unique<RailwayStation>(RENT, districts), districts, MIKOLAJOW_NAME, bankier);
+    auto brochow = std::make_unique<Property>(
+        BROCHOW_PRICE, std::make_unique<RailwayStation>(RENT, districts), districts, BROCHOW_NAME, bankier);
 
-  districts.assignPropertisToDistrict(
-      {mainRailway.get(), swiebodzki.get(), mikolajow.get(), brochow.get()});
+    districts.assignPropertisToDistrict({mainRailway.get(), swiebodzki.get(), mikolajow.get(), brochow.get()});
 
-  propertisSut.push_back(std::move(mainRailway));
-  propertisSut.push_back(std::move(swiebodzki));
-  propertisSut.push_back(std::move(mikolajow));
-  propertisSut.push_back(std::move(brochow));
+    propertisSut.push_back(std::move(mainRailway));
+    propertisSut.push_back(std::move(swiebodzki));
+    propertisSut.push_back(std::move(mikolajow));
+    propertisSut.push_back(std::move(brochow));
 }
 
-void PropertyRailwayStationTestSuite::diceRoll(unsigned int steps) {
-  ON_CALL(dice, diceThrow()).WillByDefault(::testing::Return(steps));
+void PropertyRailwayStationTestSuite::diceRoll(unsigned int steps)
+{
+    ON_CALL(dice, diceThrow()).WillByDefault(::testing::Return(steps));
 }
 
-TEST_F(PropertyRailwayStationTestSuite,
-       playerSecondShouldPayRentForPlayerFirst_OnePropertyInDistrict) {
-  unsigned int steps = 1;
-  unsigned int haveOnePropertyFromDistrict = 1;
+TEST_F(PropertyRailwayStationTestSuite, playerSecondShouldPayRentForPlayerFirst_OnePropertyInDistrict)
+{
+    unsigned int steps = 1;
+    unsigned int haveOnePropertyFromDistrict = 1;
 
-  diceRoll(steps);
+    diceRoll(steps);
 
-  playerFirst->turn();
-  playerSecond->turn();
+    playerFirst->turn();
+    playerSecond->turn();
 
-  auto statusPlayerFirst = playerFirst->status();
-  auto statusPlayerSecond = playerSecond->status();
+    auto statusPlayerFirst = playerFirst->status();
+    auto statusPlayerSecond = playerSecond->status();
 
-  const auto expectedMoneyForPlayerFirst = moneyOnStartGame - SWIEBODZKI_PRICE +
-                                           RENT.at(haveOnePropertyFromDistrict);
-  EXPECT_EQ(statusPlayerFirst.money(), expectedMoneyForPlayerFirst);
+    const auto expectedMoneyForPlayerFirst = moneyOnStartGame - SWIEBODZKI_PRICE + RENT.at(haveOnePropertyFromDistrict);
+    EXPECT_EQ(statusPlayerFirst.money(), expectedMoneyForPlayerFirst);
 
-  const auto expectedMoneyForPlayerSecond =
-      moneyOnStartGame - RENT.at(haveOnePropertyFromDistrict);
-  EXPECT_EQ(statusPlayerSecond.money(), expectedMoneyForPlayerSecond);
+    const auto expectedMoneyForPlayerSecond = moneyOnStartGame - RENT.at(haveOnePropertyFromDistrict);
+    EXPECT_EQ(statusPlayerSecond.money(), expectedMoneyForPlayerSecond);
 }
 
-TEST_F(PropertyRailwayStationTestSuite,
-       playerSecondShouldPayRentForPlayerFirst_TwoPropertyInDistrict) {
-  unsigned int steps = 1;
-  unsigned int haveOnePropertyFromDistrict = 1;
-  unsigned int haveTwoPropertyFromDistrict = 2;
+TEST_F(PropertyRailwayStationTestSuite, playerSecondShouldPayRentForPlayerFirst_TwoPropertyInDistrict)
+{
+    unsigned int steps = 1;
+    unsigned int haveOnePropertyFromDistrict = 1;
+    unsigned int haveTwoPropertyFromDistrict = 2;
 
-  diceRoll(steps);
-  playerFirst->turn();
-  playerSecond->turn();
+    diceRoll(steps);
+    playerFirst->turn();
+    playerSecond->turn();
 
-  diceRoll(steps + 1);
-  playerFirst->turn();
-  playerSecond->turn();
+    diceRoll(steps + 1);
+    playerFirst->turn();
+    playerSecond->turn();
 
-  auto statusPlayerFirst = playerFirst->status();
-  auto statusPlayerSecond = playerSecond->status();
+    auto statusPlayerFirst = playerFirst->status();
+    auto statusPlayerSecond = playerSecond->status();
 
-  const auto expectedMoneyForPlayerFirst =
-      moneyOnStartGame - SWIEBODZKI_PRICE - MIKOLAJOW_PRICE +
-      RENT.at(haveOnePropertyFromDistrict) +
-      RENT.at(haveTwoPropertyFromDistrict);
-  EXPECT_EQ(statusPlayerFirst.money(), expectedMoneyForPlayerFirst);
+    const auto expectedMoneyForPlayerFirst = moneyOnStartGame - SWIEBODZKI_PRICE - MIKOLAJOW_PRICE +
+        RENT.at(haveOnePropertyFromDistrict) + RENT.at(haveTwoPropertyFromDistrict);
+    EXPECT_EQ(statusPlayerFirst.money(), expectedMoneyForPlayerFirst);
 
-  const auto expectedMoneyForPlayerSecond =
-      moneyOnStartGame - RENT.at(haveOnePropertyFromDistrict) -
-      RENT.at(haveTwoPropertyFromDistrict);
-  EXPECT_EQ(statusPlayerSecond.money(), expectedMoneyForPlayerSecond);
+    const auto expectedMoneyForPlayerSecond =
+        moneyOnStartGame - RENT.at(haveOnePropertyFromDistrict) - RENT.at(haveTwoPropertyFromDistrict);
+    EXPECT_EQ(statusPlayerSecond.money(), expectedMoneyForPlayerSecond);
 }
