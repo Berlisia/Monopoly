@@ -2,6 +2,7 @@
 
 #include "Bankier.h"
 #include "DiceMock.h"
+#include "MonopolyGameFixture.h"
 #include "Player.h"
 #include "Property.h"
 #include "RailwayStation.h"
@@ -27,13 +28,10 @@ const std::string BROCHOW_NAME = "Brochow";
 class PropertyRailwayStationTestSuite : public ::testing::Test
 {
 public:
-    PropertyRailwayStationTestSuite()
+    PropertyRailwayStationTestSuite() : board(std::move(setupTestBoard()))
     {
-        setupTestBoard();
-        playerFirst = std::make_unique<Player>(
-            "tester Marek", BoardIterator(propertisSut.begin(), propertisSut.end()), dice, subjectBuildingProperty);
-        playerSecond = std::make_unique<Player>(
-            "tester Dawid", BoardIterator(propertisSut.begin(), propertisSut.end()), dice, subjectBuildingProperty);
+        playerFirst = std::make_unique<Player>("tester Marek", dice, subjectBuildingProperty);
+        playerSecond = std::make_unique<Player>("tester Dawid", dice, subjectBuildingProperty);
     }
 
     ::testing::NiceMock<DiceMock> dice;
@@ -42,14 +40,15 @@ public:
     std::unique_ptr<Contestant> playerSecond;
     District districts;
     Bankier bankier;
-    Squers propertisSut;
+    Board board;
 
-    void setupTestBoard();
+    Squers setupTestBoard();
     void diceRoll(unsigned int steps);
 };
 
-void PropertyRailwayStationTestSuite::setupTestBoard()
+Squers PropertyRailwayStationTestSuite::setupTestBoard()
 {
+    Squers propertisSut;
     auto mainRailway = std::make_unique<Property>(
         MAIN_PRICE, std::make_unique<RailwayStation>(RENT, districts), districts, MAIN_NAME, bankier);
     auto swiebodzki = std::make_unique<Property>(
@@ -65,6 +64,7 @@ void PropertyRailwayStationTestSuite::setupTestBoard()
     propertisSut.push_back(std::move(swiebodzki));
     propertisSut.push_back(std::move(mikolajow));
     propertisSut.push_back(std::move(brochow));
+    return propertisSut;
 }
 
 void PropertyRailwayStationTestSuite::diceRoll(unsigned int steps)
@@ -74,13 +74,16 @@ void PropertyRailwayStationTestSuite::diceRoll(unsigned int steps)
 
 TEST_F(PropertyRailwayStationTestSuite, playerSecondShouldPayRentForPlayerFirst_OnePropertyInDistrict)
 {
+    MonopolyGameFixture game;
     unsigned int steps = 1;
     unsigned int haveOnePropertyFromDistrict = 1;
+    auto possitionFirst = board.createBoardIterator();
+    auto possitionSecond = board.createBoardIterator();
 
     diceRoll(steps);
 
-    playerFirst->turn();
-    playerSecond->turn();
+    game.turn(*playerFirst, possitionFirst);
+    game.turn(*playerSecond, possitionSecond);
 
     auto statusPlayerFirst = playerFirst->status();
     auto statusPlayerSecond = playerSecond->status();
@@ -94,17 +97,20 @@ TEST_F(PropertyRailwayStationTestSuite, playerSecondShouldPayRentForPlayerFirst_
 
 TEST_F(PropertyRailwayStationTestSuite, playerSecondShouldPayRentForPlayerFirst_TwoPropertyInDistrict)
 {
+    MonopolyGameFixture game;
     unsigned int steps = 1;
     unsigned int haveOnePropertyFromDistrict = 1;
     unsigned int haveTwoPropertyFromDistrict = 2;
+    auto possitionFirst = board.createBoardIterator();
+    auto possitionSecond = board.createBoardIterator();
 
     diceRoll(steps);
-    playerFirst->turn();
-    playerSecond->turn();
+    game.turn(*playerFirst, possitionFirst);
+    game.turn(*playerSecond, possitionSecond);
 
     diceRoll(steps + 1);
-    playerFirst->turn();
-    playerSecond->turn();
+    game.turn(*playerFirst, possitionFirst);
+    game.turn(*playerSecond, possitionSecond);
 
     auto statusPlayerFirst = playerFirst->status();
     auto statusPlayerSecond = playerSecond->status();

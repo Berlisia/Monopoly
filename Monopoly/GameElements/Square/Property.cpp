@@ -14,6 +14,7 @@ void Property::actionOnStop(Guest& player)
     if (owner->myName() != player.myName())
     {
         payRentMode->payRent(player);
+        std::cout << player.myName() << " payRent to " << owner->myName() << std::endl;
     }
 }
 

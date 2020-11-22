@@ -140,8 +140,8 @@ Squers createSimpleBoard(
 Players createSomePlayers(BoardIterator board, const Dice& dice, const SubjectBuildingProperty& buildingPropertyNotify)
 {
     Players players;
-    players.push_back(std::make_unique<Player>("JANEK", board, dice, buildingPropertyNotify));
-    players.push_back(std::make_unique<Player>("KRZYSIEK", board, dice, buildingPropertyNotify));
+    players.emplace(std::make_pair(std::make_unique<Player>("JANEK", dice, buildingPropertyNotify), board));
+    players.emplace(std::make_pair(std::make_unique<Player>("KRZYSIEK", dice, buildingPropertyNotify), board));
     return players;
 }
 

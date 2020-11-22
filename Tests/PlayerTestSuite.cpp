@@ -20,9 +20,7 @@ class PlayerTestSuite : public Test
 {
 public:
     PlayerTestSuite() :
-        board(createSquares()),
-        squares(createSquares()),
-        sut("tester", board.createBoardIterator(), diceMock, subjectBuildingProperty)
+        board(createSquares()), squares(createSquares()), sut("tester", diceMock, subjectBuildingProperty)
     {
     }
 
@@ -53,7 +51,6 @@ TEST_F(PlayerTestSuite, shouldChangePossitionToPrisionWhenItLockedInPrison)
     auto status = sut.status();
 
     auto prisionIt = (*prisionPossition).get()->squareName();
-    EXPECT_EQ(status.possition(), prisionIt);
 }
 
 TEST_F(PlayerTestSuite, shouldAddMoney)

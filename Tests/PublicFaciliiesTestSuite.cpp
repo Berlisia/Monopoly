@@ -2,6 +2,7 @@
 
 #include "Bankier.h"
 #include "DiceMock.h"
+#include "MonopolyGameFixture.h"
 #include "Player.h"
 #include "Property.h"
 #include "PublicFacilities.h"
@@ -21,13 +22,10 @@ const std::string POWER_STATION_NAME = "Elektrownia";
 class PropertyPublicFacilitiesTestSuite : public ::testing::Test
 {
 public:
-    PropertyPublicFacilitiesTestSuite()
+    PropertyPublicFacilitiesTestSuite() : board(std::move(setupPropertyWithPublicFacilitesPayMode()))
     {
-        setupPropertyWithPublicFacilitesPayMode();
-        playerFirst = std::make_unique<Player>(
-            "tester Marek", BoardIterator(propertisSut.begin(), propertisSut.end()), dice, subjectBuildingProperty);
-        playerSecond = std::make_unique<Player>(
-            "tester Dawid", BoardIterator(propertisSut.begin(), propertisSut.end()), dice, subjectBuildingProperty);
+        playerFirst = std::make_unique<Player>("tester Marek", dice, subjectBuildingProperty);
+        playerSecond = std::make_unique<Player>("tester Dawid", dice, subjectBuildingProperty);
     }
 
     ::testing::NiceMock<DiceMock> dice;
@@ -36,14 +34,15 @@ public:
     std::unique_ptr<Player> playerSecond;
     District district;
     Bankier bankier;
-    Squers propertisSut;
+    Board board;
 
-    void setupPropertyWithPublicFacilitesPayMode();
+    Squers setupPropertyWithPublicFacilitesPayMode();
     void diceRoll(unsigned int steps);
 };
 
-void PropertyPublicFacilitiesTestSuite::setupPropertyWithPublicFacilitesPayMode()
+Squers PropertyPublicFacilitiesTestSuite::setupPropertyWithPublicFacilitesPayMode()
 {
+    Squers propertisSut;
     auto waterSupply = std::make_unique<Property>(
         WATER_SUPPLY_PRICE, std::make_unique<PublicFacilities>(district), district, WATER_SUPPLY_NAME, bankier);
     auto powerStation = std::make_unique<Property>(
@@ -53,6 +52,7 @@ void PropertyPublicFacilitiesTestSuite::setupPropertyWithPublicFacilitesPayMode(
 
     propertisSut.push_back(std::move(waterSupply));
     propertisSut.push_back(std::move(powerStation));
+    return propertisSut;
 }
 
 void PropertyPublicFacilitiesTestSuite::diceRoll(unsigned int steps)
@@ -64,12 +64,15 @@ TEST_F(PropertyPublicFacilitiesTestSuite, dawidShouldPayRentForMarekWhenMarekHav
 {
     unsigned int steps = 1;
     diceRoll(steps);
+    auto possitionFirst = board.createBoardIterator();
+    auto possitionSecond = board.createBoardIterator();
+    MonopolyGameFixture game;
 
-    playerFirst->turn();
+    game.turn(*playerFirst, possitionFirst);
 
     unsigned int rollDice = 4;
     EXPECT_CALL(dice, diceThrow()).Times(2).WillOnce(::testing::Return(steps)).WillOnce(::testing::Return(rollDice));
-    playerSecond->turn();
+    game.turn(*playerSecond, possitionSecond);
 
     auto statusMarek = playerFirst->status();
     auto statusDawid = playerSecond->status();
@@ -87,6 +90,9 @@ TEST_F(PropertyPublicFacilitiesTestSuite, dawidShouldPayRentForMarekWhenMarekHav
     unsigned int steps = 1;
     unsigned int rollDiceFirstTurn = 4;
     unsigned int rollDiceSecondTurn = 5;
+    auto possitionFirst = board.createBoardIterator();
+    auto possitionSecond = board.createBoardIterator();
+    MonopolyGameFixture game;
 
     EXPECT_CALL(dice, diceThrow())
         .Times(6)
@@ -102,11 +108,11 @@ TEST_F(PropertyPublicFacilitiesTestSuite, dawidShouldPayRentForMarekWhenMarekHav
         . // Dawid run to Wodociagi
         WillOnce(::testing::Return(rollDiceSecondTurn)); // Dawid roll dice to pay rent
 
-    playerFirst->turn();
-    playerSecond->turn();
+    game.turn(*playerFirst, possitionFirst);
+    game.turn(*playerSecond, possitionSecond);
 
-    playerFirst->turn();
-    playerSecond->turn();
+    game.turn(*playerFirst, possitionFirst);
+    game.turn(*playerSecond, possitionSecond);
 
     auto expectedRentFirstTurn = FACTOR_OWNER_HAVE_ONE_FACILITY * rollDiceFirstTurn;
     auto expectedRentSecondTurn = FACTOR_OWNER_HAVE_TWO_FACILITY * rollDiceSecondTurn;

@@ -4,7 +4,8 @@
 #include "Contestant.h"
 #include "Die.h"
 
-typedef std::vector<std::unique_ptr<Contestant>> Players;
+using Players = std::map<std::unique_ptr<Contestant>, BoardIterator>;
+using PlayerWithPossiton = std::pair<std::unique_ptr<Contestant>, BoardIterator>;
 
 class MonopolyGame
 {
@@ -18,5 +19,7 @@ private:
     Players players;
     Bank bank;
 
-    void turn(Contestant& player);
+    Square* actualSquare(BoardIterator& possition);
+    void walkThrought(Contestant& player, BoardIterator& possition);
+    void actionOnStop(Contestant& player, BoardIterator& possition);
 };

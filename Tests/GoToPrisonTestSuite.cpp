@@ -13,7 +13,7 @@ class GoToPrisonTestSuite : public Test
 public:
     GoToPrisonTestSuite() :
         simpleBoard(createSimpleSquares()),
-        playerMock("tester", simpleBoard.createBoardIterator(), diceMock, subjectBuildingProperty),
+        playerMock("tester", diceMock, subjectBuildingProperty),
         sut(prisonPossisionOnBoard)
     {
     }

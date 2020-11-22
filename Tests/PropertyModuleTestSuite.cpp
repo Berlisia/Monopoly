@@ -3,6 +3,7 @@
 #include "Bankier.h"
 #include "BuildingProperty.h"
 #include "DiceMock.h"
+#include "MonopolyGameFixture.h"
 #include "Player.h"
 #include "Property.h"
 
@@ -31,13 +32,10 @@ constexpr Rent BEAR_RENT = 5;
 class PropertyTestSuite : public ::testing::Test
 {
 public:
-    PropertyTestSuite()
+    PropertyTestSuite() : board(std::move(setupTestBoard()))
     {
-        setupTestBoard();
-        playerFirst = std::make_unique<Player>(
-            "tester Marek", BoardIterator(propertisSut.begin(), propertisSut.end()), dice, subjectBuildingProperty);
-        playerSecond = std::make_unique<Player>(
-            "tester Dawid", BoardIterator(propertisSut.begin(), propertisSut.end()), dice, subjectBuildingProperty);
+        playerFirst = std::make_unique<Player>("tester Marek", dice, subjectBuildingProperty);
+        playerSecond = std::make_unique<Player>("tester Dawid", dice, subjectBuildingProperty);
     }
 
     ::testing::NiceMock<DiceMock> dice;
@@ -47,59 +45,59 @@ public:
     std::vector<District> districts;
     std::vector<HouseDevelop*> buildingModes;
     Bankier bankier;
-    Squers propertisSut;
+    Board board;
 
-    void setupTestBoard();
-    void diceRoll(unsigned int steps);
+    void diceRoll(unsigned int steps) { ON_CALL(dice, diceThrow()).WillByDefault(::testing::Return(steps)); }
+
+    Squers setupTestBoard()
+    {
+        districts.push_back(District());
+        districts.push_back(District());
+        auto buildingModeForPub = std::make_unique<BuildingProperty>(
+            CardInfo{PUB_RENT, PUB_RENT_BUILDING, HOUSE_PRICE, HOTEL_PRICE, PUB_PRICE / 2}, districts[0]);
+        auto buildingModeForBear = std::make_unique<BuildingProperty>(
+            CardInfo{BEAR_RENT, BEAR_RENT_BUILDING, HOUSE_PRICE, HOTEL_PRICE, BEAR_PRICE / 2}, districts[0]);
+        auto buildingModeForExpensive = std::make_unique<BuildingProperty>(
+            CardInfo{EXPENSIVE_RENT, EXPENSIVE_RENT_BUILDING, HOUSE_PRICE, HOTEL_PRICE, EXPENSIVE_PRICE / 2},
+            districts[1]);
+
+        buildingModes.push_back(buildingModeForPub.get());
+        buildingModes.push_back(buildingModeForBear.get());
+        buildingModes.push_back(buildingModeForExpensive.get());
+
+        subjectBuildingProperty.attach(buildingModeForBear.get());
+        subjectBuildingProperty.attach(buildingModeForPub.get());
+        subjectBuildingProperty.attach(buildingModeForExpensive.get());
+
+        auto propertyPub =
+            std::make_unique<Property>(PUB_PRICE, std::move(buildingModeForPub), districts[0], PUB_NAME, bankier);
+        auto propertyBear =
+            std::make_unique<Property>(BEAR_PRICE, std::move(buildingModeForBear), districts[0], BEAR_NAME, bankier);
+        auto propertyExpensive = std::make_unique<Property>(
+            EXPENSIVE_PRICE, std::move(buildingModeForExpensive), districts[1], EXPENSIVE_NAME, bankier);
+
+        districts[0].assignPropertisToDistrict({propertyPub.get(), propertyBear.get()});
+        districts[1].assignPropertisToDistrict({propertyExpensive.get()});
+
+        Squers squers;
+        squers.push_back(std::move(propertyPub));
+        squers.push_back(std::move(propertyBear));
+        squers.push_back(std::move(propertyExpensive));
+
+        return squers;
+    }
 };
-
-void PropertyTestSuite::setupTestBoard()
-{
-    districts.push_back(District());
-    districts.push_back(District());
-    auto buildingModeForPub = std::make_unique<BuildingProperty>(
-        CardInfo{PUB_RENT, PUB_RENT_BUILDING, HOUSE_PRICE, HOTEL_PRICE, PUB_PRICE / 2}, districts[0]);
-    auto buildingModeForBear = std::make_unique<BuildingProperty>(
-        CardInfo{BEAR_RENT, BEAR_RENT_BUILDING, HOUSE_PRICE, HOTEL_PRICE, BEAR_PRICE / 2}, districts[0]);
-    auto buildingModeForExpensive = std::make_unique<BuildingProperty>(
-        CardInfo{EXPENSIVE_RENT, EXPENSIVE_RENT_BUILDING, HOUSE_PRICE, HOTEL_PRICE, EXPENSIVE_PRICE / 2}, districts[1]);
-
-    buildingModes.push_back(buildingModeForPub.get());
-    buildingModes.push_back(buildingModeForBear.get());
-    buildingModes.push_back(buildingModeForExpensive.get());
-
-    subjectBuildingProperty.attach(buildingModeForBear.get());
-    subjectBuildingProperty.attach(buildingModeForPub.get());
-    subjectBuildingProperty.attach(buildingModeForExpensive.get());
-
-    auto propertyPub =
-        std::make_unique<Property>(PUB_PRICE, std::move(buildingModeForPub), districts[0], PUB_NAME, bankier);
-    auto propertyBear =
-        std::make_unique<Property>(BEAR_PRICE, std::move(buildingModeForBear), districts[0], BEAR_NAME, bankier);
-    auto propertyExpensive = std::make_unique<Property>(
-        EXPENSIVE_PRICE, std::move(buildingModeForExpensive), districts[1], EXPENSIVE_NAME, bankier);
-
-    districts[0].assignPropertisToDistrict({propertyPub.get(), propertyBear.get()});
-    districts[1].assignPropertisToDistrict({propertyExpensive.get()});
-
-    propertisSut.push_back(std::move(propertyPub));
-    propertisSut.push_back(std::move(propertyBear));
-    propertisSut.push_back(std::move(propertyExpensive));
-}
-
-void PropertyTestSuite::diceRoll(unsigned int steps)
-{
-    ON_CALL(dice, diceThrow()).WillByDefault(::testing::Return(steps));
-}
 
 TEST_F(PropertyTestSuite, playerSecondShouldPayRentForPlayerFirst_OnePropertyInDistrict)
 {
     unsigned int steps = 1;
-
+    auto startPossitionPlayerFirst = board.createBoardIterator();
+    auto startPossitionPlayerSecond = board.createBoardIterator();
     diceRoll(steps);
 
-    playerFirst->turn();
-    playerSecond->turn();
+    MonopolyGameFixture game;
+    game.turn(*playerFirst, startPossitionPlayerFirst);
+    game.turn(*playerSecond, startPossitionPlayerSecond);
 
     auto statusPlayerFirst = playerFirst->status();
     auto statusPlayerSecond = playerSecond->status();
@@ -114,14 +112,17 @@ TEST_F(PropertyTestSuite, playerSecondShouldPayRentForPlayerFirst_OnePropertyInD
 TEST_F(PropertyTestSuite, playerSecondShouldPayRentx2ForPlayerFirst_AllPropertyInDistrict)
 {
     unsigned int steps = 1;
-
+    auto possitionMarek = board.createBoardIterator();
+    auto possitionDawid = board.createBoardIterator();
     diceRoll(steps);
-    playerFirst->turn();
-    playerSecond->turn();
+
+    MonopolyGameFixture game;
+    game.turn(*playerFirst, possitionMarek);
+    game.turn(*playerSecond, possitionDawid);
 
     diceRoll(steps + 1);
-    playerFirst->turn();
-    playerSecond->turn();
+    game.turn(*playerFirst, possitionMarek);
+    game.turn(*playerSecond, possitionDawid);
 
     auto statusPlayerFirst = playerFirst->status();
     auto statusPlayerSecond = playerSecond->status();
@@ -139,6 +140,8 @@ TEST_F(PropertyTestSuite, DawidShouldPayRentWhenMarekHaveTwoHousesOnBearProperty
     unsigned int stepsInSecondTrun = 2;
     unsigned int pubPropertyBuildingMode = 0;
     unsigned int numberOfHousesToBuy = 2;
+    auto possitionMarek = board.createBoardIterator();
+    auto possitionDawid = board.createBoardIterator();
 
     EXPECT_CALL(dice, diceThrow())
         .Times(4)
@@ -147,12 +150,13 @@ TEST_F(PropertyTestSuite, DawidShouldPayRentWhenMarekHaveTwoHousesOnBearProperty
         .WillOnce(::testing::Return(stepsInSecondTrun))
         .WillOnce(::testing::Return(stepsInSecondTrun));
 
-    playerFirst->turn();
-    playerSecond->turn();
+    MonopolyGameFixture game;
+    game.turn(*playerFirst, possitionMarek);
+    game.turn(*playerSecond, possitionDawid);
 
-    playerFirst->turn();
+    game.turn(*playerFirst, possitionMarek);
     buildingModes[pubPropertyBuildingMode]->buyHouse(numberOfHousesToBuy, *playerFirst);
-    playerSecond->turn();
+    game.turn(*playerSecond, possitionDawid);
 
     auto statusMarek = playerFirst->status();
     auto statusDawid = playerSecond->status();
@@ -171,6 +175,8 @@ TEST_F(PropertyTestSuite, DawidShouldPayRentx2WhenMarekHaveTwoHousesOnBearProper
     unsigned int stepsInSecondTrun = 2;
     unsigned int pubPropertyBuildingMode = 0;
     unsigned int numberOfHousesToBuy = 2;
+    auto possitionMarek = board.createBoardIterator();
+    auto possitionDawid = board.createBoardIterator();
 
     EXPECT_CALL(dice, diceThrow())
         .Times(6)
@@ -181,16 +187,17 @@ TEST_F(PropertyTestSuite, DawidShouldPayRentx2WhenMarekHaveTwoHousesOnBearProper
         .WillOnce(::testing::Return(steps))
         .WillOnce(::testing::Return(3));
 
-    playerFirst->turn();
-    playerSecond->turn();
+    MonopolyGameFixture game;
+    game.turn(*playerFirst, possitionMarek);
+    game.turn(*playerSecond, possitionDawid);
 
-    playerFirst->turn();
+    game.turn(*playerFirst, possitionMarek);
     buildingModes[pubPropertyBuildingMode]->buyHouse(numberOfHousesToBuy, *playerFirst);
-    playerSecond->turn();
+    game.turn(*playerSecond, possitionDawid);
 
-    playerFirst->turn();
+    game.turn(*playerFirst, possitionMarek);
     buildingModes[pubPropertyBuildingMode]->sellHouse(numberOfHousesToBuy, *playerFirst);
-    playerSecond->turn();
+    game.turn(*playerSecond, possitionDawid);
 
     auto statusMarek = playerFirst->status();
     auto statusDawid = playerSecond->status();

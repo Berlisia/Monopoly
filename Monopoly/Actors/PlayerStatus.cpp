@@ -3,16 +3,16 @@
 #include "Estate.h"
 #include "PlayerStatus.h"
 
-void PlayerStatus::update()
+void PlayerStatus::update(const BoardIterator& possitionOnBoard)
 {
-    std::cout << "  Stop on: " << (*actualPossisionOnBoard).get()->squareName() << std::endl;
+    std::cout << "  Stop on: " << possition(possitionOnBoard) << std::endl;
     std::cout << "  Money in walet: " << moneyInWalet << std::endl;
     printPropertis();
 }
 
-const std::string PlayerStatus::possition()
+const std::string PlayerStatus::possition(const BoardIterator& possition)
 {
-    return (*actualPossisionOnBoard).get()->squareName();
+    return (*possition).get()->squareName();
 }
 
 unsigned int PlayerStatus::money()

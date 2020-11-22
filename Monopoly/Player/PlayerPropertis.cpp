@@ -14,7 +14,10 @@ unsigned int PlayerPropertis::countPropertisInDistrict(const std::vector<const E
     unsigned int countPropertisFromDistrict = 0;
     for (const auto districtProperty : propertisInDistrict)
     {
-        if (findProperty(districtProperty)) countPropertisFromDistrict++;
+        if (findProperty(districtProperty))
+        {
+            countPropertisFromDistrict++;
+        }
     }
     return countPropertisFromDistrict;
 }

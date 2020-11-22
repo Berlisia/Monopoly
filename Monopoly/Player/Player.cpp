@@ -6,42 +6,29 @@
 #include "Estate.h"
 #include "Player.h"
 #include "Square.h"
-#include "StateActivePlayer.h"
-#include "StatePlayerBancrut.h"
-#include "StatePlayerInPrison.h"
 
-Player::Player(
-    std::string p_name,
-    BoardIterator p_boardIterator,
-    const Dice& p_dice,
-    const SubjectBuildingProperty& p_buildingProperty) :
-    name(p_name), actualPossisionOnBoard(p_boardIterator), propertis(p_buildingProperty), dice(p_dice)
+Player::Player(std::string p_name, const Dice& p_dice, const SubjectBuildingProperty& p_buildingProperty) :
+    name(p_name), propertis(p_buildingProperty), fsm(std::make_unique<PlayerFsm>()), dice(p_dice)
 {
-    stateTransition(std::make_unique<StateActivePlayer>());
 }
 
 void Player::turn()
 {
     std::cout << "Turn " << name << " ";
-    currentState->turn(*this);
-}
-
-void Player::move()
-{
-    auto valueOfSteps = rollDice();
-    walkThrought(valueOfSteps);
-    actionOnStop();
+    // turn()
 }
 
 void Player::lockInPrison()
 {
     // actualPossisionOnBoard.moveToNewCursor(prison); TODO prison possition !!!
-    stateTransition(std::make_unique<StatePlayerInPrison>());
+    PlayerEvent lockEvent = LockInPrison{};
+    fsm->dispatch(lockEvent);
 }
 
 void Player::addMoney(unsigned int moneyToAdd)
 {
     money += moneyToAdd;
+    std::cout << name << " Add " << moneyToAdd << " after: " << money << std::endl;
 }
 
 bool Player::buyProperty(unsigned int price, const Estate* property, const District& district)
@@ -50,6 +37,7 @@ bool Player::buyProperty(unsigned int price, const Estate* property, const Distr
     {
         money -= price;
         propertis.addNew(property, district);
+        std::cout << name << " Buy: " << property->estateName() << " money " << money << std::endl;
         return true;
     }
     return false;
@@ -77,6 +65,7 @@ bool Player::withdrawMoney(unsigned int valueToTake)
     if (moneyBeforeWithdraw >= 0)
     {
         money = moneyBeforeWithdraw;
+        std::cout << name << " withraw money " << valueToTake << " after: " << money << std::endl;
         return true;
     }
     // stateTransition(std::make_unique<StatePlayerBancrut>());
@@ -95,45 +84,10 @@ void Player::printStatus()
 
 const PlayerStatus Player::status()
 {
-    return PlayerStatus{actualPossisionOnBoard, money, propertis.snapchotPropertis()};
+    return PlayerStatus{money, propertis.snapchotPropertis()};
 }
 
 const std::string& Player::myName()
 {
     return name;
-}
-
-void Player::stateTransition(std::unique_ptr<State> state)
-{
-    currentState = std::move(state);
-}
-
-void Player::moveNextSquare()
-{
-    ++actualPossisionOnBoard;
-}
-
-Square* Player::actualSquare()
-{
-    return (*actualPossisionOnBoard).get();
-}
-
-void Player::walkThrought(unsigned int valueOfSteps)
-{
-    moveNextSquare();
-    for (unsigned int i = 0; i < valueOfSteps - 1; i++)
-    {
-        actionOnWalkThrought();
-    }
-}
-
-void Player::actionOnWalkThrought()
-{
-    actualSquare()->actionOnWalkThrought(*this);
-    moveNextSquare();
-}
-
-void Player::actionOnStop()
-{
-    actualSquare()->actionOnStop(*this);
 }
