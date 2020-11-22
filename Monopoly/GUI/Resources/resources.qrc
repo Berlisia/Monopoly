@@ -1,0 +1,6 @@
+<!DOCTYPE RCC><RCC version="1.0">
+    <qresource>
+        <file>Board.png</file>
+        <file>start.png</file>
+    </qresource>
+</RCC>

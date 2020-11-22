@@ -1,6 +1,9 @@
 #pragma once
 
+#include <QLabel>
 #include <QMainWindow>
+
+#include "BoardView.hpp"
 
 namespace Ui
 {
@@ -17,4 +20,6 @@ public:
 
 private:
     Ui::MainWindow* ui;
+    BoardView board;
+    QLabel startLabel;
 };
